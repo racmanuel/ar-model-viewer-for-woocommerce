@@ -1,3 +1,5 @@
+import '@google/model-viewer';
+
 (function( $ ) {
 	'use strict';
 
