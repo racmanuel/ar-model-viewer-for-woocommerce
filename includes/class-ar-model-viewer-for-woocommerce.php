@@ -171,8 +171,11 @@ class Ar_Model_Viewer_For_Woocommerce {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		//Sets the extension and mime type for Android - .gbl and IOS - .usdz files.
 		$this->loader->add_filter( 'wp_check_filetype_and_ext', $plugin_admin, 'ar_model_viewer_for_woocommerce_file_and_ext', 10, 4 );
+		//Adds Android - .gbl and IOS - .usdz filetype to allowed mimes
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types' );
+		//Define the metabox and field configurations.
 		$this->loader->add_action( 'cmb2_admin_init', $plugin_admin, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes' );
 	}
 
