@@ -72,7 +72,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ar-model-viewer-for-woocommerce-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ar-model-viewer-for-woocommerce-public.min.css', array(), $this->version, 'all' );
 
 	}
 
@@ -83,7 +83,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ar-model-viewer-for-woocommerce-public.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ar-model-viewer-for-woocommerce-public-dist.js', array( 'jquery' ), $this->version, true );
 
 	}
 
@@ -136,6 +136,11 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		}
 
 		// ShortCodes are filters and should always return, never echo.
+
+		ob_start();
+			include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
+		$out = ob_get_clean();
+
 		return $out;
 
 	}
