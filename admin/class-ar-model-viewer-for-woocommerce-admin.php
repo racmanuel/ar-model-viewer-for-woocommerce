@@ -185,5 +185,43 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
         // Add other metaboxes as needed
 
+        
+        /**
+         * Registers options page menu item and form.
+         */
+        $cmb = new_cmb2_box(array(
+            'id' => 'ar_model_viewer_for_woocommerce_settings',
+            'title' => esc_html__('AR Model Viewer for WooCommerce', 'cmb2'),
+            'object_types' => array('options-page'),
+
+            /*
+             * The following parameters are specific to the options-page box
+             * Several of these parameters are passed along to add_menu_page()/add_submenu_page().
+             */
+
+            'option_key' => 'ar_model_viewer_for_woocommerce_settings', // The option key and admin menu page slug.
+            // 'icon_url'        => '', // Menu icon. Only applicable if 'parent_slug' is left empty.
+            'menu_title' => esc_html__('AR Model Viewer for WooCommerce', 'cmb2'), // Falls back to 'title' (above).
+            'parent_slug' => 'edit.php?post_type=product', // Make options page a submenu item of the themes menu.
+            'capability' => 'manage_options', // Cap required to view options-page.
+            // 'position'        => 1, // Menu position. Only applicable if 'parent_slug' is left empty.
+            // 'admin_menu_hook' => 'network_admin_menu', // 'network_admin_menu' to add network-level options page.
+            // 'display_cb'      => false, // Override the options-page form output (CMB2_Hookup::options_page_output()).
+            'save_button' => esc_html__('Save', 'cmb2'), // The text for the options-page save button. Defaults to 'Save'.
+            // 'disable_settings_errors' => true, // On settings pages (not options-general.php sub-pages), allows disabling.
+            // 'message_cb'      => 'yourprefix_options_page_message_callback',
+        ));
+
+        $cmb->add_field( array(
+            'name'             => 'Test Radio',
+            'id'               => 'wiki_test_radio',
+            'type'             => 'radio_inline',
+            'show_option_none' => true,
+            'options'          => array(
+                'standard' => __( 'Option One', 'cmb2' ),
+                'custom'   => __( 'Option Two', 'cmb2' ),
+            ),
+            'default' => 'standard',
+        ) );
     }
 }
