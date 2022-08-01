@@ -33,6 +33,13 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
+ * Get the bootstrap!
+ * (Update path to use cmb2 or CMB2, depending on the name of the folder.
+ * Case-sensitive is important on some systems.)
+ */
+require_once __DIR__ . '/vendor/autoload.php';
+
+/**
  * Current plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
