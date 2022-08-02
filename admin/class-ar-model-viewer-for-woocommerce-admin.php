@@ -213,15 +213,16 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         ));
 
         $cmb->add_field( array(
-            'name'             => 'Test Radio',
-            'id'               => 'wiki_test_radio',
+            'name'             => 'Show before Single Product',
+            'id'               => 'ar_model_viewer_for_woocommerce_single_product',
             'type'             => 'radio_inline',
-            'show_option_none' => true,
+            'show_option_none' => false,
             'options'          => array(
-                'standard' => __( 'Option One', 'cmb2' ),
-                'custom'   => __( 'Option Two', 'cmb2' ),
+                'yes' => __( 'Yes', 'cmb2' ),
+                'no'  => __( 'No', 'cmb2' ),
             ),
             'default' => 'standard',
+            'classes' => 'switch-field',
         ) );
     }
 }
