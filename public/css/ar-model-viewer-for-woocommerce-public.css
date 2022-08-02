@@ -2,3 +2,44 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    model-viewer {
+        width: 320px;
+        height: 320px;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    model-viewer {
+        width: 600px;
+        height: 400px;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    model-viewer {
+        width: 600px;
+        height: 400px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    model-viewer {
+        width: 600px;
+        height: 600px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    model-viewer {
+        width: 600px;
+        height: 600px;
+    }
+}

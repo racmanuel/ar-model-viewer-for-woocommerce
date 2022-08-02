@@ -14,4 +14,12 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<button type="submit">AR</button>
+<button id="ar_model_viewer_for_woocommerce_btn">View in 3D</button>
+<?php
+  global $product;
+  $id = $product->get_id();
+  $name = $product->get_name();
+?>
+<div id="dialog" title="<?php echo $name; ?>">
+  <?php echo do_shortcode('[ar_model_viewer_for_woocommerce_shortcode]') ?>
+</div>

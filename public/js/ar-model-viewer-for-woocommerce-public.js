@@ -1,6 +1,6 @@
 import '@google/model-viewer';
 
-(function( $ ) {
+(function ($) {
 	'use strict';
 
 	/**
@@ -30,5 +30,20 @@ import '@google/model-viewer';
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
-
-})( jQuery );
+	$(function () {
+		$("#dialog").dialog({
+			autoOpen: false,
+			modal: true,
+			//Set the responsive dialog
+			width: "auto",
+  			// maxWidth: 660, // This won't work
+			create: function( event, ui ) {
+				// Set maxWidth
+				$(this).css("maxWidth", "660px");
+			}
+		});
+		$("#ar_model_viewer_for_woocommerce_btn").click(function () {
+			$("#dialog").dialog("open");
+		});
+	});
+})(jQuery);
