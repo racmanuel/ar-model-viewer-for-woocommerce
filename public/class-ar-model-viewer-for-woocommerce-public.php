@@ -151,7 +151,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	public function ar_model_viewer_for_woocommerce_tab( $tabs ) {
 		// Adds the new tab
 		$tabs['ar_model_viewer'] = array(
-			'title'     => __( 'View in 3D', 'woocommerce' ),
+			'title'     => __( 'View Product on 3D', 'woocommerce' ),
 			'priority'  => 50,
 			'callback'  => array('Ar_Model_Viewer_For_Woocommerce_Public','ar_model_viewer_for_woocommerce_tab_content'),
 		);
@@ -159,7 +159,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	}
 
 	public static function ar_model_viewer_for_woocommerce_tab_content(){
-		echo '<h2>3D Model</h2>';
+		echo '<h2>Product 3D</h2>';
 		include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
 	}
 }
