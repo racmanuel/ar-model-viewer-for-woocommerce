@@ -147,4 +147,19 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	public function ar_model_viewer_for_woocommerce_button(){
 		include 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
 	}
+
+	public function ar_model_viewer_for_woocommerce_tab( $tabs ) {
+		// Adds the new tab
+		$tabs['ar_model_viewer'] = array(
+			'title'     => __( 'AR Model Viewer', 'woocommerce' ),
+			'priority'  => 50,
+			'callback'  => array('Ar_Model_Viewer_For_Woocommerce_Public','ar_model_viewer_for_woocommerce_tab_content'),
+		);
+		return $tabs;
+	}
+
+	public static function ar_model_viewer_for_woocommerce_tab_content(){
+		echo '<h2>AR Model Viewer</h2>';
+		include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
+	}
 }

@@ -192,9 +192,16 @@ class Ar_Model_Viewer_For_Woocommerce {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		// Show a button before single_product
-		$this->loader->add_filter( 'woocommerce_before_single_product',  $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+		//Check options of the plugin
+		$ar_model_viewer_settings = get_option( 'ar_model_viewer_for_woocommerce_settings' );
 
+		if($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product'] == 'yes'){
+			// Show a button before single_product
+			$this->loader->add_filter( 'woocommerce_before_single_product',  $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+		}
+
+		// Show a custom tab in single_product
+		$this->loader->add_filter( 'woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab' );
 		
 		// Shortcode name must be the same as in shortcode_atts() third parameter.
 		$this->loader->add_shortcode( $this->get_plugin_prefix() . 'shortcode', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func' );
