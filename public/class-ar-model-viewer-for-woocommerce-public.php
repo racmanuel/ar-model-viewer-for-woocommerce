@@ -144,10 +144,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		return $out;
 
 	}
-	public function custom_button_by_categories(){
-    
-		global $product;
-			 $demo_url = get_post_meta( $product->get_id(), 'ar_model_viewer_for_woocommerce_file_android', true );
-			printf('<a href="#" class="product-three-model-button" src='. $demo_url . '>3D</a>');
+	public function ar_model_viewer_for_woocommerce_button(){
+		include 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
 	}
 }
