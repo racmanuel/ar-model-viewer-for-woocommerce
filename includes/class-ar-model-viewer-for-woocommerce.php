@@ -195,6 +195,7 @@ class Ar_Model_Viewer_For_Woocommerce {
 		//Check options of the plugin
 		$ar_model_viewer_settings = get_option( 'ar_model_viewer_for_woocommerce_settings' );
 
+		// Check if in settings show before single product is active
 		if($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product'] == 'yes'){
 			// Show a button before single_product
 			$this->loader->add_filter( 'woocommerce_before_single_product',  $plugin_public, 'ar_model_viewer_for_woocommerce_button');
