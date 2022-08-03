@@ -207,7 +207,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
          */
         $cmb = new_cmb2_box(array(
             'id' => 'ar_model_viewer_for_woocommerce_settings',
-            'title' => esc_html__('AR Model Viewer for WooCommerce', 'cmb2'),
+            //'title' => esc_html__('AR Model Viewer for WooCommerce', 'cmb2'),
             'object_types' => array('options-page'),
 
             /*
@@ -218,7 +218,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'option_key' => 'ar_model_viewer_for_woocommerce_settings', // The option key and admin menu page slug.
             // 'icon_url'        => '', // Menu icon. Only applicable if 'parent_slug' is left empty.
             'menu_title' => esc_html__('AR Model Viewer for WooCommerce', 'cmb2'), // Falls back to 'title' (above).
-            'parent_slug' => 'edit.php?post_type=product', // Make options page a submenu item of the themes menu.
+            'parent_slug' => 'options-general.php', // Make options page a submenu item of the themes menu.
             'capability' => 'manage_options', // Cap required to view options-page.
             // 'position'        => 1, // Menu position. Only applicable if 'parent_slug' is left empty.
             // 'admin_menu_hook' => 'network_admin_menu', // 'network_admin_menu' to add network-level options page.
@@ -227,6 +227,15 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             // 'disable_settings_errors' => true, // On settings pages (not options-general.php sub-pages), allows disabling.
             // 'message_cb'      => 'yourprefix_options_page_message_callback',
         ));
+
+        /** NOTE FOR DEVELOPMENT - PENDING */
+        $cmb->add_field( array(
+            'name' => 'View Options',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'wiki_test_title',
+            'before_row' => array('Ar_Model_Viewer_For_Woocommerce_Admin','ar_model_viewer_for_woocommerce_cmb2_after_row')
+        ) );
 
         $cmb->add_field( array(
             'name'             => 'Show before Single Product',
@@ -238,7 +247,24 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 'no'  => __( 'No', 'cmb2' ),
             ),
             'default' => 'standard',
+            'classes' => 'switch-field'
+        ) );
+
+        $cmb->add_field( array(
+            'name'             => 'Show 3D Model in Product Tab',
+            'id'               => 'ar_model_viewer_for_woocommerce_single_product_tab',
+            'type'             => 'radio_inline',
+            'show_option_none' => false,
+            'options'          => array(
+                'yes' => __( 'Yes', 'cmb2' ),
+                'no'  => __( 'No', 'cmb2' ),
+            ),
+            'default' => 'standard',
             'classes' => 'switch-field',
         ) );
+    }
+
+    public static function ar_model_viewer_for_woocommerce_cmb2_after_row( $field_args, $field ) {
+        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display.php';
     }
 }
