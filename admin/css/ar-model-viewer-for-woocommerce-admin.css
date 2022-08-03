@@ -42,3 +42,9 @@
 	border-radius: 0 .25rem .25rem 0;
 }
 /* End Switch field */
+
+/* Style for icon in cmb2 field in products*/
+.icon-in-field{
+	width: 18px;
+	vertical-align: middle;
+}

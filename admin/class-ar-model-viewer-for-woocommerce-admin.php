@@ -136,7 +136,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
          */
         $cmb = new_cmb2_box(array(
             'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
-            'title' => __('AR Model Viewer', 'cmb2'),
+            'title' => __('AR Model Viewer for Product', 'cmb2'),
             'object_types' => array('product'), // Post type
             'context' => 'normal',
             'priority' => 'low',
@@ -145,9 +145,16 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'closed' => false, // Keep the metabox closed by default
         ));
 
-        // Regular File field
+        $cmb->add_field( array(
+            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-3d-object-18(-ldpi).png' .'" class="icon-in-field"></img> 3D Model',
+            'desc' => 'Add the files of 3D model to this product. Only glTF/GLB models are supported.',
+            'type' => 'title',
+            'id'   => 'ar_model_viewer_for_woocommerce_title_3d_model'
+        ) );
+
+        // Regular File field - Android .glb
         $cmb->add_field(array(
-            'name' => 'File for Android',
+            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-android-os-18(-ldpi).png' .'" class="icon-in-field"></img> File for Android',
             'desc' => 'Upload or enter an URL to 3D object (with .glb extension).',
             'id' => 'ar_model_viewer_for_woocommerce_file_android',
             'type' => 'file',
@@ -164,9 +171,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             ),
         ));
 
-        // Regular File field
+        // Regular File field - IOS .usdz
         $cmb->add_field(array(
-            'name' => 'File for IOS',
+            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-mac-client-18(-ldpi).png' .'" class="icon-in-field"></img> File for IOS',
             'desc' => 'Upload or enter an URL to 3D object (with .usdz extension).',
             'id' => 'ar_model_viewer_for_woocommerce_file_ios',
             'type' => 'file',
@@ -183,8 +190,17 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             ),
         ));
 
-        // Add other metaboxes as needed
+         // Regular Text field - alt for models
+        $cmb->add_field( array(
+            'name'    => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-web-accessibility-18(-ldpi).png' .'" class="icon-in-field"></img> alt',
+            'desc'    => 'Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
+            'default' => '',
+            'id'      => 'ar_model_viewer_for_woocommerce_file_alt',
+            'type'    => 'text',
+        ));
 
+        // Add other metaboxes as needed
+        do_action('ar_model_viewer_for_woocommerce_custom_fields');
         
         /**
          * Registers options page menu item and form.
