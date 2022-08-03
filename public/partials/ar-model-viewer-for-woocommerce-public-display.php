@@ -11,12 +11,45 @@
  * @subpackage Ar_Model_Viewer_For_Woocommerce/public/partials
  */
 
+// Global product variable
+global $product;
+
+//Get the file url for android
+$get_android_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_android', true);
+//Get the fiel url for IOS
+$get_ios_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_ios', true);
+//Get the alt for web accessibility
+$get_alt = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_alt', true);
+/**
+ * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
+ */
+//Get the Poster
+$get_poster = wp_get_attachment_url($product->get_image_id());
+
+// Check if the customs fields has a value.
+if (!empty($get_android_file)) {
+    $android_file_url = $get_android_file;
+}
+if (!empty($get_ios_file)) {
+    $ios_file_url = $get_ios_file;
+}
+if (!empty($get_alt)) {
+    $alt_description = sanitize_text_field($get_alt);
+}
+if (!empty($get_poster)) {
+    $poster_file_url = $get_poster;
+}
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<!-- Use it like any other HTML element -->
+<!-- AR Model Viewer for WooCommerce -->
+
 <model-viewer
-    alt=""
-    src="https://modelviewer.dev/assets/ShopifyModels/Chair.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls
-    poster="https://cdn.glitch.com/36cb8393-65c6-408d-a538-055ada20431b%2Fposter-astronaut.png?v=1599079951717"
+    alt="<?php echo esc_attr($alt_description) ?>"
+    src="<?php echo esc_url($android_file_url); ?>"
+    ios-src="<?php echo esc_url($ios_file_url); ?>"
+    poster="<?php echo esc_url($poster_file_url); ?>"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
     seamless-poster shadow-intensity="1" camera-controls enable-pan></model-viewer>
