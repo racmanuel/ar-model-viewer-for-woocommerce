@@ -158,7 +158,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		 * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
 		 */
 		//Get the Poster
-		$get_poster = wp_get_attachment_url($product->get_image_id());
+		$get_poster = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_poster', true);
+		//$get_poster = wp_get_attachment_url($product->get_image_id());
 
 		// Check if the customs fields has a value.
 		if (!empty($get_android_file)) {
@@ -169,9 +170,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		}
 		if (!empty($get_alt)) {
 			$alt_description = sanitize_text_field($get_alt);
+		}else{
+			$alt_description = $product->get_name();
 		}
 		if (!empty($get_poster)) {
 			$poster_file_url = $get_poster;
+		}
+		else{
+			$poster_file_url = wp_get_attachment_url($product->get_image_id());
 		}
 		include 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
 	}
@@ -200,7 +206,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		 * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
 		 */
 		//Get the Poster
-		$get_poster = wp_get_attachment_url($product->get_image_id());
+		$get_poster = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_poster', true);
+		//$get_poster = wp_get_attachment_url($product->get_image_id());
 
 		// Check if the customs fields has a value.
 		if (!empty($get_android_file)) {
@@ -211,9 +218,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 		}
 		if (!empty($get_alt)) {
 			$alt_description = sanitize_text_field($get_alt);
+		}else{
+			$alt_description = $product->get_name();
 		}
 		if (!empty($get_poster)) {
 			$poster_file_url = $get_poster;
+		}
+		else{
+			$poster_file_url = wp_get_attachment_url($product->get_image_id());
 		}
 		include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
 	}

@@ -136,7 +136,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
          */
         $cmb = new_cmb2_box(array(
             'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
-            'title' => __('AR Model Viewer for Product', 'cmb2'),
+            'title' => __('AR Model Viewer for WooCommerce', 'cmb2'),
             'object_types' => array('product'), // Post type
             'context' => 'normal',
             'priority' => 'low',
@@ -145,16 +145,16 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'closed' => false, // Keep the metabox closed by default
         ));
 
-        $cmb->add_field( array(
-            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-3d-object-18(-ldpi).png' .'" class="icon-in-field"></img> 3D Model',
+        $cmb->add_field(array(
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-3d-object-18(-ldpi).png' . '" class="icon-in-field"></img> 3D Model',
             'desc' => 'Add the files of 3D model to this product. Only glTF/GLB models are supported.',
             'type' => 'title',
-            'id'   => 'ar_model_viewer_for_woocommerce_title_3d_model'
-        ) );
+            'id' => 'ar_model_viewer_for_woocommerce_title_3d_model',
+        ));
 
         // Regular File field - Android .glb
         $cmb->add_field(array(
-            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-android-os-18(-ldpi).png' .'" class="icon-in-field"></img> File for Android',
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-android-os-18(-ldpi).png' . '" class="icon-in-field"></img> File for Android',
             'desc' => 'Upload or enter an URL to 3D object (with .glb extension).',
             'id' => 'ar_model_viewer_for_woocommerce_file_android',
             'type' => 'file',
@@ -173,7 +173,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
         // Regular File field - IOS .usdz
         $cmb->add_field(array(
-            'name' => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-mac-client-18(-ldpi).png' .'" class="icon-in-field"></img> File for IOS',
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-mac-client-18(-ldpi).png' . '" class="icon-in-field"></img> File for IOS',
             'desc' => 'Upload or enter an URL to 3D object (with .usdz extension).',
             'id' => 'ar_model_viewer_for_woocommerce_file_ios',
             'type' => 'file',
@@ -190,18 +190,44 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             ),
         ));
 
-         // Regular Text field - alt for models
-        $cmb->add_field( array(
-            'name'    => '<img src="'. plugin_dir_url(__FILE__) . 'images/icons8-web-accessibility-18(-ldpi).png' .'" class="icon-in-field"></img> alt',
-            'desc'    => 'Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
+        //Regular File Field to Poster
+        $cmb->add_field(array(
+            'name' => 'Poster',
+            'desc' => 'Upload an image or enter an URL. If the image field (alt) is left empty, the photo of the product is taken. This field displays an image instead of the model, useful for showing the user something before a model is loaded and ready to render.',
+            'id' => 'ar_model_viewer_for_woocommerce_file_poster',
+            'type' => 'file',
+            // Optional:
+            'options' => array(
+                'url' => true, // Hide the text input for the url
+            ),
+            'text' => array(
+                'add_upload_file_text' => 'Add File', // Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                // Or only allow gif, jpg, or png images
+                'type' => array(
+                    'image/gif',
+                    'image/jpeg',
+                    'image/png',
+                    'image/webp',
+                ),
+            ),
+            'preview_size' => 'thumbnail', // Image size to use when previewing in the admin.
+        ));
+
+        // Regular Text field - alt for models
+        $cmb->add_field(array(
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-web-accessibility-18(-ldpi).png' . '" class="icon-in-field"></img> alt',
+            'desc' => 'Insert a text. if the text field is left empty, the name of the product is taken. Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
             'default' => '',
-            'id'      => 'ar_model_viewer_for_woocommerce_file_alt',
-            'type'    => 'text',
+            'id' => 'ar_model_viewer_for_woocommerce_file_alt',
+            'type' => 'text',
         ));
 
         // Add other metaboxes as needed
         do_action('ar_model_viewer_for_woocommerce_custom_fields');
-        
+
         /**
          * Registers options page menu item and form.
          */
@@ -229,42 +255,48 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         ));
 
         /** NOTE FOR DEVELOPMENT - PENDING */
-        $cmb->add_field( array(
+        $cmb->add_field(array(
             'name' => 'View Options',
             'desc' => '',
             'type' => 'title',
-            'id'   => 'wiki_test_title',
-            'before_row' => array('Ar_Model_Viewer_For_Woocommerce_Admin','ar_model_viewer_for_woocommerce_cmb2_after_row')
-        ) );
+            'id' => 'wiki_test_title',
+            'before_row' => array('Ar_Model_Viewer_For_Woocommerce_Admin', 'ar_model_viewer_for_woocommerce_cmb2_after_row'),
+        ));
 
-        $cmb->add_field( array(
-            'name'             => 'Show before Single Product',
-            'id'               => 'ar_model_viewer_for_woocommerce_single_product',
-            'type'             => 'radio_inline',
+        $cmb->add_field(array(
+            'name' => 'Show AR Model Viewer button in',
+            'id' => 'ar_model_viewer_for_woocommerce_btn',
+            'type' => 'radio_inline',
             'show_option_none' => false,
-            'options'          => array(
-                'yes' => __( 'Yes', 'cmb2' ),
-                'no'  => __( 'No', 'cmb2' ),
-            ),
-            'default' => 'standard',
-            'classes' => 'switch-field'
-        ) );
-
-        $cmb->add_field( array(
-            'name'             => 'Show 3D Model in Product Tab',
-            'id'               => 'ar_model_viewer_for_woocommerce_single_product_tab',
-            'type'             => 'radio_inline',
-            'show_option_none' => false,
-            'options'          => array(
-                'yes' => __( 'Yes', 'cmb2' ),
-                'no'  => __( 'No', 'cmb2' ),
+            'options' => array(
+                '0' => __('None', 'cmb2'),
+                '1' => __('woocommerce_before_single_product_summary', 'cmb2'),
+                '2' => __('woocommerce_after_single_product_summary', 'cmb2'),
+                '3' => __('woocommerce_before_single_product', 'cmb2'),
+                '4' => __('woocommerce_after_single_product', 'cmb2'),
+                '5' => __('woocommerce_after_add_to_cart_form', 'cmb2'),
+                '6' => __('woocommerce_before_add_to_cart_form', 'cmb2'),
             ),
             'default' => 'standard',
             'classes' => 'switch-field',
-        ) );
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Show in Product Tabs',
+            'id' => 'ar_model_viewer_for_woocommerce_single_product_tabs',
+            'type' => 'radio_inline',
+            'show_option_none' => false,
+            'options' => array(
+                'yes' => __('Yes', 'cmb2'),
+                'no' => __('No', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
     }
 
-    public static function ar_model_viewer_for_woocommerce_cmb2_after_row( $field_args, $field ) {
+    public static function ar_model_viewer_for_woocommerce_cmb2_after_row($field_args, $field)
+    {
         include_once 'partials/ar-model-viewer-for-woocommerce-admin-display.php';
     }
 }
