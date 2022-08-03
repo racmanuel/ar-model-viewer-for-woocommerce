@@ -145,6 +145,34 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 
 	}
 	public function ar_model_viewer_for_woocommerce_button(){
+		// Global product variable
+		global $product;
+
+		//Get the file url for android
+		$get_android_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_android', true);
+		//Get the fiel url for IOS
+		$get_ios_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_ios', true);
+		//Get the alt for web accessibility
+		$get_alt = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_alt', true);
+		/**
+		 * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
+		 */
+		//Get the Poster
+		$get_poster = wp_get_attachment_url($product->get_image_id());
+
+		// Check if the customs fields has a value.
+		if (!empty($get_android_file)) {
+			$android_file_url = $get_android_file;
+		}
+		if (!empty($get_ios_file)) {
+			$ios_file_url = $get_ios_file;
+		}
+		if (!empty($get_alt)) {
+			$alt_description = sanitize_text_field($get_alt);
+		}
+		if (!empty($get_poster)) {
+			$poster_file_url = $get_poster;
+		}
 		include 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
 	}
 
@@ -159,7 +187,34 @@ class Ar_Model_Viewer_For_Woocommerce_Public {
 	}
 
 	public static function ar_model_viewer_for_woocommerce_tab_content(){
-		echo '<h2>Product 3D</h2>';
+		// Global product variable
+		global $product;
+
+		//Get the file url for android
+		$get_android_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_android', true);
+		//Get the fiel url for IOS
+		$get_ios_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_ios', true);
+		//Get the alt for web accessibility
+		$get_alt = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_alt', true);
+		/**
+		 * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
+		 */
+		//Get the Poster
+		$get_poster = wp_get_attachment_url($product->get_image_id());
+
+		// Check if the customs fields has a value.
+		if (!empty($get_android_file)) {
+			$android_file_url = $get_android_file;
+		}
+		if (!empty($get_ios_file)) {
+			$ios_file_url = $get_ios_file;
+		}
+		if (!empty($get_alt)) {
+			$alt_description = sanitize_text_field($get_alt);
+		}
+		if (!empty($get_poster)) {
+			$poster_file_url = $get_poster;
+		}
 		include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
 	}
 }
