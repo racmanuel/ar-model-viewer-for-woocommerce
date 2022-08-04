@@ -256,7 +256,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
         /** NOTE FOR DEVELOPMENT - PENDING */
         $cmb->add_field(array(
-            'name' => 'View Options',
+            'name' => '<span class="dashicons dashicons-admin-generic"></span> View Settings',
             'desc' => '',
             'type' => 'title',
             'id' => 'wiki_test_title',
@@ -267,9 +267,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'Show AR Model Viewer button in',
             'id' => 'ar_model_viewer_for_woocommerce_btn',
             'type' => 'radio_inline',
-            'show_option_none' => false,
+            'show_option_none' => true,
             'options' => array(
-                '0' => __('None', 'cmb2'),
                 '1' => __('woocommerce_before_single_product_summary', 'cmb2'),
                 '2' => __('woocommerce_after_single_product_summary', 'cmb2'),
                 '3' => __('woocommerce_before_single_product', 'cmb2'),
@@ -289,6 +288,89 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'options' => array(
                 'yes' => __('Yes', 'cmb2'),
                 'no' => __('No', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => '<span class="dashicons dashicons-admin-generic"></span> Loading : Attributes',
+            'desc' => '',
+            'type' => 'title',
+            'id' => 'ar_title',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Loading',
+            'id' => 'ar_model_viewer_for_woocommerce_loading',
+            'type' => 'radio_inline',
+            'desc' => 'An enumerable attribute describing under what conditions the model should be preloaded. The supported values are "auto", "lazy" and "eager". Auto is equivalent to lazy, which loads the model when it is near the viewport for reveal="auto", and when interacted with for reveal="interaction". Eager loads the model immediately.',
+            'show_option_none' => true,
+            'options' => array(
+                '1' => __('Auto', 'cmb2'),
+                '2' => __('Lazy', 'cmb2'),
+                '3' => __('Eager', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Reveal',
+            'id' => 'ar_model_viewer_for_woocommerce_reveal',
+            'type' => 'radio_inline',
+            'desc' => 'This attribute controls when the model should be revealed. It currently supports three values: "auto", "interaction", and "manual". If reveal is set to "interaction", <model-viewer> will wait until the user interacts with the poster before loading and revealing the model. If reveal is set to "auto", the model will be revealed as soon as it is done loading and rendering. If reveal is set to "manual", the model will remain hidden until dismissPoster() is called.',
+            'show_option_none' => true,
+            'options' => array(
+                '1' => __('Auto', 'cmb2'),
+                '2' => __('Interaction', 'cmb2'),
+                '3' => __('Manual', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'With-credentials',
+            'id' => 'ar_model_viewer_for_woocommerce_with_credentials',
+            'type' => 'radio_inline',
+            'desc' => 'This attribute makes the browser include credentials (cookies, authorization headers or TLS client certificates) in the request to fetch the 3D model. Its useful if the 3D model file is stored on another server that require authentication. By default the file will be fetch without credentials. Note that this has no effect if you are loading files locally or from the same domain.',
+            'show_option_none' => true,
+            'options' => array(
+                '1' => __('True', 'cmb2'),
+                '2' => __('False', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => '--poster-color',
+            'id' => 'wiki_test_colorpicker',
+            'desc' => 'Sets the background-color of the poster . You may wish to set this to transparent if you are using a seamless poster with transparency (so that the background color of <model-viewer> shows through).',
+            'type' => 'colorpicker',
+            'default' => '#ffffff',
+            'options' => array(
+                'alpha' => true, // Make this a rgba color picker.
+            ),
+        ));
+
+        $cmb->add_field(array(
+            'name' => '<span class="dashicons dashicons-admin-generic"></span> Augmented Reality : Attributes',
+            'desc' => '',
+            'type' => 'title',
+            'id' => 'ar_title_2',
+        ));
+
+        $cmb->add_field( array(
+            'name'    => 'Enable AR',
+            'id'      => 'ar_model_viewer_for_woocommerce_ar',
+            'type'    => 'radio_inline',
+            'desc'    => 'Enable the ability to launch AR experiences on supported devices.',
+            'show_option_none' => true,
+            'options' => array(
+                '1' => __( 'True', 'cmb2' ),
+                '2' => __( 'False', 'cmb2' ),
             ),
             'default' => 'standard',
             'classes' => 'switch-field',

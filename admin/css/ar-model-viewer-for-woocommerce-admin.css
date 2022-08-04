@@ -71,6 +71,9 @@ span.dashicons.dashicons-coffee{
 span.dashicons.dashicons-star-filled{
 	vertical-align: middle;
 }
+span.dashicons.dashicons-admin-generic {
+    vertical-align: middle;
+}
 
 /* Stye for CMB2 Admin div*/
 /* Create two equal columns that floats next to each other */

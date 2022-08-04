@@ -203,8 +203,6 @@ class Ar_Model_Viewer_For_Woocommerce
         $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
 
         switch ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn']) {
-            case 0:
-                break;
             case 1:
                  $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
                 break;
@@ -231,8 +229,10 @@ class Ar_Model_Viewer_For_Woocommerce
             $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
         }
 
-        // Show a custom tab in single_product
-        //$this->loader->add_filter( 'woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab' );
+        // Check if AR Mode is enabled
+        if($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'] == '1'){
+
+        }
 
         // Shortcode name must be the same as in shortcode_atts() third parameter.
         $this->loader->add_shortcode($this->get_plugin_prefix() . 'shortcode', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func');
