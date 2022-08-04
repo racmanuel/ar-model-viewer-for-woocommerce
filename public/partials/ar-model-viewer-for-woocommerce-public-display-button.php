@@ -18,21 +18,22 @@
 
 <div id="dialog" title="">
   <!-- AR Model Viewer for WooCommerce - Styles -->
-  <style>
+  <style type="text/css">
     model-viewer#reveal {
-      --poster-color: transparent;
+      --poster-color: <?php echo $this->ar_model_viewer_for_woocommerce_poster_color($poster_color_type); ?>;
     }
   </style>
   <!-- AR Model Viewer for WooCommerce - HTML -->
   <model-viewer 
+    id="reveal"
     alt="<?php echo esc_attr($alt_description) ?>" 
     src="<?php echo esc_url($android_file_url); ?>"
     ios-src="<?php echo esc_url($ios_file_url); ?>" 
     poster="<?php echo esc_url($poster_file_url); ?>"
     <?php echo $this->ar_model_viewer_for_woocommerce_loading_type($loading_type); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_reveal_type($reveal_type); ?> 
-    ar
-    ar-modes="webxr scene-viewer quick-look" 
+    <?php echo $this->ar_model_viewer_for_woocommerce_ar($ar_active); ?>
+    ar-modes="webxr scene-viewer" 
     camera-controls 
     seamless-poster 
     shadow-intensity="1" 

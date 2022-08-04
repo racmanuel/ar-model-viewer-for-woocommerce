@@ -336,10 +336,10 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
         $cmb->add_field(array(
             'name' => '--poster-color',
-            'id' => 'wiki_test_colorpicker',
+            'id' => 'ar_model_viewer_for_woocommerce_poster_color',
             'desc' => 'Sets the background-color of the poster . You may wish to set this to transparent if you are using a seamless poster with transparency (so that the background color of <model-viewer> shows through).',
             'type' => 'colorpicker',
-            'default' => '#ffffff',
+            'default' => 'rgba(255,255,255,0)',
             'options' => array(
                 'alpha' => true, // Make this a rgba color picker.
             ),
@@ -357,10 +357,10 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'id' => 'ar_model_viewer_for_woocommerce_ar',
             'type' => 'radio_inline',
             'desc' => 'Enable the ability to launch AR experiences on supported devices.',
-            'show_option_none' => true,
+            'show_option_none' => false,
             'options' => array(
-                '1' => __('True', 'cmb2'),
-                '2' => __('False', 'cmb2'),
+                '1' => __('Active', 'cmb2'),
+                '2' => __('Deactivate', 'cmb2'),
             ),
             'default' => 'standard',
             'classes' => 'switch-field',

@@ -209,6 +209,33 @@ class Ar_Model_Viewer_For_Woocommerce_Public
              */
             $this->ar_model_viewer_for_woocommerce_reveal_type($reveal_type);
 
+            /**
+             * Get the --poster-color from plugin settings
+             * @see: https://modelviewer.dev/docs/#entrydocs-loading-attributes-reveal
+             */
+            $poster_color_type = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_poster_color'];
+            /**
+             * Check the value of $reveal_type and return the $reveal_type
+             * @param string $reveal_type
+             */
+            $this->ar_model_viewer_for_woocommerce_poster_color($poster_color_type);
+
+            /**
+             * AR Settings
+             */
+
+            /**
+             * Get the --poster-color from plugin settings
+             * @see: https://modelviewer.dev/docs/#entrydocs-loading-attributes-reveal
+             */
+            $ar_active = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar'];
+            /**
+             * Check the value of $reveal_type and return the $reveal_type
+             * @param string $reveal_type
+             */
+            $this->ar_model_viewer_for_woocommerce_ar($ar_active);
+
+
             //Include the HTML for display the modal and the HTML content with a lilte bit PHP
             include_once 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
         }
@@ -305,6 +332,25 @@ class Ar_Model_Viewer_For_Woocommerce_Public
                 # code...
                 return $reveal;
                 break;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_poster_color($poster_color)
+    {
+        if (isset($poster_color)) {
+            # code...
+            return $poster_color;
+        } else {
+            $poster_color = 'transparent';
+            return $poster_color;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar($ar){
+        if(isset($ar) & $ar == 1) {
+            return 'ar';
+        }else{
+            return '';
         }
     }
 }
