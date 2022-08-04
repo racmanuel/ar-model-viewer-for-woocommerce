@@ -37,7 +37,8 @@
             possible, fallbacks and polyfills will be supported to provide a seamless development experience.', 'ar-model-viewer-for-woocommerce');?>
         </p>
         <a class="button button-primary" href="https://modelviewer.dev/" target="_blank"><span
-                class="dashicons dashicons-media-document"></span> Go to Documentation</a>
+                class="dashicons dashicons-media-document"></span>
+            <?php _e('Go to Documentation','ar-model-viewer-for-woocommerce'); ?></a>
         <!-- contribute to the project -->
         <h3>
             <span class="dashicons dashicons-groups"></span>
@@ -48,8 +49,13 @@
             <?php _e('Are you a developer? You would like to contribute to the project, visit the plugin page on GitHub, if you have any improvements make a (PR) Pull Request and add your improvement.', 'ar-model-viewer-for-woocommerce');?>
         </p>
         <a class="button button-primary" href="https://github.com/racmanuel/ar-model-viewer-for-woocommerce"
-            target="_blank"> <span class="dashicons dashicons-networking"></span> Go to GitHub Project</a>
-        <h3><span class="dashicons dashicons-admin-generic"></span> ¿Do you have a technical problem?</h3>
+            target="_blank"> <span class="dashicons dashicons-networking"></span>
+            <?php _e('Go to Repository','ar-model-viewer-for-woocommerce'); ?>
+        </a>
+        <h3>
+            <span class="dashicons dashicons-admin-generic"></span>
+            <?php _e('¿Do you have a technical problem?','ar-model-viewer-for-woocommerce'); ?>
+        </h3>
         <hr>
         <p style="text-align: justify;">
             <?php _e('Please check our FAQ before adding a thread with technical problem. If you do not find help there, check
@@ -58,33 +64,48 @@
         </p>
         <a class="button button-primary" href="https://wordpress.org/support/plugin/ar-model-viewer-for-woocommerce/"
             target="_blank"><span class="dashicons dashicons-admin-generic"></span>
-            Go to Support</a>
+            <?php _e('Go to Support','ar-model-viewer-for-woocommerce'); ?>
+        </a>
     </div>
     <div class="ar-model-viewer-for-woocommerce-card">
-        <h3><span class="dashicons dashicons-thumbs-up"></span> Do you like our plugin?</h3>
+        <h3>
+            <span class="dashicons dashicons-thumbs-up"></span>
+            <?php _e('Go to Support','ar-model-viewer-for-woocommerce'); ?>
+        </h3>
         <hr>
         <p style="text-align: justify;">
             <?php _e('Could you rate it? Please let us know what you think about our plugin. It is important for us to develop this tool. Thank you for all the ratings, reviews and donations.', 'ar-model-viewer-for-woocommerce')?>
         </p>
-        <a class="button button-primary" href="" target="_blank"><span class="dashicons dashicons-star-filled"></span>
-            Add a Review</a>
-        <h3>¿Do you need a custom development on WordPress?</h3>
+        <a class="button button-primary"
+            href="https://wordpress.org/support/plugin/ar-model-viewer-for-woocommerce/reviews/?rate=5#new-post"
+            target="_blank">
+            <span class="dashicons dashicons-star-filled"></span>
+            <?php _e('Add a Review','ar-model-viewer-for-woocommerce'); ?>
+        </a>
+        <h3>
+            <?php _e('¿Do you need a custom development on WordPress?','ar-model-viewer-for-woocommerce'); ?>
+        </h3>
         <hr>
         <p>
             <?php _e('You can do a request for a quote, I am <a href="https://racmanuel.dev">racmanuel</a> a Software Engineer and Web Programmer specialized in WordPress, do not hesitate to contact me to make your quote. I hope that AR Model Viewer for WooCommerce is useful to you. Cheers.', 'ar-model-viewer-for-woocommerce');?>
         </p>
         <a class="button button-primary" href="https://racmanuel.dev" target="_blank">
             <span class="dashicons dashicons-analytics"></span>
-            Request a Quote
+            <?php _e('Request a Quote','ar-model-viewer-for-woocommerce'); ?>
         </a>
-        <h3><span class="dashicons dashicons-heart"></span> I love what I do!</h3>
+        <h3>
+            <span class="dashicons dashicons-heart"></span>
+            <?php _e('I love what I do!','ar-model-viewer-for-woocommerce'); ?>
+        </h3>
         <hr>
         <p style="text-align: justify;">
             <?php _e('However, working on plugins and technical support requires many hours of work. If you want to appreciate it, you can give me a coffee.
             If every user of the plugin did it, I could dedicate myself entirely to working on this plugin. Thank you all!', 'ar-model-viewer-for-woocommerce');?>
         </p>
-        <a class="button button-primary" href="https://racmanuel.dev" target="_blank"><span class="dashicons dashicons-coffee"></span> Give
-            me a coffee</a>
+        <a class="button button-primary" href="https://racmanuel.dev" target="_blank"><span
+                class="dashicons dashicons-coffee"></span>
+            <?php _e('Give me a coffee','ar-model-viewer-for-woocommerce'); ?>
+        </a>
     </div>
 </div>
 <br>
