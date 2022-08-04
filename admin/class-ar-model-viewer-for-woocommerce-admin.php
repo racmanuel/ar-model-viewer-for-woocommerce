@@ -264,9 +264,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         ));
 
         $cmb->add_field(array(
-            'name' => 'Show AR Model Viewer button in',
+            'name' => 'Show button in',
             'id' => 'ar_model_viewer_for_woocommerce_btn',
-            'type' => 'radio_inline',
+            'type' => 'select',
             'show_option_none' => true,
             'options' => array(
                 '1' => __('woocommerce_before_single_product_summary', 'cmb2'),
@@ -297,7 +297,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => '<span class="dashicons dashicons-admin-generic"></span> Loading : Attributes',
             'desc' => '',
             'type' => 'title',
-            'id' => 'ar_title',
+            'id' => 'ar_model_viewer_for_woocommerce_loading_title',
         ));
 
         $cmb->add_field(array(
@@ -325,20 +325,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 '1' => __('Auto', 'cmb2'),
                 '2' => __('Interaction', 'cmb2'),
                 '3' => __('Manual', 'cmb2'),
-            ),
-            'default' => 'standard',
-            'classes' => 'switch-field',
-        ));
-
-        $cmb->add_field(array(
-            'name' => 'With-credentials',
-            'id' => 'ar_model_viewer_for_woocommerce_with_credentials',
-            'type' => 'radio_inline',
-            'desc' => 'This attribute makes the browser include credentials (cookies, authorization headers or TLS client certificates) in the request to fetch the 3D model. Its useful if the 3D model file is stored on another server that require authentication. By default the file will be fetch without credentials. Note that this has no effect if you are loading files locally or from the same domain.',
-            'show_option_none' => true,
-            'options' => array(
-                '1' => __('True', 'cmb2'),
-                '2' => __('False', 'cmb2'),
             ),
             'default' => 'standard',
             'classes' => 'switch-field',

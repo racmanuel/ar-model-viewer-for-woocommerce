@@ -16,25 +16,27 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <button id="ar_model_viewer_for_woocommerce_btn">View in 3D</button>
 
-<?php
-global $product;
-$id = $product->get_id();
-$name = $product->get_name();
-?>
-<div id="dialog" title="<?php echo $name; ?>">
-  <?php 
-  // Check if product have a 3D Model 
-  if (empty($android_file_url) and empty($ios_file_url)) {
-			echo '<h1>No disponible</h1>';
-  }else{
-  ?>
-  <!-- AR Model Viewer for WooCommerce -->
-  <model-viewer alt="<?php echo esc_attr($alt_description) ?>" src="<?php echo esc_url($android_file_url); ?>"
-    ios-src="<?php echo esc_url($ios_file_url); ?>" poster="<?php echo esc_url($poster_file_url); ?>" ar
-    ar-modes="webxr scene-viewer quick-look" camera-controls seamless-poster shadow-intensity="1" camera-controls
+<div id="dialog" title="">
+  <!-- AR Model Viewer for WooCommerce - Styles -->
+  <style>
+    model-viewer#reveal {
+      --poster-color: transparent;
+    }
+  </style>
+  <!-- AR Model Viewer for WooCommerce - HTML -->
+  <model-viewer 
+    alt="<?php echo esc_attr($alt_description) ?>" 
+    src="<?php echo esc_url($android_file_url); ?>"
+    ios-src="<?php echo esc_url($ios_file_url); ?>" 
+    poster="<?php echo esc_url($poster_file_url); ?>"
+    <?php echo $this->ar_model_viewer_for_woocommerce_loading_type($loading_type); ?>
+    <?php echo $this->ar_model_viewer_for_woocommerce_reveal_type($reveal_type); ?> 
+    ar
+    ar-modes="webxr scene-viewer quick-look" 
+    camera-controls 
+    seamless-poster 
+    shadow-intensity="1" 
+    camera-controls
     enable-pan>
   </model-viewer>
-  <?php
-  }
-  ?>
 </div>
