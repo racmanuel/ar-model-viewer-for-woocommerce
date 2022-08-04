@@ -75,9 +75,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
      */
     public function enqueue_styles($hook_suffix)
     {
-
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin.css', array(), $this->version, 'all');
-
+        // For debug the $hook_suffix echo '<h1 style="color: crimson;">' . esc_html( $hook_suffix ) . '</h1>';
+        if($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
+            wp_enqueue_style($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin.css', array(), $this->version, 'all');
+        }
+        if($hook_suffix == 'edit.php?post_type=product' || 'post-new.php?post_type=product') {
+            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), $this->version, 'all');        
+        }
     }
 
     /**
@@ -348,15 +352,15 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'id' => 'ar_title_2',
         ));
 
-        $cmb->add_field( array(
-            'name'    => 'Enable AR',
-            'id'      => 'ar_model_viewer_for_woocommerce_ar',
-            'type'    => 'radio_inline',
-            'desc'    => 'Enable the ability to launch AR experiences on supported devices.',
+        $cmb->add_field(array(
+            'name' => 'Enable AR',
+            'id' => 'ar_model_viewer_for_woocommerce_ar',
+            'type' => 'radio_inline',
+            'desc' => 'Enable the ability to launch AR experiences on supported devices.',
             'show_option_none' => true,
             'options' => array(
-                '1' => __( 'True', 'cmb2' ),
-                '2' => __( 'False', 'cmb2' ),
+                '1' => __('True', 'cmb2'),
+                '2' => __('False', 'cmb2'),
             ),
             'default' => 'standard',
             'classes' => 'switch-field',

@@ -1,0 +1,24 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+/* Stye for AR Model Viewer for WooCommerce - CMB2 Fields*/
+
+/* Style for icons in CMB2 Field TItle*/
+.icon-in-title {
+	height: 36px;
+	width: 36px;
+	vertical-align: middle;
+}
+
+/* Style for icons in CMB2 Field*/
+.icon-in-field {
+	width: 18px;
+	vertical-align: middle;
+}
+
+/* Changes the labels for CMB2 Fields*/
+.cmb-th > label{
+	font-weight: 600;
+}

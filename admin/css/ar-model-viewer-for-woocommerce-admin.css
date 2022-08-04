@@ -2,6 +2,39 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+/* Stye for AR Model Viewer for WooCommerce - Settings Page*/
+
+/* Create two equal columns that floats next to each other */
+.ar-model-viewer-for-woocommerce-card {
+	background-color: white;
+	padding: 14px;
+	border: 1px solid #e9e9e9;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.ar-model-viewer-for-woocommerce-cards {
+	margin: 0 auto;
+	display: grid;
+	/* If you need gap grid-gap: 1%;*/
+}
+
+/* Screen larger than 600px? 2 column */
+@media (min-width: 600px) {
+	.ar-model-viewer-for-woocommerce-cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Screen larger than 900px? 3 columns */
+@media (min-width: 900px) {
+	.ar-model-viewer-for-woocommerce-cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Style to CMB2 Radio in Line field to change for Switch Style*/
+
 /* Start Switch field */
 .switch-field .cmb2-radio-list li {
 	padding-right: 0 !important;
@@ -42,24 +75,7 @@
 .switch-field .cmb2-radio-list li:last-of-type label {
 	border-radius: 0 .25rem .25rem 0;
 }
-
 /* End Switch field */
-
-/* Style for icon in cmb2 field in products*/
-.icon-in-field {
-	width: 18px;
-	vertical-align: middle;
-}
-.icon-in-title {
-	height: 36px;
-	width: 36px;
-	vertical-align: middle;
-}
-
-/* Changes the labes for CMB2 Fields*/
-.cmb-th > label{
-	font-weight: 600;
-}
 
 /* change the vertical alignamente of the dash icons*/
 span.dashicons.dashicons-media-document{
@@ -75,31 +91,3 @@ span.dashicons.dashicons-admin-generic {
     vertical-align: middle;
 }
 
-/* Stye for CMB2 Admin div*/
-/* Create two equal columns that floats next to each other */
-.card-cmb2 {
-	background-color: white;
-	padding: 14px;
-	border: 1px solid #e9e9e9;
-	box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-}
-
-.cards-cmb2 {
-	margin: 0 auto;
-	display: grid;
-	/* If you need gap grid-gap: 1%;*/
-}
-
-/* Screen larger than 600px? 2 column */
-@media (min-width: 600px) {
-	.cards-cmb2 {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-/* Screen larger than 900px? 3 columns */
-@media (min-width: 900px) {
-	.cards-cmb2 {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
