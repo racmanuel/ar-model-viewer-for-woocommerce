@@ -215,8 +215,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public
              */
             $poster_color_type = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_poster_color'];
             /**
-             * Check the value of $reveal_type and return the $reveal_type
-             * @param string $reveal_type
+             * Check the value of $poster_color_type and return the $poster_color_type
+             * @param string $poster_color_type
              */
             $this->ar_model_viewer_for_woocommerce_poster_color($poster_color_type);
 
@@ -226,14 +226,25 @@ class Ar_Model_Viewer_For_Woocommerce_Public
 
             /**
              * Get the --poster-color from plugin settings
-             * @see: https://modelviewer.dev/docs/#entrydocs-loading-attributes-reveal
+             * @see: https://modelviewer.dev/docs/#entrydocs-augmentedreality-attributes-ar
              */
             $ar_active = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar'];
             /**
-             * Check the value of $reveal_type and return the $reveal_type
-             * @param string $reveal_type
+             * Check the value of $ar_active and return the $ar_active
+             * @param string $ar_active
              */
             $this->ar_model_viewer_for_woocommerce_ar($ar_active);
+
+            /**
+             * Get the ar-modes from plugin settings
+             * @see: https://modelviewer.dev/docs/#entrydocs-augmentedreality-attributes-arModes
+             */
+            $ar_mode = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_modes'];
+            /**
+             * Check the value of $ar_active and return the $ar_active
+             * @param string $ar_active
+             */
+            $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
 
 
             //Include the HTML for display the modal and the HTML content with a lilte bit PHP
@@ -351,6 +362,23 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             return 'ar';
         }else{
             return '';
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar_modes($ar_modes){
+        switch ($ar_modes) {
+            case 1:
+                # code...
+                
+                break;
+            case 2:
+                # code...
+                    
+                break;
+            
+            default:
+                # code...
+                break;
         }
     }
 }

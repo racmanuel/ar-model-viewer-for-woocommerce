@@ -29,4 +29,21 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	 $(function() {
+		if( $('#ar_model_viewer_for_woocommerce_ar2').is(':checked') ){
+			//alert("Radio Button Is checked!");
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-modes').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-scale').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-placement').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-xr-environment').hide();
+			$('#cmb2-id-ar-model-viewer-for-woocommerce-ar-settings').hide();
+		}
+		if( $('#ar_model_viewer_for_woocommerce_ar_button2').is(':checked') ){
+			//alert("Radio Button Is checked!");
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-text').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-background-color').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-text-color').hide();
+		}
+	 });
+
 })( jQuery );

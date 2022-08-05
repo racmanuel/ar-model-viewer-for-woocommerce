@@ -40,4 +40,7 @@
     camera-controls
     enable-pan>
   </model-viewer>
+  <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
+      👋 Activate AR
+  </button>
 </div>

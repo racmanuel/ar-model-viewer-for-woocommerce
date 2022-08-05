@@ -178,7 +178,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         // Regular File field - IOS .usdz
         $cmb->add_field(array(
             'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-mac-client-18(-ldpi).png' . '" class="icon-in-field"></img> File for IOS',
-            'desc' => 'Upload or enter an URL to 3D object (with .usdz extension).',
+            'desc' => 'Upload or enter an URL to 3D object (with .usdz extension). <br><hr>The url to a USDZ model which will be used on supported iOS 12+ devices via AR Quick Look on Safari. The presence of this attribute will automatically enable the quick-look ar-mode, however it is no longer necessary. If instead the quick-look ar-mode is specified and ios-src is not specified, then we will generate a USDZ on the fly when the AR button is pressed. This means modifications via the scene-graph API will now be reflected in Quick Look. Hoowever, USDZ generation is not perfect, for instance animations are not yet supported, so in some cases supplying ios-src may give better results.',
             'id' => 'ar_model_viewer_for_woocommerce_file_ios',
             'type' => 'file',
             // Optional:
@@ -271,6 +271,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'Show button in',
             'id' => 'ar_model_viewer_for_woocommerce_btn',
             'type' => 'select',
+            'default' => '6',
+            'classes' => 'switch-field',
             'show_option_none' => true,
             'options' => array(
                 '1' => __('woocommerce_before_single_product_summary', 'cmb2'),
@@ -280,21 +282,19 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 '5' => __('woocommerce_after_add_to_cart_form', 'cmb2'),
                 '6' => __('woocommerce_before_add_to_cart_form', 'cmb2'),
             ),
-            'default' => 'standard',
-            'classes' => 'switch-field',
         ));
 
         $cmb->add_field(array(
             'name' => 'Show in Product Tabs',
             'id' => 'ar_model_viewer_for_woocommerce_single_product_tabs',
             'type' => 'radio_inline',
+            'default' => 'no',
+            'classes' => 'switch-field',
             'show_option_none' => false,
             'options' => array(
                 'yes' => __('Yes', 'cmb2'),
                 'no' => __('No', 'cmb2'),
             ),
-            'default' => 'standard',
-            'classes' => 'switch-field',
         ));
 
         $cmb->add_field(array(
@@ -309,14 +309,14 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'id' => 'ar_model_viewer_for_woocommerce_loading',
             'type' => 'radio_inline',
             'desc' => 'An enumerable attribute describing under what conditions the model should be preloaded. The supported values are "auto", "lazy" and "eager". Auto is equivalent to lazy, which loads the model when it is near the viewport for reveal="auto", and when interacted with for reveal="interaction". Eager loads the model immediately.',
-            'show_option_none' => true,
+            'default' => '1',
+            'classes' => 'switch-field',
+            'show_option_none' => false,
             'options' => array(
                 '1' => __('Auto', 'cmb2'),
                 '2' => __('Lazy', 'cmb2'),
                 '3' => __('Eager', 'cmb2'),
             ),
-            'default' => 'standard',
-            'classes' => 'switch-field',
         ));
 
         $cmb->add_field(array(
@@ -324,14 +324,14 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'id' => 'ar_model_viewer_for_woocommerce_reveal',
             'type' => 'radio_inline',
             'desc' => 'This attribute controls when the model should be revealed. It currently supports three values: "auto", "interaction", and "manual". If reveal is set to "interaction", <model-viewer> will wait until the user interacts with the poster before loading and revealing the model. If reveal is set to "auto", the model will be revealed as soon as it is done loading and rendering. If reveal is set to "manual", the model will remain hidden until dismissPoster() is called.',
-            'show_option_none' => true,
+            'default' => '1',
+            'classes' => 'switch-field',
+            'show_option_none' => false,
             'options' => array(
                 '1' => __('Auto', 'cmb2'),
                 '2' => __('Interaction', 'cmb2'),
                 '3' => __('Manual', 'cmb2'),
             ),
-            'default' => 'standard',
-            'classes' => 'switch-field',
         ));
 
         $cmb->add_field(array(
@@ -364,6 +364,114 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             ),
             'default' => 'standard',
             'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'AR Modes',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_modes',
+            'type' => 'multicheck',
+            'desc' => 'A prioritized list of the types of AR experiences to enable. Allowed values are "webxr", to launch the AR experience in the browser, "scene-viewer", to launch the Scene Viewer app, "quick-look", to launch the iOS Quick Look app. Note that the presence of an ios-src will enable quick-look by itself.',
+            'show_option_none' => false,
+            'options' => array(
+                '1' => __('webxr', 'cmb2'),
+                '2' => __('scene-viewer', 'cmb2'),
+                '3' => __('quick-look', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'AR Scale',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_scale',
+            'type' => 'radio_inline',
+            'desc' => 'Controls the scaling behavior in AR mode. Set to "fixed" to disable scaling of the model, which sets it to always be at 100% scale. Defaults to "auto" which allows the model to be resized by pinch.',
+            'show_option_none' => false,
+            'options' => array(
+                '1' => __('Auto', 'cmb2'),
+                '2' => __('Fixed', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'AR Placement',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_placement',
+            'type' => 'radio_inline',
+            'desc' => 'Selects whether to place the object on the floor (horizontal surface) or a wall (vertical surface) in AR. The back (negative Z) of the object´s bounding box will be placed against the wall and the shadow will be put on this surface as well. Note that the different AR modes handle the placement UX differently.',
+            'show_option_none' => false,
+            'options' => array(
+                '1' => __('Floor', 'cmb2'),
+                '2' => __('Wall', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'XR-Environment',
+            'id' => 'ar_model_viewer_for_woocommerce_xr_environment',
+            'type' => 'radio_inline',
+            'desc' => 'Enables AR lighting estimation in WebXR mode; this has a performance cost and replaces the lighting selected with during an AR session. Known issues: sometimes too dark, sudden updates, shiny materials look matte.environment-image',
+            'show_option_none' => false,
+            'options' => array(
+                '1' => __('Active', 'cmb2'),
+                '2' => __('Deactive', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field',
+        ));
+
+        $cmb->add_field(array(
+            'name' => '<span class="dashicons dashicons-admin-generic"></span> Augmented Reality : Slots',
+            'desc' => '',
+            'type' => 'title',
+            'id' => 'ar_title_3',
+            'before_row' => '<div id="cmb2-id-ar-model-viewer-for-woocommerce-ar-settings">',
+            'after_row' => '</div>'
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Custom AR Button',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_button',
+            'type' => 'radio_inline',
+            'desc' => 'By placing a child element under <model-viewer> with slot="ar-button", this element will replace the default "Enter AR" button, which is a <model-viewer> icon in the lower right. This button will be visible if AR is potentially available (we will have some false positives until the user tries).',
+            'show_option_none' => false,
+            'options' => array(
+                '1' => __('Active', 'cmb2'),
+                '2' => __('Deactive', 'cmb2'),
+            ),
+            'default' => 'standard',
+            'classes' => 'switch-field', 
+        ));
+
+        $cmb->add_field( array(
+            'name'    => 'Button Text',
+            'desc'    => '',
+            'default' => '👋 Activate AR',
+            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_text',
+            'type'    => 'text_medium',           
+        ) );
+
+        $cmb->add_field( array(
+            'name'    => 'Button Color',
+            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_background_color',
+            'type'    => 'colorpicker',
+            'default' => '#ffffff',
+            // 'options' => array(
+            //     'alpha' => true, // Make this a rgba color picker.
+            // ),
+        ));
+
+        $cmb->add_field( array(
+            'name'    => 'Text Color',
+            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_text_color',
+            'type'    => 'colorpicker',
+            'default' => '#000000',
+            // 'options' => array(
+            //     'alpha' => true, // Make this a rgba color picker.
+            // ),
         ));
     }
 
