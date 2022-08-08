@@ -356,13 +356,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'Enable AR',
             'id' => 'ar_model_viewer_for_woocommerce_ar',
             'type' => 'radio_inline',
+            'default' => '1',
             'desc' => 'Enable the ability to launch AR experiences on supported devices.',
             'show_option_none' => false,
             'options' => array(
                 '1' => __('Active', 'cmb2'),
                 '2' => __('Deactivate', 'cmb2'),
             ),
-            'default' => 'standard',
             'classes' => 'switch-field',
         ));
 
@@ -370,6 +370,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'AR Modes',
             'id' => 'ar_model_viewer_for_woocommerce_ar_modes',
             'type' => 'multicheck',
+            'default' => '1,2',
             'desc' => 'A prioritized list of the types of AR experiences to enable. Allowed values are "webxr", to launch the AR experience in the browser, "scene-viewer", to launch the Scene Viewer app, "quick-look", to launch the iOS Quick Look app. Note that the presence of an ios-src will enable quick-look by itself.',
             'show_option_none' => false,
             'options' => array(
@@ -377,7 +378,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 '2' => __('scene-viewer', 'cmb2'),
                 '3' => __('quick-look', 'cmb2'),
             ),
-            'default' => 'standard',
             'classes' => 'switch-field',
         ));
 
@@ -385,13 +385,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'AR Scale',
             'id' => 'ar_model_viewer_for_woocommerce_ar_scale',
             'type' => 'radio_inline',
+            'default' => '1',
             'desc' => 'Controls the scaling behavior in AR mode. Set to "fixed" to disable scaling of the model, which sets it to always be at 100% scale. Defaults to "auto" which allows the model to be resized by pinch.',
             'show_option_none' => false,
             'options' => array(
                 '1' => __('Auto', 'cmb2'),
                 '2' => __('Fixed', 'cmb2'),
             ),
-            'default' => 'standard',
             'classes' => 'switch-field',
         ));
 
@@ -399,13 +399,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'AR Placement',
             'id' => 'ar_model_viewer_for_woocommerce_ar_placement',
             'type' => 'radio_inline',
+            'default' => '1',
             'desc' => 'Selects whether to place the object on the floor (horizontal surface) or a wall (vertical surface) in AR. The back (negative Z) of the object´s bounding box will be placed against the wall and the shadow will be put on this surface as well. Note that the different AR modes handle the placement UX differently.',
             'show_option_none' => false,
             'options' => array(
                 '1' => __('Floor', 'cmb2'),
                 '2' => __('Wall', 'cmb2'),
             ),
-            'default' => 'standard',
             'classes' => 'switch-field',
         ));
 
@@ -413,13 +413,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'XR-Environment',
             'id' => 'ar_model_viewer_for_woocommerce_xr_environment',
             'type' => 'radio_inline',
+            'default' => '2',
             'desc' => 'Enables AR lighting estimation in WebXR mode; this has a performance cost and replaces the lighting selected with during an AR session. Known issues: sometimes too dark, sudden updates, shiny materials look matte.environment-image',
             'show_option_none' => false,
             'options' => array(
                 '1' => __('Active', 'cmb2'),
                 '2' => __('Deactive', 'cmb2'),
             ),
-            'default' => 'standard',
             'classes' => 'switch-field',
         ));
 
@@ -442,7 +442,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 '1' => __('Active', 'cmb2'),
                 '2' => __('Deactive', 'cmb2'),
             ),
-            'default' => 'standard',
+            'default' => '2',
             'classes' => 'switch-field', 
         ));
 
