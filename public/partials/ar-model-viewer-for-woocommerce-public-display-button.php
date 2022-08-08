@@ -17,7 +17,7 @@
 
 
 
-<div id="dialog" title="">
+<div id="dialog" title="<?php echo $product->get_name(); ?>">
   <!-- AR Model Viewer for WooCommerce - Styles -->
   <style type="text/css">
     model-viewer#reveal {
@@ -44,7 +44,7 @@
   </model-viewer>
   <!-- AR Custom Button -->
   <?php if($this->ar_model_viewer_for_woocommerce_ar_btn_custom($ar_btn_custom) == true): ?>
-  <button slot="ar-button" style="background-color: <?php echo esc_attr($ar_btn_custom_background); ?>; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
+  <button slot="ar-button" style="background-color: <?php echo esc_attr($ar_btn_custom_background); ?>; color: <?php echo esc_attr($ar_btn_custom_text_color); ?>; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
     <?php echo esc_html($ar_btn_custom_text); ?>
   </button>
   <?php endif; ?>

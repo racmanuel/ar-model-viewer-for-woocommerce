@@ -154,7 +154,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $get_android_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_android', true);
         //Get the fiel url for IOS
         $get_ios_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_ios', true);
-
         //Get the alt for web accessibility
         $get_alt = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_alt', true);
         //Get the Poster
@@ -244,7 +243,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
              * Check the value of $ar_active and return the $ar_active
              * @param string $ar_active
              */
-            $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
+            //$this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
 
             /**
              * Get the ar scale from plugin settings
@@ -327,12 +326,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $get_ios_file = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_ios', true);
         //Get the alt for web accessibility
         $get_alt = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_alt', true);
-        /**
-         * NOTE FOR DEVELOPMENT: MAYBE ADD A OPTION IN WP-ADMIN TO CHECK IF GET THE CURRENT POST IMAGE OR ADD ANOTHER
-         */
         //Get the Poster
         $get_poster = get_post_meta($product->get_id(), 'ar_model_viewer_for_woocommerce_file_poster', true);
-        //$get_poster = wp_get_attachment_url($product->get_image_id());
 
         // Check if the customs fields has a value.
         if (!empty($get_android_file)) {
@@ -402,7 +397,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
     public function ar_model_viewer_for_woocommerce_poster_color($poster_color)
     {
         if (isset($poster_color)) {
-            # code...
             return $poster_color;
         } else {
             $poster_color = 'transparent';
@@ -421,7 +415,11 @@ class Ar_Model_Viewer_For_Woocommerce_Public
 
     public function ar_model_viewer_for_woocommerce_ar_modes($ar_modes)
     {
-
+        foreach ($ar_modes as $ar_mode) {
+            $mode = $ar_mode;
+        }
+        //$mode = $mode_1 . ' ' . $mode_2 . ' ' . $mode_3;
+        return $mode;
     }
 
     public function ar_model_viewer_for_woocommerce_ar_scale($scale)
