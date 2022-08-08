@@ -37,6 +37,7 @@
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-placement').hide();
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-xr-environment').hide();
 			$('#cmb2-id-ar-model-viewer-for-woocommerce-ar-settings').hide();
+			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button').hide();
 		}
 		if( $('#ar_model_viewer_for_woocommerce_ar_button2').is(':checked') ){
 			//alert("Radio Button Is checked!");

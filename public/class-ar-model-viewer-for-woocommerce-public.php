@@ -246,6 +246,59 @@ class Ar_Model_Viewer_For_Woocommerce_Public
              */
             $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
 
+            /**
+             * Get the ar scale from plugin settings
+             * @see: https://modelviewer.dev/docs/index.html#entrydocs-augmentedreality-attributes-arScale
+             */
+            $ar_scale = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_scale'];
+            /**
+             * Check the value of $ar_scale and return the $ar_scale
+             * @param string $ar_scale
+             */
+            $this->ar_model_viewer_for_woocommerce_ar_scale($ar_scale);
+
+            /**
+             * Get the ar placement from plugin settings
+             * @see: https://modelviewer.dev/docs/index.html#entrydocs-augmentedreality-attributes-arPlacement
+             */
+            $ar_placement = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_placement'];
+            /**
+             * Check the value of $ar_placement and return the $ar_placement
+             * @param string $ar_placement
+             */
+            $this->ar_model_viewer_for_woocommerce_ar_placement($ar_placement);
+
+            /**
+             * Get the xr_enviroment from plugin settings
+             * @see: https://modelviewer.dev/docs/index.html#entrydocs-augmentedreality-attributes-xrEnvironment
+             */
+            $xr_enviroment = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_xr_environment'];
+            /**
+             * Check the value of xr_enviroment and return the $xr_enviroment
+             * @param string $xr_enviroment
+             */
+            $this->ar_model_viewer_for_woocommerce_ar_xr_environment($xr_enviroment);
+
+            /**
+             * AR Button Settings
+             */
+
+            /**
+             * Get the custom btn option from plugin settings
+             * @see: https://modelviewer.dev/docs/#entrydocs-augmentedreality-slots-arButton
+             */
+            $ar_btn_custom = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_button'];
+            /**
+             * Check ar button custom is active
+             */
+            $this->ar_model_viewer_for_woocommerce_ar_btn_custom($ar_btn_custom);
+
+            // Get the custom text btn
+            $ar_btn_custom_text = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_button_text'];
+            // Get the custom backgrund btn
+            $ar_btn_custom_background = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_button_background_color'];
+            // Get the custom text color btn
+            $ar_btn_custom_text_color = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_button_text_color'];
 
             //Include the HTML for display the modal and the HTML content with a lilte bit PHP
             include_once 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
@@ -357,28 +410,79 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         }
     }
 
-    public function ar_model_viewer_for_woocommerce_ar($ar){
-        if(isset($ar) & $ar == 1) {
+    public function ar_model_viewer_for_woocommerce_ar($ar)
+    {
+        if (isset($ar) & $ar == 1) {
             return 'ar';
-        }else{
+        } else {
             return '';
         }
     }
 
-    public function ar_model_viewer_for_woocommerce_ar_modes($ar_modes){
-        switch ($ar_modes) {
+    public function ar_model_viewer_for_woocommerce_ar_modes($ar_modes)
+    {
+
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar_scale($scale)
+    {
+        switch ($scale) {
             case 1:
                 # code...
-                
+                return 'ar-scale="auto"';
                 break;
             case 2:
                 # code...
-                    
+                return 'ar-scale="fixed"';
                 break;
-            
             default:
                 # code...
+                return $scale;
                 break;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar_placement($placement)
+    {
+        switch ($placement) {
+            case 1:
+                # code...
+                return 'ar-placement="floor"';
+                break;
+            case 2:
+                return 'ar-placement="wall"';
+                break;
+            default:
+                # code...
+                return $placement;
+                break;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar_xr_environment($xr)
+    {
+        switch ($xr) {
+            case 1:
+                # code...
+                return 'xr-environment';
+                break;
+            case 2:
+                # code...
+                return '';
+                break;
+            default:
+                # code...
+                return $xr;
+                break;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_ar_btn_custom($btn_custom)
+    {
+        if ($btn_custom == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

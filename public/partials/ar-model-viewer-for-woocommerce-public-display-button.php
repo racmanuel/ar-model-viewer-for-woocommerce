@@ -10,11 +10,12 @@
  * @package    Ar_Model_Viewer_For_Woocommerce
  * @subpackage Ar_Model_Viewer_For_Woocommerce/public/partials
  */
-
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <button id="ar_model_viewer_for_woocommerce_btn">View in 3D</button>
+
+
 
 <div id="dialog" title="">
   <!-- AR Model Viewer for WooCommerce - Styles -->
@@ -33,14 +34,19 @@
     <?php echo $this->ar_model_viewer_for_woocommerce_loading_type($loading_type); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_reveal_type($reveal_type); ?> 
     <?php echo $this->ar_model_viewer_for_woocommerce_ar($ar_active); ?>
-    ar-modes="webxr scene-viewer" 
-    camera-controls 
-    seamless-poster 
-    shadow-intensity="1" 
+    ar-modes="<?php echo $this->ar_model_viewer_for_woocommerce_ar_modes($ar_modes); ?>"
+    <?php echo $this->ar_model_viewer_for_woocommerce_ar_scale($ar_scale); ?>
+    <?php echo $this->ar_model_viewer_for_woocommerce_ar_placement($ar_placement); ?>
+    <?php echo $this->ar_model_viewer_for_woocommerce_ar_xr_environment($xr_enviroment); ?>
+    seamless-poster
     camera-controls
     enable-pan>
   </model-viewer>
-  <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
-      👋 Activate AR
+  <!-- AR Custom Button -->
+  <?php if($this->ar_model_viewer_for_woocommerce_ar_btn_custom($ar_btn_custom) == true): ?>
+  <button slot="ar-button" style="background-color: <?php echo esc_attr($ar_btn_custom_background); ?>; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
+    <?php echo esc_html($ar_btn_custom_text); ?>
   </button>
+  <?php endif; ?>
+  <!-- AR Custom Button -->
 </div>
