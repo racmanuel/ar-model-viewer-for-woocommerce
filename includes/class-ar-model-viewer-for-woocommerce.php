@@ -174,7 +174,9 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
+        // Include the admin styles in the Admin
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+        // Include the admin scripts in the Admin
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
         //Sets the extension and mime type for Android - .gbl and IOS - .usdz files.
         $this->loader->add_filter('wp_check_filetype_and_ext', $plugin_admin, 'ar_model_viewer_for_woocommerce_file_and_ext', 10, 4);
@@ -196,12 +198,15 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $plugin_public = new Ar_Model_Viewer_For_Woocommerce_Public($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
+        // Include the styles for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+        // Include the scripts for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
-        //Check options of the plugin
+        // Check options of the plugin
         $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
 
+        // Check the option where the button is avaible
         switch ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn']) {
             case 1:
                  $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
@@ -229,8 +234,12 @@ class Ar_Model_Viewer_For_Woocommerce
             $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
         }
 
-        // Shortcode name must be the same as in shortcode_atts() third parameter.
-        $this->loader->add_shortcode($this->get_plugin_prefix() . 'shortcode', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func');
+        /***
+         * Code for use a Shortcode for the plugin.
+         * NOTE: Maybe remove for prodcution.
+         * Shortcode name must be the same as in shortcode_atts() third parameter.
+         */
+        //$this->loader->add_shortcode($this->get_plugin_prefix() . 'shortcode', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func');
 
     }
 

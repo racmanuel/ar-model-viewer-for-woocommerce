@@ -36,7 +36,7 @@
             As new standards and APIs become available model-viewer will be improved to take advantage of them. If
             possible, fallbacks and polyfills will be supported to provide a seamless development experience.', 'ar-model-viewer-for-woocommerce');?>
         </p>
-        <a class="button button-primary" href="https://modelviewer.dev/" target="_blank"><span
+        <a class="button button-primary" href="https://racmanuel.dev/" target="_blank"><span
                 class="dashicons dashicons-media-document"></span>
             <?php _e('Go to Documentation','ar-model-viewer-for-woocommerce'); ?></a>
         <!-- contribute to the project -->
