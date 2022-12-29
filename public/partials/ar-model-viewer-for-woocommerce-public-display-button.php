@@ -14,6 +14,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <button id="ar_model_viewer_for_woocommerce_btn">View in 3D</button>
+<?php echo $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode); ?>
 
 <div id="dialog" title="<?php echo $product->get_name(); ?>">
   <!-- AR Model Viewer for WooCommerce - Styles -->
@@ -34,7 +35,7 @@
     <?php echo $this->ar_model_viewer_for_woocommerce_loading_type($loading_type); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_reveal_type($reveal_type); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_ar($ar_active); ?>
-    ar-modes="<?php echo $this->ar_model_viewer_for_woocommerce_ar_modes($ar_modes); ?>"
+    ar-modes="<?php echo $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode); ?>"
     <?php echo $this->ar_model_viewer_for_woocommerce_ar_scale($ar_scale); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_ar_placement($ar_placement); ?>
     <?php echo $this->ar_model_viewer_for_woocommerce_ar_xr_environment($xr_enviroment); ?> 

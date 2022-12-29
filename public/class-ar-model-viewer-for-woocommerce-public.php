@@ -243,7 +243,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
              * Check the value of $ar_active and return the $ar_active
              * @param string $ar_active
              */
-            //$this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
+            $this->ar_model_viewer_for_woocommerce_ar_modes($ar_mode);
 
             /**
              * Get the ar scale from plugin settings
@@ -413,13 +413,23 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         }
     }
 
-    public function ar_model_viewer_for_woocommerce_ar_modes($ar_modes)
+    public function ar_model_viewer_for_woocommerce_ar_modes($ar_mode)
     {
-        foreach ($ar_modes as $ar_mode) {
-            $mode = $ar_mode;
+        foreach ($ar_mode as $mode_for_ar) {
+            $mode = $mode_for_ar;
+            if($mode == 1){
+                $mode_webxr = 'webxr';
+            }
+            if($mode == 2){
+                $mode_scene = 'scene-viewer';
+            }
+            if($mode == 3){
+                $mode_quick = 'quick-look';
+            }
         }
-        //$mode = $mode_1 . ' ' . $mode_2 . ' ' . $mode_3;
-        return $mode;
+        $ar_mode = $mode_webxr . ' ' . $mode_scene . ' ' . $mode_quick;
+
+        return $ar_mode;
     }
 
     public function ar_model_viewer_for_woocommerce_ar_scale($scale)
