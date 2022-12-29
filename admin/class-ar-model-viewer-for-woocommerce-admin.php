@@ -76,11 +76,11 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     public function enqueue_styles($hook_suffix)
     {
         // For debug the $hook_suffix echo '<h1 style="color: crimson;">' . esc_html( $hook_suffix ) . '</h1>';
-        if($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
+        if ($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
             wp_enqueue_style($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin.css', array(), $this->version, 'all');
         }
-        if($hook_suffix == 'edit.php?post_type=product' || 'post-new.php?post_type=product') {
-            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), $this->version, 'all');        
+        if ($hook_suffix == 'edit.php?post_type=product' || 'post-new.php?post_type=product') {
+            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), $this->version, 'all');
         }
     }
 
@@ -429,7 +429,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'type' => 'title',
             'id' => 'ar_title_3',
             'before_row' => '<div id="cmb2-id-ar-model-viewer-for-woocommerce-ar-settings">',
-            'after_row' => '</div>'
+            'after_row' => '</div>',
         ));
 
         $cmb->add_field(array(
@@ -443,31 +443,31 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 '2' => __('Deactive', 'cmb2'),
             ),
             'default' => '2',
-            'classes' => 'switch-field', 
+            'classes' => 'switch-field',
         ));
 
-        $cmb->add_field( array(
-            'name'    => 'Button Text',
-            'desc'    => '',
+        $cmb->add_field(array(
+            'name' => 'Button Text',
+            'desc' => '',
             'default' => '👋 Activate AR',
-            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_text',
-            'type'    => 'text_medium',           
-        ) );
+            'id' => 'ar_model_viewer_for_woocommerce_ar_button_text',
+            'type' => 'text_medium',
+        ));
 
-        $cmb->add_field( array(
-            'name'    => 'Button Color',
-            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_background_color',
-            'type'    => 'colorpicker',
+        $cmb->add_field(array(
+            'name' => 'Button Color',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_button_background_color',
+            'type' => 'colorpicker',
             'default' => '#ffffff',
             // 'options' => array(
             //     'alpha' => true, // Make this a rgba color picker.
             // ),
         ));
 
-        $cmb->add_field( array(
-            'name'    => 'Text Color',
-            'id'      => 'ar_model_viewer_for_woocommerce_ar_button_text_color',
-            'type'    => 'colorpicker',
+        $cmb->add_field(array(
+            'name' => 'Text Color',
+            'id' => 'ar_model_viewer_for_woocommerce_ar_button_text_color',
+            'type' => 'colorpicker',
             'default' => '#000000',
             // 'options' => array(
             //     'alpha' => true, // Make this a rgba color picker.
