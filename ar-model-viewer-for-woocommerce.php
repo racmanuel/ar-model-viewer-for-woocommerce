@@ -15,11 +15,11 @@
  * Plugin Name:       AR Model Viewer for WooCommerce
  * Plugin URI:        https://plugin.com/ar-model-viewer-for-woocommerce-uri/
  * Description:       AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin support formats .glb
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            Manuel Ramirez Coronel
- * Requires at least: 1.0.0
+ * Requires at least: 5.9
  * Requires PHP:      7.4
- * Tested up to:      6.0
+ * Tested up to:      6.1.0
  * Author URI:        https://racmanuel.dev/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
