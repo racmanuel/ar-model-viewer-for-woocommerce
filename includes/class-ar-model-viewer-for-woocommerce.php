@@ -174,6 +174,9 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
+        if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+			$this->loader->add_action( 'admin_notices', $plugin_admin, 'ar_model_viewer_for_woocommerce_error_notice' );
+		}
         // Include the admin styles in the Admin
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         // Include the admin scripts in the Admin
