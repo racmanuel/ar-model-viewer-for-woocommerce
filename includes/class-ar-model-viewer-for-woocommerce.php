@@ -187,6 +187,13 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->loader->add_filter('upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types');
         //Define the metabox and field configurations.
         $this->loader->add_action('cmb2_admin_init', $plugin_admin, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
+
+        $theme_actual = wp_get_theme();
+
+        if ($theme_actual->name === 'Bloksy') {
+            // El tema Bloksy está activo
+            $this->loader->add_filter('blocksy:woocommerce:product-view:use-default', $plugin_admin, 'ar_model_viewer_for_woocommerce_blocksy_fix');
+        }
     }
 
     /**

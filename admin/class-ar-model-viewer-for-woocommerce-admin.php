@@ -483,4 +483,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     public function ar_model_viewer_for_woocommerce_error_notice() {
         echo '<div class="notice notice-error is-dismissible"><p>'.__('AR Model Viewer for WooCommerce is active but not working. You need to install the WooCommerce plugin for the plugin to work properly.', 'datos-de-facturacion-para-mexico').'</p></div>';
     }
+
+    public function ar_model_viewer_for_woocommerce_blocksy_fix($current_value){
+        // Use WooCommerce built in gallery
+        return true;
+    }
 }
