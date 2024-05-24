@@ -15,11 +15,14 @@
  * Plugin Name:       AR Model Viewer for WooCommerce
  * Plugin URI:        https://plugin.com/ar-model-viewer-for-woocommerce-uri/
  * Description:       AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin support formats .glb
- * Version:           1.0.4
+ * Version:           1.0.5
  * Author:            Manuel Ramirez Coronel
  * Requires at least: 5.9
  * Requires PHP:      7.4
- * Tested up to:      6.1.0
+ * Tested up to:      6.5
+ * Requires Plugins: woocommerce
+ * WC requires at least: 3.9
+ * WC tested up to: 8.8
  * Author URI:        https://racmanuel.dev/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
@@ -28,8 +31,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
@@ -37,19 +40,19 @@ if ( ! defined( 'WPINC' ) ) {
  * (Update path to use cmb2 or CMB2, depending on the name of the folder.
  * Case-sensitive is important on some systems.)
  */
-require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 /**
  * Current plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '1.0.4' );
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '1.0.5');
 
 /**
  * Define the Plugin basename
  */
-define( 'AR_MODEL_VIEWER_FOR_WOOCOMMERCE_BASE_NAME', plugin_basename( __FILE__ ) );
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_BASE_NAME', plugin_basename(__FILE__));
 
 /**
  * The code that runs during plugin activation.
@@ -57,9 +60,10 @@ define( 'AR_MODEL_VIEWER_FOR_WOOCOMMERCE_BASE_NAME', plugin_basename( __FILE__ )
  * This action is documented in includes/class-ar-model-viewer-for-woocommerce-activator.php
  * Full security checks are performed inside the class.
  */
-function ar_model_viewer_for_woocommerce_activate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-ar-model-viewer-for-woocommerce-activator.php';
-	Ar_Model_Viewer_For_Woocommerce_Activator::activate();
+function ar_model_viewer_for_woocommerce_activate()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-ar-model-viewer-for-woocommerce-activator.php';
+    Ar_Model_Viewer_For_Woocommerce_Activator::activate();
 }
 
 /**
@@ -68,19 +72,41 @@ function ar_model_viewer_for_woocommerce_activate() {
  * This action is documented in includes/class-ar-model-viewer-for-woocommerce-deactivator.php
  * Full security checks are performed inside the class.
  */
-function ar_model_viewer_for_woocommerce_deactivate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-ar-model-viewer-for-woocommerce-deactivator.php';
-	Ar_Model_Viewer_For_Woocommerce_Deactivator::deactivate();
+function ar_model_viewer_for_woocommerce_deactivate()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-ar-model-viewer-for-woocommerce-deactivator.php';
+    Ar_Model_Viewer_For_Woocommerce_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'ar_model_viewer_for_woocommerce_activate' );
-register_deactivation_hook( __FILE__, 'ar_model_viewer_for_woocommerce_deactivate' );
+register_activation_hook(__FILE__, 'ar_model_viewer_for_woocommerce_activate');
+register_deactivation_hook(__FILE__, 'ar_model_viewer_for_woocommerce_deactivate');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-ar-model-viewer-for-woocommerce.php';
+require plugin_dir_path(__FILE__) . 'includes/class-ar-model-viewer-for-woocommerce.php';
+
+/**
+ * Initialize the plugin tracker
+ *
+ * @return void
+ */
+function appsero_init_tracker_ar_model_viewer_for_woocommerce()
+{
+
+    if (!class_exists('Appsero\Client')) {
+        require_once __DIR__ . '/appsero/src/Client.php';
+    }
+
+    $client = new Appsero\Client('25337288-b833-4220-ad60-666a2ae90aac', 'AR Model Viewer for WooCommerce', __FILE__);
+
+    // Active insights
+    $client->insights()->init();
+
+}
+
+appsero_init_tracker_ar_model_viewer_for_woocommerce();
 
 /**
  * Begins execution of the plugin.
@@ -94,10 +120,11 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ar-model-viewer-for-woocom
  *
  * @since    1.0.0
  */
-function ar_model_viewer_for_woocommerce_run() {
+function ar_model_viewer_for_woocommerce_run()
+{
 
-	$plugin = new Ar_Model_Viewer_For_Woocommerce();
-	$plugin->run();
+    $plugin = new Ar_Model_Viewer_For_Woocommerce();
+    $plugin->run();
 
 }
 ar_model_viewer_for_woocommerce_run();

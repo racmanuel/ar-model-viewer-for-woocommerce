@@ -2,9 +2,9 @@
 Contributors: racmanuel
 Donate link: https://racmanuel.dev 
 Tags: Augmented Reality, AR, Model Viewer, 3D, Woocommerce
-Requires at least: 6.0.0
-Tested up to: 6.1.1
-Stable tag: 1.0.4
+Requires at least: 5.9
+Tested up to: 6.5
+Stable tag: 1.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,11 +13,32 @@ The AR Model Viewer for WooCommmerce is a plugin that allows you to show 3D mode
 
 == Description ==
 
-The AR Model Viewer for WooCommmerce is a plugin that allows you to show 3D models in your products of your website and allow people to view them in augmented reality. 3D model files such as.glb and.gltf are supported by this plugin. The plugin is incredibly simple to use.
+The AR Model Viewer for WooCommerce is a versatile plugin designed to enhance your online store by displaying 3D models of your products. Customers can view these models in augmented reality (AR), providing an interactive and immersive shopping experience. The plugin supports 3D model files in .glb and .gltf formats and is incredibly easy to use.
 
-The AR Model Viewer plugin can be used on any type of website, and eCommerce/WooCommerce websites.
+Whether your website is an eCommerce platform or a WooCommerce-based store, the AR Model Viewer plugin seamlessly integrates to allow customers to explore your products in 3D and AR.
 
-The AR Model Viewer plugin allows you to add a 3D model viewer to your WooCommerce products so customers can view them in 3D and augmented reality.
+## Key Features ✨
+
+- Display 3D models of your products.
+- Enable augmented reality viewing.
+- Support for .glb and .gltf file formats.
+- Easy integration with WooCommerce.
+
+## Customization 🛠️
+
+If you need any customization for the plugin, feel free to send me a message or visit my website: [https://racmanuel.dev](https://racmanuel.dev).
+
+## Privacy Policy 🔒
+
+AR Model Viewer for WooCommerce uses the [Appsero](https://appsero.com) SDK to collect telemetry data, but only with the user's explicit consent. This data collection helps us troubleshoot issues and improve our product.
+
+- **No data is gathered by default.**
+- Data collection only begins **after user consent via the admin notice**.
+- Collected data ensures a great user experience.
+
+Integrating the Appsero SDK **does not immediately start data collection without user confirmation**.
+
+For more details on how Appsero collects and uses data, please refer to their [privacy policy](https://appsero.com/privacy-policy/).
 
 == Installation ==
 
@@ -38,6 +59,7 @@ e.g.
 
 == Changelog ==
 
+1.0.5 - Update the tested up to 6.5 and added Appsero
 
 == Upgrade Notice ==
 
