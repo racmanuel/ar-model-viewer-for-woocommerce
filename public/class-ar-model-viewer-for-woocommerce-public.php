@@ -102,9 +102,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      * @since    1.0.0
      * @param    array  $atts    ShortCode Attributes.
      * @param    mixed  $content ShortCode enclosed content.
-     * @param    string $tag    The Shortcode tag.
      */
-    public function ar_model_viewer_for_woocommerce_shortcode_func($atts, $content = null, $tag)
+    public function ar_model_viewer_for_woocommerce_shortcode_func($atts, $content = null)
     {
 
         /**
