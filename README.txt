@@ -4,7 +4,7 @@ Donate link: https://racmanuel.dev
 Tags: Augmented Reality, AR, Model Viewer, 3D, Woocommerce
 Requires at least: 5.9
 Tested up to: 6.6
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -65,5 +65,6 @@ To ensure that all visitors to your website can see the AR scenes, each scene mu
 1.0.5 - Update the tested up to 6.5 and added Appsero
 1.0.6 - Update the tested up to 6.5 and added Appsero
 1.0.7 - Removed the Appsero SDK and add Freemius SDK, and Tested up to: 6.6 version of WordPress, removed uninstall.php, and on deactive plugin delete_option('ar_model_viewer_for_woocommerce_settings');
+1.0.8 - Fix: Optional parameter $content declared before required parameter $tag is implicitly treated as a required parameter in ar-model-viewer-for-woocommerce/public/class-ar-model-viewer-for-woocommerce-public.php on line 107
 
 == Upgrade Notice ==
