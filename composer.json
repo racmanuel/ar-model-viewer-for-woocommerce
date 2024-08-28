@@ -13,6 +13,6 @@
     "minimum-stability": "dev",
     "require": {
         "cmb2/cmb2": "v2.10.1",
-        "appsero/client": "dev-develop"
+        "freemius/wordpress-sdk": "dev-master"
     }
 }
