@@ -69,7 +69,7 @@ class Ar_Model_Viewer_For_Woocommerce_Deactivator {
 		 * The plugin is now safely deactivated.
 		 * Perform your deactivation actions here.
 		 */
-
+		delete_option('ar_model_viewer_for_woocommerce_settings');
 	}
 
 	/**

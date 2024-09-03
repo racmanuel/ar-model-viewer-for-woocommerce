@@ -217,7 +217,7 @@ class Ar_Model_Viewer_For_Woocommerce
         $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
 
         // Check the option where the button is avaible
-        switch ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn']) {
+        switch (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn'])) {
             case 1:
                  $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
                 break;
@@ -239,10 +239,13 @@ class Ar_Model_Viewer_For_Woocommerce
         }
 
         // Check if in settings show in tabs is active
-        if ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'] == 'yes') {
-            // Show a button before single_product
-            $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
+        if (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'])) {
+            if ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'] == 'yes') {
+                // Show a button before single_product
+                $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
+            }
         }
+        
 
         /***
          * Code for use a Shortcode for the plugin.
