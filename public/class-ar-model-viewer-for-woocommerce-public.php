@@ -74,7 +74,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function enqueue_styles()
     {
-
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-public.css', array(), $this->version, 'all');
         wp_enqueue_style('jquery-ui-theme', plugin_dir_url(__FILE__) . 'css/jquery-ui.min.css', array(), $this->version, 'all');
     }
@@ -86,7 +85,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function enqueue_scripts()
     {
-
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-public-dist.js', array('jquery'), $this->version, true);
         wp_enqueue_script('jquery-ui-dialog');
     }
@@ -104,7 +102,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      * @param    mixed  $content ShortCode enclosed content.
      * @param    string $tag    The Shortcode tag.
      */
-    public function ar_model_viewer_for_woocommerce_shortcode_func($atts, $content = null, $tag)
+    public function ar_model_viewer_for_woocommerce_shortcode_func($atts, $content = null)
     {
 
         /**
@@ -117,33 +115,59 @@ class Ar_Model_Viewer_For_Woocommerce_Public
          */
         $atts = shortcode_atts(
             array(
-                'attribute' => 123,
+                'id' => 0, // Definir el atributo 'id' por defecto
             ),
             $atts,
-            $this->plugin_prefix . 'shortcode'
+            'ar-model-viewer'
         );
 
-        /**
-         * Build our ShortCode output.
-         * Remember to sanitize all user input.
-         * In this case, we expect a integer value to be passed to the ShortCode attribute.
-         *
-         * @see https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
-         */
-        $out = intval($atts['attribute']);
+        // Sanitizar el valor del atributo 'id'
+        $post_id = intval($atts['id']);
+
+        // Obtener el post por ID
+        $post = get_post($post_id);
+
+        // Verificar si el post existe
+        if (!$post) {
+            return __('Post not found.', 'ar-model-viewer-for-woocommerce');
+        }
+
+        //Get the file url for android
+        $get_android_file = get_post_meta($post->ID, 'ar_model_viewer_for_woocommerce_file_android', true);
+        //Get the fiel url for IOS
+        $get_ios_file = get_post_meta($post->ID, 'ar_model_viewer_for_woocommerce_file_ios', true);
+        //Get the alt for web accessibility
+        $get_alt = get_post_meta($post->ID, 'ar_model_viewer_for_woocommerce_file_alt', true);
+        //Get the Poster
+        $get_poster = get_post_meta($post->ID, 'ar_model_viewer_for_woocommerce_file_poster', true);
+
+        // Check if the customs fields has a value.
+        if (!empty($get_android_file)) {
+            $android_file_url = $get_android_file;
+        }
+        if (!empty($get_ios_file)) {
+            $ios_file_url = $get_ios_file;
+        }
+        if (!empty($get_alt)) {
+            $alt_description = sanitize_text_field($get_alt);
+        } else {
+            $alt_description = $product->get_name();
+        }
+        if (!empty($get_poster)) {
+            $poster_file_url = $get_poster;
+        } else {
+            $poster_file_url = wp_get_attachment_url($product->get_image_id());
+        }
 
         /**
          * If the shortcode is enclosing, we may want to do something with $content
          */
-        if (!is_null($content) && !empty($content)) {
-            $out = do_shortcode($content); // We can parse shortcodes inside $content.
-            $out = intval($atts['attribute']) . ' ' . sanitize_text_field($out); // Remember to sanitize your user input.
-        }
+        ob_start();
+        include 'partials/ar-model-viewer-for-woocommerce-public-display.php';
+        $out = ob_get_clean();
 
         // ShortCodes are filters and should always return, never echo.
-
         return $out;
-
     }
     public function ar_model_viewer_for_woocommerce_button()
     {
@@ -415,15 +439,20 @@ class Ar_Model_Viewer_For_Woocommerce_Public
 
     public function ar_model_viewer_for_woocommerce_ar_modes($ar_mode)
     {
+        if (!is_array($ar_mode)) {
+            // If $ar_mode is not an array, return an empty string to avoid errors.
+            return '';
+        }
+
         foreach ($ar_mode as $mode_for_ar) {
             $mode = $mode_for_ar;
-            if($mode == 1){
+            if ($mode == 1) {
                 $mode_webxr = 'webxr';
             }
-            if($mode == 2){
+            if ($mode == 2) {
                 $mode_scene = 'scene-viewer';
             }
-            if($mode == 3){
+            if ($mode == 3) {
                 $mode_quick = 'quick-look';
             }
         }

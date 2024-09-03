@@ -82,6 +82,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         if ($hook_suffix == 'edit.php?post_type=product' || 'post-new.php?post_type=product') {
             wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), $this->version, 'all');
         }
+        if ($hook_suffix == 'edit.php?post_type=product' || 'post-new.php?post_type=product') {
+            wp_enqueue_style($this->plugin_name . '-ctp', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-ctp.css', array(), time(), 'all');
+        }
     }
 
     /**
@@ -92,9 +95,42 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
      */
     public function enqueue_scripts($hook_suffix)
     {
+        if ($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
+            // Overwrite Automattic's Iris color picker to enable alpha channel (transparency) support in the WordPress color picker.
+            // This is done to enhance the color picker functionality to handle RGBA colors, not just RGB.
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin.js', array('jquery'), $this->version, false);
+            // Overwrite WordPress's default color picker to improve implementation and integration of the Iris color picker with alpha channel support.
+            // This is necessary to ensure that the extended functionality of the color picker (alpha channel) works seamlessly with WordPress.
 
+            // Register the 'wp-color-picker-alpha' script in WordPress.
+            // The script is dependent on the existing 'wp-color-picker' script, ensuring that it integrates properly.
+            // The script is located in the 'js' directory of the plugin, and the URL is constructed using 'plugin_dir_url(__FILE__)'.
+            // '$this->version' specifies the version of the script, which is useful for cache busting.
+            // 'false' as the last parameter indicates that the script should not be loaded in the footer.
+            wp_register_script('wp-color-picker-alpha', plugin_dir_url(__FILE__) . 'js/wp-color-picker-alpha.min.js', array('wp-color-picker'), $this->version, false);
+
+            // Add inline script to initialize the color picker on elements with the class 'color-picker'.
+            // The jQuery function is used to ensure compatibility and proper initialization.
+            // 'wpColorPicker()' is called on elements with the class 'color-picker', initializing the enhanced color picker with alpha channel support.
+            wp_add_inline_script(
+                'wp-color-picker-alpha',
+                'jQuery( function() { jQuery( ".color-picker" ).wpColorPicker(); } );'
+            );
+
+            // Enqueue the 'wp-color-picker-alpha' script to ensure it is loaded and executed on the WordPress site.
+            // This step is crucial for the script to take effect and enhance the color picker functionality on the site.
+            wp_enqueue_script('wp-color-picker-alpha');
+
+            wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin.js', array('jquery', 'wp-i18n'), $this->version, false);
+        }
+
+        if ($hook_suffix == 'edit.php?post_type=ar_model' || 'post-new.php?post_type=ar_model') {
+            wp_enqueue_script($this->plugin_name . '-ctp', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-ctp-dist.js', array('jquery', 'wp-i18n'), $this->version, false);
+            wp_localize_script($this->plugin_name, 'ajax_object', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'ajax_nonce' => wp_create_nonce('ar-model-viewer-ajax-nonce'),
+            ));
+        }
     }
 
     /**
@@ -141,7 +177,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         $cmb = new_cmb2_box(array(
             'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
             'title' => __('AR Model Viewer for WooCommerce', 'cmb2'),
-            'object_types' => array('product'), // Post type
+            'object_types' => array('product', 'ar_model'), // Post type
             'context' => 'normal',
             'priority' => 'low',
             'show_names' => true, // Show field names on the left
@@ -370,7 +406,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             'name' => 'AR Modes',
             'id' => 'ar_model_viewer_for_woocommerce_ar_modes',
             'type' => 'multicheck',
-            'default' => '1,2',
+            'default' => array('1', '2', '3'),
             'desc' => 'A prioritized list of the types of AR experiences to enable. Allowed values are "webxr", to launch the AR experience in the browser, "scene-viewer", to launch the Scene Viewer app, "quick-look", to launch the iOS Quick Look app. Note that the presence of an ios-src will enable quick-look by itself.',
             'show_option_none' => false,
             'options' => array(
@@ -480,12 +516,28 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         include_once 'partials/ar-model-viewer-for-woocommerce-admin-display.php';
     }
 
-    public function ar_model_viewer_for_woocommerce_error_notice() {
-        echo '<div class="notice notice-error is-dismissible"><p>'.__('AR Model Viewer for WooCommerce is active but not working. You need to install the WooCommerce plugin for the plugin to work properly.', 'datos-de-facturacion-para-mexico').'</p></div>';
+    public function ar_model_viewer_for_woocommerce_error_notice()
+    {
+        echo '<div class="notice notice-error is-dismissible"><p>' . __('AR Model Viewer for WooCommerce is active but not working. You need to install the WooCommerce plugin for the plugin to work properly.', 'datos-de-facturacion-para-mexico') . '</p></div>';
     }
 
-    public function ar_model_viewer_for_woocommerce_blocksy_fix($current_value){
+    public function ar_model_viewer_for_woocommerce_blocksy_fix($current_value)
+    {
         // Use WooCommerce built in gallery
         return true;
+    }
+
+    public function ar_model_viewer_for_woocommerce_admin_notice()
+    {
+        // Verifica si el usuario no está pagando por la versión premium del plugin.
+        if (ar_model_viewer_for_woocommerce_fs()->is_not_paying()) {
+            // Muestra el mensaje con las características premium y el enlace para actualizar.
+            echo '<div class="notice notice-success is-dismissible">';
+            echo '<p>' . __('Actualiza a la version Personal de AR Model for WooCommerce y añade tus modelos 3D en cualquier parte de tu sitio web usando Shortcodes.', 'ar-model-viewer-for-woocommerce') . '</p>';
+            echo '<p><a href="' . ar_model_viewer_for_woocommerce_fs()->get_upgrade_url() . '" class="button button-primary">' .
+            __('Upgrade Now!', 'ar-model-viewer-for-woocommerce') .
+                '</a></p>';
+            echo '</div>';
+        }
     }
 }

@@ -29,6 +29,8 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	
+
 	 $(function() {
 		if( $('#ar_model_viewer_for_woocommerce_ar2').is(':checked') ){
 			//alert("Radio Button Is checked!");

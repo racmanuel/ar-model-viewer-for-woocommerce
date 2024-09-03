@@ -134,6 +134,24 @@ class Ar_Model_Viewer_For_Woocommerce
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin.php';
 
+        // This IF block will be auto removed from the Free version.
+        if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
+            /**
+             * The class responsible for defining all actions that occur in the admin area.
+             */
+            require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-custom-post-type.php';
+
+            /**
+             * The class responsible for defining all actions that occur in the admin area.
+             */
+            require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-ajax.php';
+
+            /**
+             * The class responsible for defining all actions that occur in the admin area.
+             */
+            require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-mode-viewer-for-woocommerce-admin-widget-elementor.php';
+        }
+
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
@@ -173,10 +191,16 @@ class Ar_Model_Viewer_For_Woocommerce
     {
 
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        // This IF block will be auto removed from the Free version.
+        if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
+            $plugin_custom_post_type = new Ar_Model_Viewer_For_Woocommerce_Admin_Custom_Post_Type($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+            $plugin_admin_ajax = new Ar_Model_Viewer_For_Woocommerce_Admin_Ajax($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+            $plugin_admin_widget = new Ar_Model_Viewer_For_Woocommerce_Admin_Widget($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        }
 
-        if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-			$this->loader->add_action( 'admin_notices', $plugin_admin, 'ar_model_viewer_for_woocommerce_error_notice' );
-		}
+        if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+            $this->loader->add_action('admin_notices', $plugin_admin, 'ar_model_viewer_for_woocommerce_error_notice');
+        }
         // Include the admin styles in the Admin
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         // Include the admin scripts in the Admin
@@ -190,10 +214,30 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $theme_actual = wp_get_theme();
 
-        if ($theme_actual->name === 'Bloksy') {
+        if ($theme_actual->name === 'Blocksy') {
             // El tema Bloksy está activo
             $this->loader->add_filter('blocksy:woocommerce:product-view:use-default', $plugin_admin, 'ar_model_viewer_for_woocommerce_blocksy_fix');
         }
+
+        // This IF block will be auto removed from the Free version.
+        if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
+            // This block execute code if the user has the plan 'Personal'
+            if (ar_model_viewer_for_woocommerce_fs()->is_plan('Personal', true)) {
+                // ... premium only logic ...
+                $this->loader->add_action('init', $plugin_custom_post_type, 'ar_model_viewer_for_woocommerce_add_custom_post_type__premium_only');
+                // Añadir nuevas columnas al CPT 'ar_model'
+                $this->loader->add_filter('manage_edit-ar_model_columns', $plugin_custom_post_type, 'ar_model_viewer_for_woocommerce_add_custom_columns_in_custom_post_type__premium_only');
+                // Rellenar las nuevas columnas con datos
+                $this->loader->add_action('manage_ar_model_posts_custom_column', $plugin_custom_post_type, 'ar_model_viewer_for_woocommerce_add_content_to_custom_columns_in_custom_post_type__premium_only', 10, 2);
+                // Permite obtener los datos del modelo 3D para una vista previa.
+                $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_data', $plugin_admin_ajax, 'ar_model_viewer_for_woocommerce_get_model_data__premium_only');
+                $this->loader->add_action( 'elementor/widgets/widgets_registered', $plugin_admin_widget ,'my_elementor_load_widget' );
+                $this->loader->add_action( 'elementor/widgets/register', $plugin_admin_widget  ,'register_ar_model_viewer_widget' );
+
+            }
+        }
+
+        $this->loader->add_action('admin_notices', $plugin_admin, 'ar_model_viewer_for_woocommerce_admin_notice');
     }
 
     /**
@@ -219,23 +263,23 @@ class Ar_Model_Viewer_For_Woocommerce
         // Check the option where the button is avaible
         switch (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn'])) {
             case 1:
-                 $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
                 break;
             case 2:
-                 $this->loader->add_action('woocommerce_after_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                $this->loader->add_action('woocommerce_after_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
                 break;
             case 3:
-                 $this->loader->add_action('woocommerce_before_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                 break;
+                $this->loader->add_action('woocommerce_before_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                break;
             case 4:
-                 $this->loader->add_action('woocommerce_after_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                 break;
+                $this->loader->add_action('woocommerce_after_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                break;
             case 5:
-                 $this->loader->add_action('woocommerce_after_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                 break;
+                $this->loader->add_action('woocommerce_after_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                break;
             case 6:
-                 $this->loader->add_action('woocommerce_before_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                 break;
+                $this->loader->add_action('woocommerce_before_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+                break;
         }
 
         // Check if in settings show in tabs is active
@@ -245,14 +289,13 @@ class Ar_Model_Viewer_For_Woocommerce
                 $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
             }
         }
-        
 
         /***
          * Code for use a Shortcode for the plugin.
          * NOTE: Maybe remove for prodcution.
          * Shortcode name must be the same as in shortcode_atts() third parameter.
          */
-        //$this->loader->add_shortcode($this->get_plugin_prefix() . 'shortcode', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func');
+        $this->loader->add_shortcode('ar-model-viewer', $plugin_public, 'ar_model_viewer_for_woocommerce_shortcode_func');
 
     }
 

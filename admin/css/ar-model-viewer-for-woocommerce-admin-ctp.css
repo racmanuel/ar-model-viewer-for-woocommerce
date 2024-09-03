@@ -1,0 +1,34 @@
+.swal-button {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+	text-decoration: none;
+	text-shadow: none;
+}
+
+th#actions {
+	width: 15% !important;
+}
+
+.fancybox__container {
+	z-index: 999999 !important;
+	/* Cambia el 1050 por el valor de z-index que necesites */
+}
+
+.widefat td {
+	vertical-align: middle !important;
+}
+
+.widefat .check-column {
+	vertical-align: middle !important;
+}
+
+@screen and (max-width: 782px) {
+	.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before {
+		position: static !important;
+	}
+
+	th#actions {
+		width: 50% !important;
+	}
+}

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/racmanuel/ar-model-viewer-for-woocommerce#readme",
   "dependencies": {
-    "@google/model-viewer": "^1.12.0"
+    "@fancyapps/ui": "^5.0.36",
+    "@google/model-viewer": "^1.12.0",
+    "sweetalert": "^2.1.2"
   }
 }
