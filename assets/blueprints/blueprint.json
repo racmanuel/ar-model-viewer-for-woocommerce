@@ -1,0 +1,44 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "siteOptions": {
+        "blogname": "AR Model Viewer for WooCommerce"
+    },
+    "steps": [{
+            "step": "installTheme",
+            "themeZipFile": {
+                "resource": "wordpress.org/themes",
+                "slug": "storefront"
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginZipFile": {
+                "resource": "wordpress.org/plugins",
+                "slug": "woocommerce"
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginZipFile": {
+                "resource": "wordpress.org/plugins",
+                "slug": "ar-model-viewer-for-woocommerce"
+            }
+        },
+        {
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		}
+    ],
+    "landingPage": "/wp-admin/admin.php?page=ar_model_viewer_for_woocommerce_settings",
+    "preferredVersions": {
+        "php": "7.4",
+        "wp": "6.5"
+    },
+    "phpExtensionBundles": [
+        "kitchen-sink"
+    ],
+    "features": {
+        "networking": true
+    }
+}
