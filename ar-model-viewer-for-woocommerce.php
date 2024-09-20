@@ -59,7 +59,7 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
                 'type' => 'plugin',
                 'public_key' => 'pk_5143076d3ed4661ac299aa66baabc',
                 'is_premium' => true,
-                'premium_suffix' => 'Pro',
+                'premium_suffix' => 'pro',
                 // If your plugin is a serviceware, set this option to false.
                 'has_premium_version' => true,
                 'has_addons' => false,
