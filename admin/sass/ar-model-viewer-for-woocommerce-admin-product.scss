@@ -1,0 +1,235 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+/* Variables */
+$gradient-colors: linear-gradient(90deg, #a658f2 0%, #00e087 100%);
+$primary-color: #a658f2;
+$secondary-color: #00e087;
+$background-color: #071c26;
+$text-color: white;
+$button-hover-color: #7d3bdb;
+$border-color: rgba(204, 204, 204, 0.14);
+$code-bg-color: #ede7f6;
+$code-text-color: #071c26;
+
+/* Mixin for gradient background buttons */
+@mixin gradient-button {
+  background-image: $gradient-colors !important;
+  color: $text-color !important;
+  border: none;
+}
+
+/* Style for icons in CMB2 Field */
+.icon-in-field {
+  width: 18px;
+  vertical-align: middle;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes > div.postbox-header {
+  background-image: $gradient-colors !important;
+  margin-top: 0px !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes > div.postbox-header > h2 {
+  color: $text-color !important; 
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes > div.postbox-header {
+  border-bottom: none !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handle-order-higher {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handle-order-lower {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handlediv {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handlediv
+  > span.toggle-indicator {
+  color: $text-color;
+}
+
+/* Metabox background with radial gradient */
+#ar_model_viewer_for_woocommerce_metaboxes > div.inside {
+  background: radial-gradient(
+      50% 75% at bottom left,
+      rgba(144, 46, 239, 0.6) 0%,
+      /* Púrpura */ rgba(7, 28, 38, 0.8) 90%
+        /* Oscuro al 90% para que el púrpura domine */
+    ),
+    radial-gradient(
+      50% 75% at top right,
+      rgba(0, 224, 135, 1) 0%,
+      /* Verde */ rgba(7, 28, 38, 0.8) 70%
+        /* El verde cubre hasta el 70%, antes de mezclarse con el oscuro */
+    ),
+    $background-color; /* Fondo base */
+  margin-top: 0px !important;
+}
+
+/* Labels and text in CMB2 Fields */
+.cmb-th > label,
+div.cmb-td > p {
+  font-weight: 600;
+  color: $text-color !important;
+}
+
+/* Logo styling */
+.ar-model-viewer-logo {
+  width: 200px;
+  height: auto;
+}
+
+/* Input field styling with gradient border */
+div.cmb-td > input {
+  border: none !important;
+  background-image: $gradient-colors;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  color: $text-color;
+  font-weight: 500;
+
+  &:focus {
+    color: black !important;
+  }
+}
+
+/* Gradient button styles */
+#ar_model_viewer_for_woocommerce_product_tutorial,
+#ar_model_viewer_for_woocommerce_product_settings,
+#ar_model_viewer_for_woocommerce_product_preview,
+#cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes
+  input.cmb2-upload-button.button-secondary {
+  @include gradient-button;
+}
+
+/* Border styling for repeatable groups and rows */
+.cmb-type-group .cmb-repeatable-group:not(:last-of-type),
+.cmb-type-group .cmb-row:not(:last-of-type),
+.cmb2-postbox .cmb-repeatable-group:not(:last-of-type),
+.cmb2-postbox .cmb-row:not(:last-of-type) {
+  border-bottom: 1px solid $border-color !important;
+}
+
+/* Specific styles for links */
+.file-status.cmb2-media-item {
+  color: $secondary-color;
+}
+
+#ar_model_viewer_for_woocommerce_file_object-status > div > a:nth-child(2),
+#ar_model_viewer_for_woocommerce_file_object-status
+  > div
+  > a.cmb2-remove-file-button {
+  color: $primary-color;
+}
+
+/* Shortcode table styling */
+#ar-model-viewer-for-woocommerce-shortcode-table {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-image: $gradient-colors;
+      color: $text-color;
+      padding: 15px;
+    }
+
+    td {
+      padding: 20px;
+      vertical-align: top;
+      color: $text-color;
+    }
+  }
+}
+
+/* Shortcode box styling */
+.shortcode-box {
+  background-image: $gradient-colors;
+  border: none;
+  padding: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Code block styling */
+code {
+  background-color: $text-color;
+  padding: 10px;
+  font-size: 14px;
+  font-family: monospace;
+  border-radius: 4px;
+  color: $code-text-color;
+}
+
+/* Copy button styling */
+.copy-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: $primary-color;
+  color: $text-color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $button-hover-color;
+  }
+}
+
+/* Driver styles */
+.driver-popover-prev-btn,
+.driver-popover-next-btn {
+  @include gradient-button;
+}
+
+.driver-popover-progress-text {
+  color: $text-color !important;
+}
+
+.driver-popover-footer button {
+  text-shadow: none !important;
+  color: $text-color !important;
+  border: none !important;
+  border-radius: 3px;
+}
+
+/* Alertify success messages */
+.alertify-notifier .ajs-message.ajs-success {
+  color: $text-color !important;
+  background: $gradient-colors !important;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+  border: none;
+  border-color: none;
+  font-weight: 500;
+}
+
+.alertify .ajs-modal {
+  z-index: 999999 !important;
+}

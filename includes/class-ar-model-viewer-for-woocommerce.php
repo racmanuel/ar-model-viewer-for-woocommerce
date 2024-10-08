@@ -130,15 +130,32 @@ class Ar_Model_Viewer_For_Woocommerce
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-i18n.php';
 
         /**
+         * The class responsible for defining internationalization functionality
+         * of the plugin.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-logger.php';
+
+        /**
          * The class responsible for defining all actions that occur in the admin area.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin.php';
+
+        /**
+         * The class responsible for defining all actions that occur in the admin area.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-product.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public.php';
+
+        /**
+         * The class responsible for defining all actions that occur in the public-facing Shortcode
+         * side of the site.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-shortcode.php';
 
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
@@ -186,6 +203,7 @@ class Ar_Model_Viewer_For_Woocommerce
 
         // Instantiate the admin class for the free version of the plugin.
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         /**
          * Creates a new instance of the admin class for the free version of the plugin.
          * This class handles the core admin functionalities such as scripts, styles, and notices.
@@ -264,6 +282,8 @@ class Ar_Model_Viewer_For_Woocommerce
              * It hooks into the `blocksy:woocommerce:product-view:use-default` filter, ensuring the plugin works seamlessly with Bloksy.
              */
         }
+
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
 
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
@@ -373,6 +393,7 @@ class Ar_Model_Viewer_For_Woocommerce
     {
 
         $plugin_public = new Ar_Model_Viewer_For_Woocommerce_Public($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        $plugin_public_shortcode = new Ar_Model_Viewer_For_Woocommerce_Public_Shortcode($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
         // Include the styles for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
@@ -411,6 +432,10 @@ class Ar_Model_Viewer_For_Woocommerce
                 $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
             }
         }
+
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_public, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
+
+        $this->loader->add_shortcode($this->plugin_prefix . 'shortcode', $plugin_public_shortcode, 'ar_model_viewer_for_woocommerce_shortcode_func', 10, 1);
     }
 
     /**

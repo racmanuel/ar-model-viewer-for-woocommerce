@@ -1,4 +1,13 @@
-(function( $ ) {
+//import '@google/model-viewer';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css'; // Importa los estilos de Alertify
+import 'alertifyjs/build/css/themes/default.css'; // Opcional: Importa un tema, como el tema por defecto
+import {
+	driver
+} from "driver.js";
+import "driver.js/dist/driver.css";
+
+(function ($) {
 	'use strict';
 
 	/**
@@ -29,8 +38,9 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-	 $(function() {
-		if( $('#ar_model_viewer_for_woocommerce_ar2').is(':checked') ){
+	$(function () {
+
+		if ($('#ar_model_viewer_for_woocommerce_ar2').is(':checked')) {
 			//alert("Radio Button Is checked!");
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-modes').hide();
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-scale').hide();
@@ -39,12 +49,12 @@
 			$('#cmb2-id-ar-model-viewer-for-woocommerce-ar-settings').hide();
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button').hide();
 		}
-		if( $('#ar_model_viewer_for_woocommerce_ar_button2').is(':checked') ){
+		if ($('#ar_model_viewer_for_woocommerce_ar_button2').is(':checked')) {
 			//alert("Radio Button Is checked!");
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-text').hide();
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-background-color').hide();
 			$('.cmb2-id-ar-model-viewer-for-woocommerce-ar-button-text-color').hide();
 		}
-	 });
+	});
 
-})( jQuery );
+})(jQuery);

@@ -86,66 +86,15 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function enqueue_scripts()
     {
-
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-public-dist.js', array('jquery'), $this->version, true);
-        wp_enqueue_script('jquery-ui-dialog');
+        wp_localize_script($this->plugin_name, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
     }
 
-    /**
-     * Example of Shortcode processing function.
-     *
-     * Shortcode can take attributes like [ar-model-viewer-for-woocommerce-shortcode attribute='123']
-     * Shortcodes can be enclosing content [ar-model-viewer-for-woocommerce-shortcode attribute='123']custom content[/ar-model-viewer-for-woocommerce-shortcode].
-     *
-     * @see https://developer.wordpress.org/plugins/shortcodes/enclosing-shortcodes/
-     *
-     * @since    1.0.0
-     * @param    array  $atts    ShortCode Attributes.
-     * @param    mixed  $content ShortCode enclosed content.
-     */
-    public function ar_model_viewer_for_woocommerce_shortcode_func($atts, $content = null)
-    {
-
-        /**
-         * Combine user attributes with known attributes.
-         *
-         * @see https://developer.wordpress.org/reference/functions/shortcode_atts/
-         *
-         * Pass third paramter $shortcode to enable ShortCode Attribute Filtering.
-         * @see https://developer.wordpress.org/reference/hooks/shortcode_atts_shortcode/
-         */
-        $atts = shortcode_atts(
-            array(
-                'attribute' => 123,
-            ),
-            $atts,
-            $this->plugin_prefix . 'shortcode'
-        );
-
-        /**
-         * Build our ShortCode output.
-         * Remember to sanitize all user input.
-         * In this case, we expect a integer value to be passed to the ShortCode attribute.
-         *
-         * @see https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
-         */
-        $out = intval($atts['attribute']);
-
-        /**
-         * If the shortcode is enclosing, we may want to do something with $content
-         */
-        if (!is_null($content) && !empty($content)) {
-            $out = do_shortcode($content); // We can parse shortcodes inside $content.
-            $out = intval($atts['attribute']) . ' ' . sanitize_text_field($out); // Remember to sanitize your user input.
-        }
-
-        // ShortCodes are filters and should always return, never echo.
-
-        return $out;
-
-    }
     public function ar_model_viewer_for_woocommerce_button()
     {
+        $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
+
+        //echo print_r($ar_model_viewer_settings, true);
         // Global product variable
         global $product;
 
@@ -175,10 +124,12 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         } else {
             $poster_file_url = wp_get_attachment_url($product->get_image_id());
         }
-
+//Include the HTML for display the modal and the HTML content with a lilte bit PHP
+        include_once 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
         /**
          * If product not have a 3D Model - Hide the button
          */
+
         if (!empty($android_file_url) & !empty($ios_file_url)) {
             /**
              * Get the CMB2 Options or plugin options
@@ -298,8 +249,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             // Get the custom text color btn
             $ar_btn_custom_text_color = $ar_model_viewer_settings['ar_model_viewer_for_woocommerce_ar_button_text_color'];
 
-            //Include the HTML for display the modal and the HTML content with a lilte bit PHP
-            include_once 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
         }
     }
 
@@ -416,13 +365,13 @@ class Ar_Model_Viewer_For_Woocommerce_Public
     {
         foreach ($ar_mode as $mode_for_ar) {
             $mode = $mode_for_ar;
-            if($mode == 1){
+            if ($mode == 1) {
                 $mode_webxr = 'webxr';
             }
-            if($mode == 2){
+            if ($mode == 2) {
                 $mode_scene = 'scene-viewer';
             }
-            if($mode == 3){
+            if ($mode == 3) {
                 $mode_quick = 'quick-look';
             }
         }
@@ -490,6 +439,115 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_get_model_and_settings()
+    {
+        // Verificar si la petición AJAX incluye el ID del producto
+        if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+            wp_send_json_error('Invalid Product ID.');
+            wp_die();
+        }
+
+        // Obtener la ID del producto desde la petición AJAX
+        $product_id = intval($_POST['product_id']); // Asegúrate de convertir a entero
+        if (!$product_id) {
+            wp_send_json_error('Invalid Product ID.');
+            wp_die();
+        }
+
+        // Obtener las configuraciones globales
+        $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
+
+        // Recuperar los campos configurados en la página de opciones usando CMB2
+        $loading = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_loading', 'auto');
+        $reveal = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_reveal', 'auto');
+        $with_credentials = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_with_credentials', 'false');
+        $poster_color = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_poster_color', 'rgba(255,255,255,0)');
+        $ar = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar', 'active');
+        $scale = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_scale', 'auto');
+        $placement = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_placement', 'floor');
+        $xr_environment = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_xr_environment', 'deactive');
+        $ar_modes = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_modes', ['webxr', 'scene-viewer']);
+        // Obtener el nombre del producto
+        $product_name = get_the_title($product_id);
+
+        // Obtener los metadatos del producto
+        $model_3d_file = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_object', true);
+        $model_alt = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_alt', true);
+        $model_poster = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_poster', true);
+
+        // Comprobar que el archivo 3D existe
+        if (!$model_3d_file) {
+            wp_send_json_error('3D model file is missing.');
+            wp_die();
+        }
+
+        // Preparar los datos para el retorno
+        $data = array(
+            'loading' => $loading,
+            'reveal' => $reveal,
+            'with_credentials' => $with_credentials,
+            'poster_color' => $poster_color,
+            'ar' => $ar,
+            'scale' => $scale,
+            'placement' => $placement,
+            'xr_environment' => $xr_environment,
+            'ar_modes' => $ar_modes,
+            'product_name' => $product_name,
+            'model_3d_file' => $model_3d_file,
+            'model_alt' => $model_alt,
+            'model_poster' => $model_poster,
+        );
+
+        // Enviar la respuesta en formato JSON
+        wp_send_json_success($data);
+        wp_die();
+    }
+
+    /**
+     * Logs messages to WooCommerce system with varying levels of severity.
+     *
+     * This function checks if logging is enabled in the plugin's settings and, if so,
+     * logs messages using WooCommerce's logging system based on the specified level.
+     *
+     * @since 1.0.0
+     * @param string $message The message to be logged.
+     * @param string $level   The severity level of the log. Default is 'info'.
+     */
+    public function log_to_woocommerce($message, $level = 'info')
+    {
+        // Retrieve the logging setting from the plugin options using CMB2 library.
+        //$log_active = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_log');
+
+        // Check if logging is enabled in the plugin's settings.
+        //if (!$log_active) {
+            // If logging is not enabled, exit the function without logging.
+            //return;
+        //}
+
+        // Obtain an instance of WooCommerce's WC_Logger class.
+        $logger = wc_get_logger();
+
+        // Define the logging context, specifically indicating the source of the log.
+        $context = array('source' => 'ar-model-viewer-for-woocommerce');
+
+        // Log the message at the specified severity level.
+        switch ($level) {
+            case 'emergency':
+            case 'alert':
+            case 'critical':
+            case 'error':
+            case 'warning':
+            case 'notice':
+            case 'info':
+            case 'debug':
+                $logger->$level($message, $context);
+                break;
+            default:
+                // If an unrecognized level is specified, default to 'info' level.
+                $logger->info($message, $context);
         }
     }
 }
