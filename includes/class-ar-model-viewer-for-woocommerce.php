@@ -146,6 +146,11 @@ class Ar_Model_Viewer_For_Woocommerce
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-product.php';
 
         /**
+         * The class responsible for defining all actions that occur in the admin area.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-settings.php';
+
+        /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
@@ -156,6 +161,12 @@ class Ar_Model_Viewer_For_Woocommerce
          * side of the site.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-shortcode.php';
+
+        /**
+         * The class responsible for defining all actions that occur in the public-facing Shortcode
+         * side of the site.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-tab.php';
 
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
@@ -204,14 +215,14 @@ class Ar_Model_Viewer_For_Woocommerce
         // Instantiate the admin class for the free version of the plugin.
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
+
         /**
          * Creates a new instance of the admin class for the free version of the plugin.
          * This class handles the core admin functionalities such as scripts, styles, and notices.
          * It is initialized with the plugin name, prefix, and version.
          */
 
-        // Instantiate the admin class for the pro version of the plugin.
-        $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         /**
          * Creates a new instance of the admin class for the pro version of the plugin.
          * This class handles premium-specific admin functionalities and extends the free version.
@@ -260,6 +271,7 @@ class Ar_Model_Viewer_For_Woocommerce
 
         // Define and initialize custom metaboxes and field configurations.
         $this->loader->add_action('cmb2_admin_init', $plugin_admin, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
+        $this->loader->add_action('cmb2_admin_init', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_cmb2_settings');
         /**
          * Registers and configures custom metaboxes for the plugin using the CMB2 library.
          * The function `ar_model_viewer_for_woocommerce_cmb2_metaboxes` sets up fields for products where users can input 3D model file URLs and other details.
@@ -285,6 +297,7 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
 
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
              * Check if the user has access to premium features. This condition ensures that
@@ -299,6 +312,9 @@ class Ar_Model_Viewer_For_Woocommerce
                  * `can_use_premium_code()` ensures that the user has an active subscription.
                  * If both conditions are met, the premium functionality is executed.
                  */
+                
+                // Instantiate the admin class for the pro version of the plugin.
+                $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
                 // Register the AR model viewer widget in Elementor.
                 $this->loader->add_action('elementor/widgets/register', $plugin_admin_pro, 'register_ar_model_viewer_widget');
@@ -394,7 +410,7 @@ class Ar_Model_Viewer_For_Woocommerce
 
         $plugin_public = new Ar_Model_Viewer_For_Woocommerce_Public($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_public_shortcode = new Ar_Model_Viewer_For_Woocommerce_Public_Shortcode($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
-
+        $plugin_public_tab = new Ar_Model_Viewer_For_Woocommerce_Public_Tab($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         // Include the styles for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         // Include the scripts for public web
@@ -429,7 +445,7 @@ class Ar_Model_Viewer_For_Woocommerce
         if (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'])) {
             if ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'] == 'yes') {
                 // Show a button before single_product
-                $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'ar_model_viewer_for_woocommerce_tab');
+                $this->loader->add_filter('woocommerce_product_tabs', $plugin_public_tab, 'ar_model_viewer_for_woocommerce_tab');
             }
         }
 
