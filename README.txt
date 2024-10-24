@@ -1,10 +1,10 @@
 === AR Model Viewer for WooCommerce ===
-Contributors: racmanuel
+Contributors: racmanuel, freemius
 Donate link: https://racmanuel.dev 
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
 Tested up to: 6.6
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -35,9 +35,9 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature improvements.
 
 ### Pro Plans 💼
-- **Monthly Plan**: $9.99/month
-- **Annual Plan**: $99/year (20% discount vs monthly)
-- **Lifetime Plan**: $399 one-time payment
+- **Monthly Plan**: $9.99 - $59.99/month to 1, 3, Unlimited Sites
+- **Annual Plan**: $99.99 - $599.99/year to 1, 3, Unlimited Sites
+- **Lifetime Plan**: $299.99 - $1,729.99 one-time payment to 1, 3, Unlimited Sites
 
 Get the Pro version to enhance your product display capabilities, save time with bulk import/export, and enjoy seamless Elementor integration for 3D models.
 
@@ -94,11 +94,6 @@ To ensure that all visitors to your website can see the AR scenes, each scene mu
 1.0.7 - Removed the Appsero SDK and add Freemius SDK, and Tested up to: 6.6 version of WordPress, removed uninstall.php, and on deactive plugin delete_option('ar_model_viewer_for_woocommerce_settings');
 1.0.8 - Fix: Optional parameter $content declared before required parameter $tag is implicitly treated as a required parameter in ar-model-viewer-for-woocommerce/public/class-ar-model-viewer-for-woocommerce-public.php on line 107
 1.0.9 - Add assets/blueprints/blueprint.json for execute in WordPress Playground, added one click try plugin in README.
+1.1.0 - Update the Freemius SDK to 2.9.0 Version 2.9.0 comes with various improvements and updates to provide a better experience for your users and stay compliant with the latest wp.org guidelines.
 
 == Upgrade Notice ==
-
-== 1.0.8 ==
-Fixes an issue with optional parameters in function signatures for compatibility with PHP 8. This update is required to ensure compatibility with the latest version of WordPress.
-
-== 1.0.9 ==
-Add assets/blueprints/blueprint.json for execute in WordPress Playground, added one click try plugin in README.

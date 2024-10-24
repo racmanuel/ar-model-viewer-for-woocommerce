@@ -71,12 +71,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Freemius/wordpress-sdk.git",
-                "reference": "2741ba2b4f819b5018f68529036e505ef1e7c349"
+                "reference": "56696717c5f0b7fb395618e88e1b592d1893e5dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Freemius/wordpress-sdk/zipball/2741ba2b4f819b5018f68529036e505ef1e7c349",
-                "reference": "2741ba2b4f819b5018f68529036e505ef1e7c349",
+                "url": "https://api.github.com/repos/Freemius/wordpress-sdk/zipball/56696717c5f0b7fb395618e88e1b592d1893e5dc",
+                "reference": "56696717c5f0b7fb395618e88e1b592d1893e5dc",
                 "shasum": ""
             },
             "require": {
@@ -110,9 +110,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Freemius/wordpress-sdk/issues",
-                "source": "https://github.com/Freemius/wordpress-sdk/tree/2.7.4"
+                "source": "https://github.com/Freemius/wordpress-sdk/tree/2.9.0"
             },
-            "time": "2024-08-07T14:07:59+00:00"
+            "time": "2024-10-21T10:21:58+00:00"
         }
     ],
     "packages-dev": [],
