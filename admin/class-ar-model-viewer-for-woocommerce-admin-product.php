@@ -74,6 +74,119 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
     }
 
     /**
+     * Define the metabox and field configurations.
+     */
+    public function ar_model_viewer_for_woocommerce_cmb2_metaboxes()
+    {
+        /**
+         * Initiate the metabox
+         */
+        $main_metabox = new_cmb2_box(array(
+            'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
+            'title' => __('AR Model Viewer for WooCommerce', 'cmb2'),
+            'object_types' => array('product'), // Post type
+            'context' => 'normal',
+            'priority' => 'low',
+            'show_names' => true, // Show field names on the left
+            'cmb_styles' => true, // false to disable the CMB stylesheet
+            'closed' => false, // Keep the metabox closed by default
+        ));
+
+        // Regular File field - Android .glb
+        $main_metabox->add_field(array(
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-3d-94.png' . '" class="icon-in-field"></img> 3D Object File',
+            'desc' => 'Upload or enter an URL to 3D object (with .glb  or .glTF extension).',
+            'id' => 'ar_model_viewer_for_woocommerce_file_object',
+            'type' => 'file',
+            // Optional:
+            'options' => array(
+                'url' => true, // Hide the text input for the url
+            ),
+            'text' => array(
+                'add_upload_file_text' => 'Add URL or File', // Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                'type' => 'model/gltf-binary', // Make library only display .glb files.
+            ),
+            'before' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_before_title_row'),
+        ));
+
+        //Regular File Field to Poster
+        $main_metabox->add_field(array(
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-photo-gallery-94.png' . '" class="icon-in-field"></img> Poster',
+            'desc' => 'Upload an image or enter an URL. If the image field (alt) is left empty, the photo of the product is taken. This field displays an image instead of the model, useful for showing the user something before a model is loaded and ready to render.',
+            'id' => 'ar_model_viewer_for_woocommerce_file_poster',
+            'type' => 'file',
+            // Optional:
+            'options' => array(
+                'url' => true, // Hide the text input for the url
+            ),
+            'text' => array(
+                'add_upload_file_text' => 'Add Image', // Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                // Or only allow gif, jpg, or png images
+                'type' => array(
+                    'image/gif',
+                    'image/jpeg',
+                    'image/png',
+                    'image/webp',
+                ),
+            ),
+            'preview_size' => 'thumbnail', // Image size to use when previewing in the admin.
+        ));
+
+        // Regular Text field - alt for models
+        $main_metabox->add_field(array(
+            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-info-94.png' . '" class="icon-in-field"></img> alt',
+            'desc' => 'Insert a text. if the text field is left empty, the name of the product is taken. Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
+            'id' => 'ar_model_viewer_for_woocommerce_file_alt',
+            'type' => 'text',
+            'after_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_after_title_row'),
+        ));
+
+        $meshyAi = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+
+        if (!empty($meshyAi)) {
+            $text_to_3d = new_cmb2_box(array(
+                'id' => 'ar_model_viewer_for_woocommerce_metabox_text_to_3d',
+                'title' => __('AR Model Viewer for WooCommerce - Text to 3D Model', 'cmb2'),
+                'object_types' => array('product'), // Post type
+                'context' => 'normal',
+                'priority' => 'low',
+                'show_names' => false, // Show field names on the left
+                'cmb_styles' => true, // false to disable the CMB stylesheet
+                'closed' => false, // Keep the metabox closed by default
+            ));
+
+            $text_to_3d->add_field(array(
+                'name' => '3D Model with Text',
+                'desc' => '',
+                'type' => 'title',
+                'id' => 'text_to_3d_title',
+                'after' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_text_to_3d_content'),
+            ));
+        }
+    }
+
+    public static function ar_model_viewer_for_woocommerce_before_title_row()
+    {
+        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-header.php';
+    }
+
+    public static function ar_model_viewer_for_woocommerce_after_title_row()
+    {
+        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-footer.php';
+    }
+
+    public static function ar_model_viewer_for_woocommerce_text_to_3d_content()
+    {
+        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-text-to-3d.php';
+    }
+
+    /**
      * Handles the retrieval of 3D model settings and product details via AJAX request.
      *
      * This function is triggered by an AJAX request to get the 3D model settings and product details.
@@ -307,5 +420,72 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
 
         // Return the 3D model file URL
         return $model_3d_file;
+    }
+
+    public function ar_model_viewer_for_woocommerce_createTextTo3DTask()
+    {
+        // Verifica si se está realizando una solicitud AJAX
+        if (!isset($_POST['prompt']) || !isset($_POST['art_style']) || !isset($_POST['topology']) || !isset($_POST['target_polycount'])) {
+            wp_send_json_error('Datos incompletos.', 400);
+            return;
+        }
+
+        // Sanitizar los datos recibidos
+        $prompt = sanitize_text_field($_POST['prompt']);
+        $negative_prompt = sanitize_text_field($_POST['negative_prompt']);
+        $art_style = sanitize_text_field($_POST['art_style']);
+        $topology = sanitize_text_field($_POST['topology']);
+        $target_polycount = intval($_POST['target_polycount']);
+
+        // Valida que los datos importantes no estén vacíos o incorrectos
+        if (empty($prompt) || empty($art_style) || empty($topology) || $target_polycount < 10000 || $target_polycount > 100000) {
+            wp_send_json_error('Datos inválidos.', 400);
+            return;
+        }
+
+        // Datos adicionales
+        $mode = 'preview';
+        $preview_task_id = ''; // Puede ser dinámico según el caso
+        $texture_richness = ''; // Puede ajustarse o agregarse según el uso
+
+        // Instancia de la clase MeshyApi
+        $meshyAi = new MeshyApi($this->plugin_prefix, $this->plugin_prefix, $this->version);
+
+        // Llama a la API de Meshy para generar el modelo 3D
+        try {
+            //$model_url = $meshyAi->createTextTo3DTask($prompt, $mode, $art_style, $negative_prompt, $preview_task_id, $topology, $target_polycount);
+            $response = $meshyAi->retrieveTextTo3DTask();
+            if ($response) {
+
+                // Convertir el array a JSON para guardarlo como string
+                //$response_json = json_encode($response);
+
+                // Envía la URL del modelo generado de vuelta al frontend
+                wp_send_json_success($response);
+            } else {
+                wp_send_json_error('Error al generar el modelo.', 500);
+            }
+        } catch (Exception $e) {
+            wp_send_json_error('Excepción: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function ar_model_viewer_for_woocommerce_get_tasks()
+    {
+        // Instancia de la clase MeshyApi
+        $meshyAi = new MeshyApi($this->plugin_prefix, $this->plugin_prefix, $this->version);
+
+        // Llama a la API de Meshy para generar el modelo 3D
+        try {
+            $response = $meshyAi->retrieveTextTo3DTask();
+            if ($response) {
+                // Envía la URL del modelo generado de vuelta al frontend
+                wp_send_json_success($response);
+            } else {
+                wp_send_json_error('Error on try recover the 3D Tasks.', 500);
+            }
+        } catch (Exception $e) {
+            wp_send_json_error('Excepción: ' . $e->getMessage(), 500);
+        }
     }
 }

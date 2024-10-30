@@ -332,10 +332,30 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         ));
 
         $options->add_field(array(
+            'name' => '<span class="dashicons dashicons-admin-generic"></span> API Key to meshy.ai',
+            'desc' => '',
+            'type' => 'title',
+            'id' => 'ar_title_6',
+        ));
+
+        $options->add_field(array(
+            'name' => 'API Key',
+            'desc' => 'Inset here you API Key to generate 3D models with Meshy.ai',
+            'default' => '',
+            'id' => 'ar_model_viewer_for_woocommerce_api_key_meshy',
+            'type' => 'text',
+            'attributes' => array(
+                'type' => 'password',
+            ),
+        ));
+
+        do_action('ar_model_viewer_for_woocommerce_settings', $options);
+
+        $options->add_field(array(
             'name' => '<span class="dashicons dashicons-admin-generic"></span> Tools',
             'desc' => '',
             'type' => 'title',
-            'id' => 'ar_title_4',
+            'id' => 'ar_title_5',
         ));
 
         $options->add_field(array(
@@ -382,6 +402,49 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         wp_die();
     }
 
+    public function ar_model_viewer_for_woocommerce_get_model_to_preview_in_settings()
+    {
+        // Log successful retrieval of settings
+        $this->logger->log_to_woocommerce('Global settings retrieved successfully.', 'info'); // Log info
+
+        // Retrieve individual settings
+        $settings = $this->get_ar_model_viewer_settings();
+
+        // Retrieve product metadata
+        $model_alt = 'AR Model Viewer for WooCommerce';
+        $model_poster = plugin_dir_url(__DIR__) . '/admin/images/armvw-logo-transparent-original.png';
+        $model_3d_file = plugin_dir_url(__DIR__) . '/admin/models/witch_potion.glb';
+
+        // Initialize AR attributes based on the retrieved settings.
+        $ar_attributes = '';
+        if ($settings['ar'] === 'active') {
+            $ar_attributes .= 'ar ar-modes="' . esc_attr(implode(' ', $settings['ar_modes'])) . '" ';
+            if ($settings['scale']) {
+                $ar_attributes .= 'ar-scale="' . esc_attr($settings['scale']) . '" ';
+            }
+            if ($settings['placement']) {
+                $ar_attributes .= 'ar-placement="' . esc_attr($settings['placement']) . '" ';
+            }
+            if ($settings['xr_environment'] === 'active') {
+                $ar_attributes .= 'xr-environment ';
+            }
+        }
+
+        // Generate the HTML for the model-viewer element with all attributes and settings.
+        $output = sprintf(
+            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s></model-viewer>',
+            esc_url($model_3d_file),
+            esc_attr($model_alt),
+            esc_url($model_poster),
+            esc_attr($settings['loading']),
+            esc_attr($settings['reveal']),
+            esc_attr($settings['poster_color']),
+            $ar_attributes
+        );
+
+        echo $output;
+    }
+
     /**
      * Retrieves AR model viewer settings from the options page.
      *
@@ -418,7 +481,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'placement' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_placement', 'floor'),
 
             // Indicates whether an XR (Extended Reality) environment is used (e.g., "deactive" means no XR environment)
-            'xr_environment' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_xr_environment', 'active'),  
+            'xr_environment' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_xr_environment', 'active'),
         ];
     }
 
@@ -478,6 +541,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
 
     public static function ar_model_viewer_for_woocommerce_cmb2_after_row($field_args, $field)
     {
+        $preview = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings('', '', '');
         include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-settings.php';
     }
 }

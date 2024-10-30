@@ -79,11 +79,11 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
        // echo '<h1 style="color: crimson;">' . esc_html($hook_suffix) . '</h1>';
 
         if ($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
-            wp_enqueue_style($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css', array(), $this->version, 'all');
+            wp_enqueue_style($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css', array(), time(), 'all');
         }
 
         if ($hook_suffix == 'post.php' || get_post_type( get_the_ID()) == 'product') {
-            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), $this->version, 'all');
+            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), time(), 'all');
         }
     }
 
@@ -98,7 +98,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
         // For debug the $hook_suffix echo '<h1 style="color: crimson;">' . esc_html( $hook_suffix ) . '</h1>';
         if ($hook_suffix === 'settings_page_ar_model_viewer_for_woocommerce_settings') {
-            wp_enqueue_script($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-settings-dist.js', array('jquery', 'wp-i18n'), $this->version, false);
+            wp_enqueue_script($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-settings-dist.js', array('jquery', 'wp-i18n'), time(), false);
             wp_localize_script($this->plugin_name . '-settings', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 
             // Overwrite Automattic's Iris color picker to enable alpha channel (transparency) support in the WordPress color picker.
@@ -166,99 +166,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         return $mimes;
     }
 
-    /**
-     * Define the metabox and field configurations.
-     */
-    public function ar_model_viewer_for_woocommerce_cmb2_metaboxes()
-    {
-        /**
-         * Initiate the metabox
-         */
-        $cmb = new_cmb2_box(array(
-            'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
-            'title' => __('AR Model Viewer for WooCommerce', 'cmb2'),
-            'object_types' => array('product'), // Post type
-            'context' => 'normal',
-            'priority' => 'low',
-            'show_names' => true, // Show field names on the left
-            'cmb_styles' => true, // false to disable the CMB stylesheet
-            'closed' => false, // Keep the metabox closed by default
-        ));
-
-        // Regular File field - Android .glb
-        $cmb->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-3d-94.png' . '" class="icon-in-field"></img> 3D Object File',
-            'desc' => 'Upload or enter an URL to 3D object (with .glb  or .glTF extension).',
-            'id' => 'ar_model_viewer_for_woocommerce_file_object',
-            'type' => 'file',
-            // Optional:
-            'options' => array(
-                'url' => true, // Hide the text input for the url
-            ),
-            'text' => array(
-                'add_upload_file_text' => 'Add URL or File', // Change upload button text. Default: "Add or Upload File"
-            ),
-            // query_args are passed to wp.media's library query.
-            'query_args' => array(
-                'type' => 'model/gltf-binary', // Make library only display .glb files.
-            ),
-            'before' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_before_title_row'),
-        ));
-
-        //Regular File Field to Poster
-        $cmb->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-photo-gallery-94.png' . '" class="icon-in-field"></img> Poster',
-            'desc' => 'Upload an image or enter an URL. If the image field (alt) is left empty, the photo of the product is taken. This field displays an image instead of the model, useful for showing the user something before a model is loaded and ready to render.',
-            'id' => 'ar_model_viewer_for_woocommerce_file_poster',
-            'type' => 'file',
-            // Optional:
-            'options' => array(
-                'url' => true, // Hide the text input for the url
-            ),
-            'text' => array(
-                'add_upload_file_text' => 'Add Image', // Change upload button text. Default: "Add or Upload File"
-            ),
-            // query_args are passed to wp.media's library query.
-            'query_args' => array(
-                // Or only allow gif, jpg, or png images
-                'type' => array(
-                    'image/gif',
-                    'image/jpeg',
-                    'image/png',
-                    'image/webp',
-                ),
-            ),
-            'preview_size' => 'thumbnail', // Image size to use when previewing in the admin.
-        ));
-
-        // Regular Text field - alt for models
-        $cmb->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-info-94.png' . '" class="icon-in-field"></img> alt',
-            'desc' => 'Insert a text. if the text field is left empty, the name of the product is taken. Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
-            'id' => 'ar_model_viewer_for_woocommerce_file_alt',
-            'type' => 'text',
-            'after_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_after_title_row'),
-        ));
-    }
-
-    public function ar_model_viewer_for_woocommerce_error_notice()
-    {
-        echo '<div class="notice notice-error is-dismissible"><p>' . __('AR Model Viewer for WooCommerce is active but not working. You need to install the WooCommerce plugin for the plugin to work properly.', 'datos-de-facturacion-para-mexico') . '</p></div>';
-    }
-
     public function ar_model_viewer_for_woocommerce_blocksy_fix($current_value)
     {
         // Use WooCommerce built in gallery
         return true;
-    }
-
-    public static function ar_model_viewer_for_woocommerce_before_title_row()
-    {
-        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-header.php';
-    }
-
-    public static function ar_model_viewer_for_woocommerce_after_title_row()
-    {
-        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-footer.php';
     }
 }

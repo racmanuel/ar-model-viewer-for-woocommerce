@@ -4,6 +4,7 @@ import "driver.js/dist/driver.css";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.css";
+import { TabulatorFull as Tabulator } from "tabulator-tables";
 
 (function ($) {
   "use strict";
@@ -358,5 +359,169 @@ import "alertifyjs/build/css/themes/default.css";
         __("Shortcode copied to clipboard!", "ar-model-viewer-for-woocommerce")
       );
     });
+
+    // Function to Generate 3D Models with AI
+    $("#generate-text-to-3d").on("click", function (e) {
+      e.preventDefault(); // Evitar el comportamiento predeterminado del botón
+
+      // Recuperar el product_id desde el data-product-id del botón
+      var product_id = $(this).data("product-id");
+
+      console.log("ID del Producto: " + product_id);
+
+      // Verificar si el product_id está definido
+      if (!product_id) {
+        alertify.error("Product ID is missing.");
+        return;
+      }
+
+      // Recoger los valores del formulario
+      var prompt = $("#prompt").val();
+      var negative_prompt = $("#negative_prompt").val();
+      var art_style = $("#art_style").val();
+      var topology = $("#topology").val();
+      var target_polycount = $("#target_polycount").val();
+
+      // Validar que los campos importantes no estén vacíos (opcional)
+      if (!prompt) {
+        alertify.error("Please insert a prompt.");
+        return;
+      }
+
+      // Mostrar los valores en consola para debug
+      console.log({
+        prompt: prompt,
+        negative_prompt: negative_prompt,
+        art_style: art_style,
+        topology: topology,
+        target_polycount: target_polycount,
+      });
+
+      // Enviar datos vía AJAX
+      $.ajax({
+        type: "POST",
+        url: ajax_object.ajax_url, // Asegúrate de que 'ajax_object' esté definido en tu plantilla
+        data: {
+          action: "ar_model_viewer_for_woocommerce_createTextTo3DTask", // Acción de tu PHP
+          prompt: prompt,
+          negative_prompt: negative_prompt,
+          art_style: art_style,
+          topology: topology,
+          target_polycount: target_polycount,
+        },
+        dataType: "json",
+        beforeSend: function () {
+          // Mostrar mensaje de carga antes de la solicitud
+          alertify.success("Generating 3D model preview...", 0); // 0 indica que el mensaje permanecerá visible hasta que se quite manualmente
+        },
+        success: function (response) {
+          // Ocultar el mensaje de carga
+          alertify.dismissAll();
+
+          // Verificar si la respuesta fue exitosa
+          if (response.success) {
+            var model_url = response.data;
+            console.log("Model URL: " + model_url);
+            alertify.success("3D model generated successfully.");
+          } else {
+            alertify.error("There was an error generating the model.");
+          }
+        },
+        error: function () {
+          alertify.dismissAll(); // Ocultar mensaje de carga en caso de error
+          alertify.error("Communication error with the server.");
+        },
+      });
+    });
+
+    meshy_ai_get_tasks();
+
+    function meshy_ai_get_tasks() {
+      console.log("Si se ejecuta el codigo");
+      // Enviar datos vía AJAX
+      $.ajax({
+        type: "POST",
+        url: ajax_object.ajax_url, // Asegúrate de que 'ajax_object' esté definido en tu plantilla
+        data: {
+          action: "ar_model_viewer_for_woocommerce_get_tasks", // Acción de tu PHP
+        },
+        dataType: "json",
+        beforeSend: function () {
+          // Mostrar mensaje de carga antes de la solicitud
+          alertify.success("Loading AI 3D Tasks...", 0); // 0 indica que el mensaje permanecerá visible hasta que se quite manualmente
+        },
+        success: function (response) {
+          // Ocultar el mensaje de carga
+          alertify.dismissAll();
+
+          // Verificar si la respuesta fue exitosa
+          if (response.success) {
+            console.log(response.data);
+            // Inicialización de Tabulator
+            var table = new Tabulator("#table-task-3d", {
+              data: response.data,
+              columns: [
+                { formatter: "rownum", hozAlign: "center", width: 40 ,  frozen:true},
+                {
+                  title: "Thumbnail",
+                  field: "thumbnail_url",
+                  formatter: "image",
+                  formatterParams: {
+                    height: "50px", // Altura fija
+                    width: "50px", // Ancho fijo
+                    normalizeHeight: true, // Normalizar la altura
+                  },
+                  cellClick: function (e, cell) {
+                    // Obtén la URL de la imagen del campo
+                    var imageUrl = cell.getValue();
+                    
+                    // Usa alertify para mostrar una vista previa de la imagen
+                    alertify.alert('<img src="' + imageUrl + '" style="width: 100%; height: auto;">');
+                  },
+                },
+                { title: "Mode", field: "mode" },
+                { title: "Prompt", field: "prompt", width: 300 },
+                { title: "Negative Prompt", field: "negative_prompt" },
+                { title: "Status", field: "status" },
+                { title: "ID", field: "id", width: 200 },
+                {
+                  title: "Progress",
+                  field: "progress",
+                  formatter: "progress",
+                  formatterParams: {
+                    min: 0,
+                    max: 100,
+                    color: ["red", "orange", "green"],
+                    legendColor: "#000000",
+                    legendAlign: "center",
+                  },
+                },
+                {
+                  title: "GLB Model",
+                  field: "model_urls.glb",
+                  formatter: "link",
+                  formatterParams: { target: "_blank", label: "Download" },
+                  width: 200,
+                },
+                {
+                  title: "Video",
+                  field: "video_url",
+                  formatter: "link",
+                  width: 150,
+                  formatterParams: { target: "_blank", label: "Watch Video" },
+                },
+              ],
+            });
+            alertify.success("Tasks loaded correctly.");
+          } else {
+            alertify.error("There was an error generating the model.");
+          }
+        },
+        error: function () {
+          alertify.dismissAll(); // Ocultar mensaje de carga en caso de error
+          alertify.error("Communication error with the server.");
+        },
+      });
+    }
   });
 })(jQuery);

@@ -127,8 +127,9 @@ Before contacting us directly, please review your server configuration and attac
                 </div>
             </div>
         <div id="ar-model-viewer-for-woocommerce-preview-content">
-            <model-viewer src="http://developer-plugins.test/wp-content/plugins/ar-model-viewer-for-woocommerce/admin/models/witch_potion.glb" alt="AR Model Viewer for WooCommerce" ar="" poster="http://developer-plugins.test/wp-content/plugins/ar-model-viewer-for-woocommerce/admin/images/armvw-logo-transparent-original.png" camera-controls="true" auto-rotate="true" style="width: 100%; height: 400px; background-color: #FFFFFF;" ar-status="not-presenting">
-            </model-viewer>
+            <?php 
+                $preview->ar_model_viewer_for_woocommerce_get_model_to_preview_in_settings();
+            ?>
         </div>
         </div>
     </div>

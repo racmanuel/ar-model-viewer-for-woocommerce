@@ -168,6 +168,12 @@ class Ar_Model_Viewer_For_Woocommerce
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-tab.php';
 
+        /**
+         * The class responsible for defining all actions that occur in the public-facing Shortcode
+         * side of the site.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-meshy-api.php';
+
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
              * Check if the user has access to premium features. This condition ensures that
@@ -217,27 +223,6 @@ class Ar_Model_Viewer_For_Woocommerce
         $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
 
-        /**
-         * Creates a new instance of the admin class for the free version of the plugin.
-         * This class handles the core admin functionalities such as scripts, styles, and notices.
-         * It is initialized with the plugin name, prefix, and version.
-         */
-
-        /**
-         * Creates a new instance of the admin class for the pro version of the plugin.
-         * This class handles premium-specific admin functionalities and extends the free version.
-         */
-
-        // Check if WooCommerce is active, otherwise show an admin notice.
-        if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-            $this->loader->add_action('admin_notices', $plugin_admin, 'ar_model_viewer_for_woocommerce_error_notice');
-            /**
-             * Adds an admin notice if WooCommerce is not active.
-             * This ensures that the user is informed that the plugin requires WooCommerce to function.
-             * The function `ar_model_viewer_for_woocommerce_error_notice` in `$plugin_admin` displays the notice.
-             */
-        }
-
         // Include the admin styles in the Admin dashboard.
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         /**
@@ -270,7 +255,7 @@ class Ar_Model_Viewer_For_Woocommerce
          */
 
         // Define and initialize custom metaboxes and field configurations.
-        $this->loader->add_action('cmb2_admin_init', $plugin_admin, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
+        $this->loader->add_action('cmb2_admin_init', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
         $this->loader->add_action('cmb2_admin_init', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_cmb2_settings');
         /**
          * Registers and configures custom metaboxes for the plugin using the CMB2 library.
@@ -296,7 +281,8 @@ class Ar_Model_Viewer_For_Woocommerce
         }
 
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
-
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTask',$plugin_admin_product,'ar_model_viewer_for_woocommerce_createTextTo3DTask');
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_tasks', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_tasks');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
@@ -312,7 +298,7 @@ class Ar_Model_Viewer_For_Woocommerce
                  * `can_use_premium_code()` ensures that the user has an active subscription.
                  * If both conditions are met, the premium functionality is executed.
                  */
-                
+
                 // Instantiate the admin class for the pro version of the plugin.
                 $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
@@ -395,7 +381,6 @@ class Ar_Model_Viewer_For_Woocommerce
                  */
             }
         }
-
     }
 
     /**
