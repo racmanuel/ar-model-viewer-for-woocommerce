@@ -434,7 +434,7 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
       });
     });
 
-    meshy_ai_get_tasks();
+    //meshy_ai_get_tasks();
 
     function meshy_ai_get_tasks() {
       console.log("Si se ejecuta el codigo");

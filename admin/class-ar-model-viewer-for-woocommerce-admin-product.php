@@ -152,19 +152,19 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
         if (!empty($meshyAi)) {
             $text_to_3d = new_cmb2_box(array(
                 'id' => 'ar_model_viewer_for_woocommerce_metabox_text_to_3d',
-                'title' => __('AR Model Viewer for WooCommerce - Text to 3D Model', 'cmb2'),
+                'title' => __('Text to 3D Model', 'cmb2'),
                 'object_types' => array('product'), // Post type
                 'context' => 'normal',
                 'priority' => 'low',
                 'show_names' => false, // Show field names on the left
                 'cmb_styles' => true, // false to disable the CMB stylesheet
-                'closed' => false, // Keep the metabox closed by default
+                'closed' => true, // Keep the metabox closed by default
             ));
 
             $text_to_3d->add_field(array(
                 'name' => '3D Model with Text',
                 'desc' => '',
-                'type' => 'title',
+                'type' => 'hidden',
                 'id' => 'text_to_3d_title',
                 'after' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_text_to_3d_content'),
             ));

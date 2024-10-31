@@ -261,4 +261,30 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/widgets/ar-model-viewer-for-woocommerce-widget.php';
         $widgets_manager->register(new \Ar_Model_Viewer_For_Woocommerce_Widget());
     }
+
+    public function ar_model_viewer_for_woocommerce_pro_metaboxes()
+    {
+        $meshyAi = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+
+        if (!empty($meshyAi)) {
+            $image_to_3d = new_cmb2_box(array(
+                'id' => 'ar_model_viewer_for_woocommerce_metabox_image_to_3d',
+                'title' => __('Image to 3D Model', 'cmb2'),
+                'object_types' => array('product'), // Post type
+                'context' => 'side',
+                'priority' => 'low',
+                'show_names' => false, // Show field names on the left
+                'cmb_styles' => true, // false to disable the CMB stylesheet
+                'closed' => false, // Keep the metabox closed by default
+            ));
+
+            $image_to_3d->add_field(array(
+                'name' => '3D Model with Image',
+                'desc' => '',
+                'type' => 'title',
+                'id' => 'image_to_3d_title',
+                'after' => '<a id="generate-text-to-3d" class="cmb2-upload-button button-secondary">Generate 3D model from Image</a>',
+            ));
+        }
+    }
 }

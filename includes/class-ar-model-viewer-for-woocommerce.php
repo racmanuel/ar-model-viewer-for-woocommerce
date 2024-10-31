@@ -302,6 +302,10 @@ class Ar_Model_Viewer_For_Woocommerce
                 // Instantiate the admin class for the pro version of the plugin.
                 $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
+                //Register the CMB2 Fields to Pro Version
+                $this->loader->add_action('cmb2_admin_init', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_pro_metaboxes');
+
+
                 // Register the AR model viewer widget in Elementor.
                 $this->loader->add_action('elementor/widgets/register', $plugin_admin_pro, 'register_ar_model_viewer_widget');
                 /**
