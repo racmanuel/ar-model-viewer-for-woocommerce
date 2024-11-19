@@ -561,17 +561,20 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
       });
     });
 
-    // Store the interval ID
-    var intervalId = setInterval(function () {
+    // Check if the API key is set
+    if (ajax_object.api_key_set) {
+      // Store the interval ID
+      var intervalId = setInterval(function () {
+        meshy_ai_get_tasks();
+      }, 60000);
+
+      // Perform an initial fetch
       meshy_ai_get_tasks();
-    }, 60000);
 
-    // Perform an initial fetch
-    meshy_ai_get_tasks();
-
-    // Stop the interval when a condition is met
-    function stopTaskFetching() {
-      clearInterval(intervalId);
+      // Stop the interval when a condition is met
+      function stopTaskFetching() {
+        clearInterval(intervalId);
+      }
     }
 
     // Function to fetch and display AI 3D tasks
@@ -592,9 +595,11 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
           // Dismiss the loading message
           alertify.dismissAll();
 
+          console.log(response);
           // Check if the response was successful
           if (response.success) {
             if (response.data && response.data.length > 0) {
+              console.log(response.data);
               // Initialize Tabulator table
               var table = new Tabulator("#table-task-3d", {
                 data: response.data, // Load data into the table
@@ -682,7 +687,7 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
                         case "EXPIRED":
                           return (
                             '<img src="' +
-                            ajax_object.status_icon[value.toLowerCase()] +
+                            ajax_object.status_succeeded_icon +
                             '" style="width: 32px; height: auto;">'
                           );
                         default:

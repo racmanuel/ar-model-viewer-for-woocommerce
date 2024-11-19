@@ -9,7 +9,7 @@
  * @subpackage Ar_Model_Viewer_For_Woocommerce/admin
  */
 
-/**
+ /**
  * The admin-specific functionality of the plugin.
  *
  * Defines the plugin name, version, and two hooks to
@@ -134,6 +134,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 'mode_preview_icon' => plugin_dir_url(__FILE__) . 'images/icons8-object-94.png',
                 'mode_refine_icon' => plugin_dir_url(__FILE__) . 'images/icons8-3d-printer-94.png',
                 'status_succeeded_icon' => plugin_dir_url(__FILE__) . 'images/icons8-check-94.png',
+                'api_key_set' => !empty(cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy')), // Check if the API Key is set
             ));
         }
     }
@@ -175,18 +176,5 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     {
         // Use WooCommerce built in gallery
         return true;
-    }
-
-    public function ar_model_viewer_for_woocommerce_hpos_compatibility()
-    {
-
-        if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                'custom_order_tables',
-                __FILE__,
-                true// true (compatible, default) or false (not compatible)
-            );
-        }
-
     }
 }

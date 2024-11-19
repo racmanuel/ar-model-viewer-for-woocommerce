@@ -223,8 +223,6 @@ class Ar_Model_Viewer_For_Woocommerce
         $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
 
-        $this->loader->add_action( 'before_woocommerce_init', $plugin_admin ,'ar_model_viewer_for_woocommerce_hpos_compatibility' );
-
         // Include the admin styles in the Admin dashboard.
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         /**

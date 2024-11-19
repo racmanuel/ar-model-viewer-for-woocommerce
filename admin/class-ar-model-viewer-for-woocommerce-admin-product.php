@@ -147,7 +147,11 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
             'after_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_after_title_row'),
         ));
 
-        $text_to_3d = new_cmb2_box(array(
+        $meshyAi = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+
+        if (!empty($meshyAi)) {
+            # code...
+            $text_to_3d = new_cmb2_box(array(
             'id' => 'ar_model_viewer_for_woocommerce_metabox_text_to_3d',
             'title' => __('Text to 3D Model', 'cmb2'),
             'object_types' => array('product'), // Post type
@@ -184,6 +188,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
             'id' => 'text_to_3d_tasks_title',
             'after' => '<div id="table-task-3d"></div>',
         ));
+        }
+        
     }
 
     public static function ar_model_viewer_for_woocommerce_before_title_row()
@@ -519,6 +525,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
         try {
             // Call the Meshy API to retrieve all 3D tasks.
             $response = $meshyAi->retrieveTextTo3DTask();
+
+            error_log(print_r($response, true));
 
             // Check if the API response is valid.
             if ($response && !is_wp_error($response)) {
