@@ -281,9 +281,12 @@ class Ar_Model_Viewer_For_Woocommerce
         }
 
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTask',$plugin_admin_product,'ar_model_viewer_for_woocommerce_createTextTo3DTask');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_tasks', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_tasks');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview',$plugin_admin_product,'ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview');
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTaskRefine', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_createTextTo3DTaskRefine');
+        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_task_and_download', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_task_and_download');
+        
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
              * Check if the user has access to premium features. This condition ensures that

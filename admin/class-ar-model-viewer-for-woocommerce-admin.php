@@ -127,9 +127,14 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             wp_enqueue_script('wp-color-picker-alpha');
 
         }
-        if ($hook_suffix === 'post.php' || get_post_type( get_the_ID()) == 'product') {
+        if ($hook_suffix === 'post.php' && get_post_type( get_the_ID()) == 'product' && $_GET['action'] === 'edit') {
             wp_enqueue_script($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-product-dist.js', array('jquery', 'wp-i18n'), $this->version, false);
-            wp_localize_script($this->plugin_name . '-product', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+            wp_localize_script($this->plugin_name . '-product', 'ajax_object', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'mode_preview_icon' => plugin_dir_url(__FILE__) . 'images/icons8-object-94.png',
+                'mode_refine_icon' => plugin_dir_url(__FILE__) . 'images/icons8-3d-printer-94.png',
+                'status_succeeded_icon' => plugin_dir_url(__FILE__) . 'images/icons8-check-94.png',
+            ));
         }
     }
 

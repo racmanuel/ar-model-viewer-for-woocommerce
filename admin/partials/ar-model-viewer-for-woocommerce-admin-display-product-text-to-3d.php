@@ -5,7 +5,7 @@
  */
 
 // Ensure WooCommerce is active and we're on the product edit screen
-if (function_exists('wc_get_product') && isset($_GET['post']) && get_post_type($_GET['post']) === 'product') {
+if (isset($_GET['post']) && get_post_type($_GET['post']) === 'product') {
     /**
      * Get the product ID from the current post.
      *
@@ -29,6 +29,14 @@ if (function_exists('wc_get_product') && isset($_GET['post']) && get_post_type($
 $escaped_product_id = esc_attr($product_id);
 ?>
 <div id="meshy-ai-text-to-3d-form" class="meshy-ai-text-to-3d-form">
+    <div class="meshy-container">
+        <img src="<?php echo esc_url(plugin_dir_url(__DIR__) . 'images/meshy-wordmark-light.png'); ?>" alt="Meshi AI" class="meshy-logo" width="150"/>
+        <p>Meshy is your 3D generative AI toolbox for effortlessly creating 3D assets from text or images, accelerating your 3D workflow. With Meshy, you can create high-quality textures and 3D models in minutes. Empowering creators of all skill levels, even those without any prior 3D experience, to generate fully textured 3D models from a simple text prompt within 2 minutes.</p>
+        <a id="tutorial-text-to-3d" class="cmb2-upload-button button-secondary mesh-button">
+            <?php _e('Tutorial to Generate a 3D Model with Text', 'ar-model-viewer-for-woocommerce');?>
+        </a>
+    </div>
+
     <div class="form-group">
         <label for="prompt"><?php _e('Prompt', 'ar-model-viewer-for-woocommerce');?></label>
         <textarea id="prompt" name="prompt" rows="3" placeholder="<?php _e('Describe the 3D model you want to generate...', 'ar-model-viewer-for-woocommerce');?>"></textarea>
@@ -53,12 +61,9 @@ $escaped_product_id = esc_attr($product_id);
             <strong><?php _e('Available values:', 'ar-model-viewer-for-woocommerce');?></strong>
             <ul>
                 <li><?php _e('Realistic: Realistic style', 'ar-model-viewer-for-woocommerce');?></li>
-                <li><?php _e('Cartoon: Cartoon style', 'ar-model-viewer-for-woocommerce');?></li>
-                <li><?php _e('Low-poly: Low Poly style', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Sculpture: Sculpture style', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('PBR: PBR style', 'ar-model-viewer-for-woocommerce');?></li>
             </ul>
-            <em><?php _e('When using meshy-ai-4, only "realistic", "sculpture", and "pbr" are available.', 'ar-model-viewer-for-woocommerce');?></em>
         </small>
     </div>
 
@@ -75,7 +80,6 @@ $escaped_product_id = esc_attr($product_id);
                 <li><?php _e('Quad: Generate a quad-dominant mesh.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Triangle: Generate a decimated triangle mesh.', 'ar-model-viewer-for-woocommerce');?></li>
             </ul>
-            <em><?php _e('This parameter is only effective if ai_model is set to meshy-ai-4.', 'ar-model-viewer-for-woocommerce');?></em>
         </small>
     </div>
 
@@ -90,13 +94,10 @@ $escaped_product_id = esc_attr($product_id);
                 <li><?php _e('Free users: 10,000 to 30,000 (inclusive)', 'ar-model-viewer-for-woocommerce');?></li>
             </ul>
             <?php _e('Default is 30,000 if not specified.', 'ar-model-viewer-for-woocommerce');?><br>
-            <em><?php _e('This parameter is only effective if ai_model is set to meshy-ai-4.', 'ar-model-viewer-for-woocommerce');?></em>
         </small>
     </div>
 
     <a id="generate-text-to-3d" class="cmb2-upload-button button-secondary" data-product-id="<?php echo $escaped_product_id; ?>">
-        <?php _e('Generate a 3D Model', 'ar-model-viewer-for-woocommerce');?>
+        <?php _e('Generate a preview of 3D Model', 'ar-model-viewer-for-woocommerce');?>
     </a>
-    <hr>
-    <div id="table-task-3d"></div>
 </div>

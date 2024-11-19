@@ -113,7 +113,39 @@ class MeshyApi
      * @param string $texture_richness The desired texture richness for refine mode (optional).
      * @return array|WP_Error         The result of the request or an error in case of failure.
      */
-    public function createTextTo3DTask($prompt, $mode = 'preview', $art_style = 'realistic', $negative_prompt = '', $preview_task_id = '', $texture_richness = '')
+    public function createTextTo3DTaskPreview($prompt, $mode = 'preview', $art_style = 'realistic', $negative_prompt = '', $preview_task_id = '')
+    {
+        // Check if the API Key is available.
+        if (empty($this->api_key)) {
+            $this->logger->log_to_woocommerce('API Key not found. Please configure it in the plugin settings.');
+            return new WP_Error('api_key_missing', 'Error: API Key is not configured.');
+        }
+
+        // Define the endpoint URL for the Meshy API.
+        $url = $this->api_base_url . '/v2/text-to-3d';
+
+        // Setup the body for the POST request with required and optional parameters.
+        $body = [
+            'mode' => $mode, // Specify the mode, 'preview' or 'refine'.
+            'prompt' => $prompt, // Text prompt for the 3D model.
+            'art_style' => $art_style, // Desired artistic style.
+            'negative_prompt' => $negative_prompt, // Description of what the model should not look like.
+            'preview_task_id' => $preview_task_id, // Task ID for refine mode (optional).
+        ];
+
+        // Make the POST request to the API endpoint.
+        $response = $this->make_request('POST', $url, $body);
+
+        // Check if the response is a WP_Error.
+        if (is_wp_error($response)) {
+            return $response; // Return the error if the request failed.
+        }
+
+        // Return the 'result' from the API response or a default message.
+        return $response['result'] ?? 'No result available.';
+    }
+
+    public function createTextTo3DTaskRefine($mode = 'refine', $preview_task_id)
     {
         // Check if the API Key is available
         if (empty($this->api_key)) {
@@ -127,22 +159,8 @@ class MeshyApi
         // Setup the body for the POST request
         $body = [
             'mode' => $mode,
-            'prompt' => $prompt,
-            'art_style' => $art_style,
-            'negative_prompt' => $negative_prompt,
+            'preview_task_id' => $preview_task_id,
         ];
-
-        // Add optional parameters for 'refine' mode
-        if ($mode === 'refine') {
-            if (empty($preview_task_id)) {
-                $this->logger->log_to_woocommerce('Preview Task ID is required for refine mode.');
-                return new WP_Error('missing_preview_task_id', 'Error: Preview Task ID is required for refine mode.');
-            }
-            $body['preview_task_id'] = $preview_task_id;
-            if (!empty($texture_richness)) {
-                $body['texture_richness'] = $texture_richness;
-            }
-        }
 
         // Make the POST request
         $response = $this->make_request('POST', $url, $body);
@@ -166,28 +184,37 @@ class MeshyApi
      */
     public function retrieveTextTo3DTask($task_id = null)
     {
-        // Check if the API Key is available
+        // Verifica si la clave API está disponible
         if (empty($this->api_key)) {
-            $this->logger->log_to_woocommerce('API Key not found. Please configure it in the plugin settings.');
-            return new WP_Error('api_key_missing', 'Error: API Key is not configured.');
+            $this->logger->log_to_woocommerce('API Key no encontrada. Por favor, configúrala en los ajustes del plugin.');
+            return new WP_Error('api_key_missing', 'Error: API Key no está configurada.');
         }
 
-        // Check if the task_id is present
+        // Define la URL del endpoint con o sin el ID de la tarea
         if (empty($task_id)) {
-            $this->logger->log_to_woocommerce('Task ID is not passed to retrieve the task.');
+            $this->logger->log_to_woocommerce('ID de tarea no proporcionado. Usando URL base.');
+            $url = $this->api_base_url . '/v2/text-to-3d/';
+        } else {
+            $url = $this->api_base_url . '/v2/text-to-3d/' . $task_id;
         }
 
-        // Define the endpoint URL with the task ID
-        $url = $this->api_base_url . '/v2/text-to-3d/' . $task_id;
-
-        // Make the GET request
+        // Realiza la solicitud GET
         $response = $this->make_request('GET', $url);
 
         if (is_wp_error($response)) {
+            $this->logger->log_to_woocommerce('Error en la respuesta: ' . print_r($response, true));
             return $response;
         }
 
-        return $response ?? 'No data available.';
+        // Verifica si la respuesta es un array vacío y retorna un array vacío si no hay registros
+        if (is_array($response) && empty($response)) {
+            $this->logger->log_to_woocommerce('No se encontraron tareas en la respuesta.');
+            return []; // Retorna un array vacío en lugar de un mensaje de error
+        }
+
+        // Retorna los datos sin el campo 'data' adicional
+        $this->logger->log_to_woocommerce('Respuesta obtenida: ' . print_r($response, true));
+        return $response;
     }
 
     /**

@@ -115,7 +115,6 @@
 .meshy-ai-text-to-3d-form ul {
   margin-left: 20px;
   list-style-type: circle; /* Puedes usar 'none', 'circle', 'square', etc., según tu preferencia */
-  
 }
 
 .meshy-ai-text-to-3d-form li {
@@ -156,4 +155,35 @@
   background-image: $gradient-colors !important;
   color: $text-color !important;
   border: none !important;
+}
+
+#tutorial-text-to-3d {
+  background-image: $gradient-colors !important;
+  color: $text-color !important;
+  border: none !important;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.meshy-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.meshy-logo {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.meshy-container p {
+  width: 100%;
+  margin: 0;
+}
+
+.meshy-container p {
+  color: white;
 }

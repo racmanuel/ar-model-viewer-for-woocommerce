@@ -279,7 +279,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
             ));
 
             $image_to_3d->add_field(array(
-                'name' => '3D Model with Image',
+                'name' => 'Image to 3D Model',
                 'desc' => '',
                 'type' => 'title',
                 'id' => 'image_to_3d_title',
