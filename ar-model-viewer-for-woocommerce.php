@@ -55,28 +55,24 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
             // Include Freemius SDK.
             require_once dirname(__FILE__) . '/vendor/freemius/wordpress-sdk/start.php';
 
-            $ar_model_viewer_for_woocommerce_fs = fs_dynamic_init(array(
-                'id' => '16088',
-                'slug' => 'ar-model-viewer-for-woocommerce',
-                'type' => 'plugin',
-                'public_key' => 'pk_5143076d3ed4661ac299aa66baabc',
-                'is_premium' => true,
-                'premium_suffix' => 'pro',
+            $ar_model_viewer_for_woocommerce_fs = fs_dynamic_init( array(
+                'id'                  => '16088',
+                'slug'                => 'ar-model-viewer-for-woocommerce',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_5143076d3ed4661ac299aa66baabc',
+                'is_premium'          => true,
+                'premium_suffix'      => 'pro',
                 // If your plugin is a serviceware, set this option to false.
                 'has_premium_version' => true,
-                'has_addons' => false,
-                'has_paid_plans' => true,
-                'trial' => array(
-                    'days' => 7,
-                    'is_require_payment' => true,
-                ),
-                'menu' => array(
-                    'slug' => 'ar_model_viewer_for_woocommerce_settings',
-                    'parent' => array(
+                'has_addons'          => false,
+                'has_paid_plans'      => true,
+                'menu'                => array(
+                    'slug'           => 'ar_model_viewer_for_woocommerce_settings',
+                    'parent'         => array(
                         'slug' => 'options-general.php',
                     ),
                 ),
-            ));
+            ) );
         }
 
         return $ar_model_viewer_for_woocommerce_fs;

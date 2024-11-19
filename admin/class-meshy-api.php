@@ -145,7 +145,7 @@ class MeshyApi
         return $response['result'] ?? 'No result available.';
     }
 
-    public function createTextTo3DTaskRefine($mode = 'refine', $preview_task_id)
+    public function createTextTo3DTaskRefine($preview_task_id, $mode = 'refine')
     {
         // Check if the API Key is available
         if (empty($this->api_key)) {

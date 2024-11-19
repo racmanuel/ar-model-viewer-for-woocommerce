@@ -558,7 +558,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
 
         try {
             // Call the Meshy API to refine the 3D model based on the input parameters.
-            $response = $meshyAi->createTextTo3DTaskRefine($mode, $preview_task_id);
+            $response = $meshyAi->createTextTo3DTaskRefine($preview_task_id, $mode);
 
             // Check if the API response is valid.
             if ($response && !is_wp_error($response)) {

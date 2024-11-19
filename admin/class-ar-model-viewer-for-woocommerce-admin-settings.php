@@ -229,7 +229,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'AR Modes',
             'id' => 'ar_model_viewer_for_woocommerce_ar_modes',
             'type' => 'multicheck',
-            'default' => array( 'webxr', 'scene-viewer', 'quick-look' ),
+            'default' => array('webxr', 'scene-viewer', 'quick-look'),
             'desc' => 'A prioritized list of the types of AR experiences to enable. Allowed values are "webxr", to launch the AR experience in the browser, "scene-viewer", to launch the Scene Viewer app, "quick-look", to launch the iOS Quick Look app. Note that the presence of an ios-src will enable quick-look by itself.',
             'show_option_none' => false,
             'options' => array(
@@ -254,11 +254,16 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'classes' => 'switch-field',
         ));
 
+        function ar_default_placement()
+        {
+            return 'floor'; // Return the intended default value
+        }
+
         $options->add_field(array(
             'name' => 'AR Placement',
             'id' => 'ar_model_viewer_for_woocommerce_ar_placement',
             'type' => 'radio_inline',
-            'default' => 'floor',
+            'default_cb' => 'ar_default_placement', // Use a custom callback
             'desc' => 'Selects whether to place the object on the floor (horizontal surface) or a wall (vertical surface) in AR. The back (negative Z) of the object´s bounding box will be placed against the wall and the shadow will be put on this surface as well. Note that the different AR modes handle the placement UX differently.',
             'show_option_none' => false,
             'options' => array(
@@ -348,7 +353,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         <li><strong>API access</strong></li>
         <li>Polygon count options: <strong>10k/30k</strong></li>
     </ul>
-    <p>Ready for more? Take your creations to the next level with <strong>advanced monthly plans</strong>, 
+    <p>Ready for more? Take your creations to the next level with <strong>advanced monthly plans</strong>,
         designed for professionals seeking enhanced features and control. Upgrade today and revolutionize your 3D modeling experience.</p>',
             'default' => '',
             'id' => 'ar_model_viewer_for_woocommerce_api_key_meshy',
@@ -372,6 +377,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'desc' => 'Check this box to enable error logs only for debug. Enabling this option allows you to view error logs in the WooCommerce admin menu by navigating to <strong>WooCommerce &gt; Status &gt; Logs &gt; Sources</strong> and selecting <strong>ar-model-viewer-for-woocommerce</strong>. This is useful for identifying and fixing issues during development or testing.',
             'id' => 'ar_model_viewer_for_woocommerce_logger',
             'type' => 'checkbox',
+            'default' => true, // Set the checkbox to be checked by default
         ));
     }
 
