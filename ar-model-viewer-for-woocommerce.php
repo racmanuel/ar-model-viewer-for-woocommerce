@@ -13,9 +13,9 @@
  *
  * @wordpress-plugin
  * Plugin Name:       AR Model Viewer for WooCommerce
- * Plugin URI:        https://racmanuel.dev/
+ * Plugin URI:        https://racmanuel.dev/plugins-wordpress/ar-model-viewer-for-woocommerce/
  * Description:       AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin support formats .glb
- * Version:           1.0.9
+ * Version:           2.0.0
  * Author:            Manuel Ramirez Coronel
  * Requires at least: 5.9
  * Requires PHP:      7.4
@@ -64,6 +64,10 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
                 'has_premium_version' => true,
                 'has_addons' => false,
                 'has_paid_plans' => true,
+                'trial' => array(
+                    'days' => 7,
+                    'is_require_payment' => true,
+                ),
                 'menu' => array(
                     'slug' => 'ar_model_viewer_for_woocommerce_settings',
                     'parent' => array(
@@ -87,7 +91,7 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '1.0.9');
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.0');
 
 /**
  * Define the Plugin basename

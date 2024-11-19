@@ -31,7 +31,7 @@
             <?php _e('This plugin uses the magical power of Google’s model-viewer library, a web component that makes rendering interactive 3D models — and even displaying them in Augmented Reality — as effortless as casting a spell. Designed to work across a wide variety of browsers and devices, model-viewer ensures enchanting default settings for both rendering quality and performance. As new standards and APIs emerge, model-viewer will be enchanted with updates to harness these advancements. If possible, fallback spells and polyfills will be conjured to offer a seamless development experience.
 If you have any questions, feel free to visit the official plugin documentation or explore the Google model-viewer documentation.', 'ar-model-viewer-for-woocommerce');?>
         </p>
-        <a class="button button-primary" href="https://racmanuel.dev/" target="_blank">
+        <a class="button button-primary" href="https://racmanuel.dev/plugins-wordpress/ar-model-viewer-for-woocommerce/" target="_blank">
             <?php _e('Go to Documentation', 'ar-model-viewer-for-woocommerce');?></a>
         <h3>
             <img src="<?php echo esc_url(plugin_dir_url(__DIR__) . 'images/icons8-man-mage-96.png'); ?>"
@@ -82,8 +82,23 @@ Before contacting us directly, please review your server configuration and attac
             <?php _e('However, working on plugins and technical support requires many hours of work. If you want to appreciate it, you can give me a coffee.
             If every user of the plugin did it, I could dedicate myself entirely to working on this plugin. Thank you all!', 'ar-model-viewer-for-woocommerce');?>
         </p>
-        <a class="button button-primary" href="https://racmanuel.dev" target="_blank">
+        <a class="button button-primary" href="https://paypal.me/MRamirezCoronel?country.x=MX&locale.x=es_XC" target="_blank">
             <?php _e('Give me a coffee', 'ar-model-viewer-for-woocommerce');?>
+        </a>
+        <h3>
+        <img src="<?php echo esc_url(plugin_dir_url(__DIR__) . 'images/meshy-wordmark-light.png'); ?>"
+        alt="Logo - AR Model Viewer for WooCommerce" width="82px">
+            <?php _e('¡This plugin can work with AI!', 'ar-model-viewer-for-woocommerce');?>
+        </h3>
+
+        <p style="text-align: justify;">
+            <?php _e('¡This plugin can work with AI!', 'ar-model-viewer-for-woocommerce');?>
+            <?php _e('With the innovative power of the <strong>Meshy.ai API</strong>, you can generate stunning 3D models from
+        <strong>text descriptions</strong> or even <strong>images</strong>. Seamlessly integrate these models into your WooCommerce store
+        and showcase them interactively with <strong>AR Model Viewer for WooCommerce</strong>.', 'ar-model-viewer-for-woocommerce');?>
+        </p>
+        <a class="button button-primary" href="app.meshy.ai?via=racmanuel" target="_blank">
+            <?php _e('See the plans', 'ar-model-viewer-for-woocommerce');?>
         </a>
     </div>
     <div class="ar-model-viewer-for-woocommerce-card">
@@ -99,8 +114,8 @@ Before contacting us directly, please review your server configuration and attac
             <ul>
                 <li><?php _e('Display 3D models on your products of WooCommerce.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Support for .glb and .gltf file formats.', 'ar-model-viewer-for-woocommerce');?></li>
-                <li><?php _e('Elementor Widget for showing 3D Models.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Bulk import and export your 3D models using the native WooCommerce importer.', 'ar-model-viewer-for-woocommerce');?></li>
+                <li><?php _e('Generate with meshy.ai a 3D Model from image of your product.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Priority support with faster response times.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Advanced performance features for large-scale stores.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Access to premium features and early access to new updates.', 'ar-model-viewer-for-woocommerce');?></li>
@@ -114,10 +129,9 @@ Before contacting us directly, please review your server configuration and attac
                 <li><?php _e('Full integration with advanced product page customization.', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Full control customization (color, animations, etc.).', 'ar-model-viewer-for-woocommerce');?></li>
                 <li><?php _e('Advanced shortcodes with customization options.', 'ar-model-viewer-for-woocommerce');?></li>
-                <li><?php _e('Generate 3D Models with meshy.ai from text with AI.', 'ar-model-viewer-for-woocommerce');?></li>
             </ul>
-            <a class="button button-primary" href="https://racmanuel.dev" target="_blank">
-                <?php _e('Give me a coffee', 'ar-model-viewer-for-woocommerce');?>
+            <a class="button button-primary" href="<?php echo admin_url('options-general.php?page=ar_model_viewer_for_woocommerce_settings-pricing'); ?>">
+                <?php _e('Shop Pro Version', 'ar-model-viewer-for-woocommerce');?>
             </a>
         </div>
         <div class="ar-model-viewer-for-woocommerce-preview">
@@ -127,7 +141,7 @@ Before contacting us directly, please review your server configuration and attac
                 </div>
             </div>
         <div id="ar-model-viewer-for-woocommerce-preview-content">
-            <?php 
+            <?php
                 $preview->ar_model_viewer_for_woocommerce_get_model_to_preview_in_settings();
             ?>
         </div>
