@@ -117,7 +117,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'Show button in',
             'id' => 'ar_model_viewer_for_woocommerce_btn',
             'type' => 'select',
-            'default' => '6',
+            'default' => '2',
             'classes' => 'switch-field',
             'show_option_none' => true,
             'options' => array(
@@ -134,7 +134,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'Show in Product Tabs',
             'id' => 'ar_model_viewer_for_woocommerce_single_product_tabs',
             'type' => 'radio_inline',
-            'default' => 'no',
+            'default' => 'yes',
             'classes' => 'switch-field',
             'show_option_none' => false,
             'options' => array(
@@ -215,7 +215,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'Enable AR',
             'id' => 'ar_model_viewer_for_woocommerce_ar',
             'type' => 'radio_inline',
-            'default' => '1',
+            'default' => 'active',
             'desc' => 'Enable the ability to launch AR experiences on supported devices.',
             'show_option_none' => false,
             'options' => array(
@@ -229,7 +229,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'AR Modes',
             'id' => 'ar_model_viewer_for_woocommerce_ar_modes',
             'type' => 'multicheck',
-            'default' => '1,2',
+            'default' => array( 'webxr', 'scene-viewer', 'quick-look' ),
             'desc' => 'A prioritized list of the types of AR experiences to enable. Allowed values are "webxr", to launch the AR experience in the browser, "scene-viewer", to launch the Scene Viewer app, "quick-look", to launch the iOS Quick Look app. Note that the presence of an ios-src will enable quick-look by itself.',
             'show_option_none' => false,
             'options' => array(
@@ -244,7 +244,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'AR Scale',
             'id' => 'ar_model_viewer_for_woocommerce_ar_scale',
             'type' => 'radio_inline',
-            'default' => '1',
+            'default' => 'auto',
             'desc' => 'Controls the scaling behavior in AR mode. Set to "fixed" to disable scaling of the model, which sets it to always be at 100% scale. Defaults to "auto" which allows the model to be resized by pinch.',
             'show_option_none' => false,
             'options' => array(
@@ -258,7 +258,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'AR Placement',
             'id' => 'ar_model_viewer_for_woocommerce_ar_placement',
             'type' => 'radio_inline',
-            'default' => '1',
+            'default' => 'floor',
             'desc' => 'Selects whether to place the object on the floor (horizontal surface) or a wall (vertical surface) in AR. The back (negative Z) of the object´s bounding box will be placed against the wall and the shadow will be put on this surface as well. Note that the different AR modes handle the placement UX differently.',
             'show_option_none' => false,
             'options' => array(
@@ -272,7 +272,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'name' => 'XR-Environment',
             'id' => 'ar_model_viewer_for_woocommerce_xr_environment',
             'type' => 'radio_inline',
-            'default' => '2',
+            'default' => 'active',
             'desc' => 'Enables AR lighting estimation in WebXR mode; this has a performance cost and replaces the lighting selected with during an AR session. Known issues: sometimes too dark, sudden updates, shiny materials look matte.environment-image',
             'show_option_none' => false,
             'options' => array(
@@ -299,7 +299,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'active' => __('Active', 'cmb2'),
                 'deactive' => __('Deactive', 'cmb2'),
             ),
-            'default' => '2',
+            'default' => 'deactive',
             'classes' => 'switch-field',
         ));
 

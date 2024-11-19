@@ -28,6 +28,8 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       ar-model-viewer-for-woocommerce
  * Domain Path:       /languages
+ * 
+ * @fs_premium_only /admin/class-ar-model-viewer-for-woocommerce-admin-pro.php
  *
  */
 
