@@ -1,0 +1,370 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+@import url("/admin/fonts/DMSans-VariableFont_opsz\,wght.ttf");
+
+#wpcontent {
+  background: radial-gradient(
+      50% 75% at center,
+      rgba(144, 46, 239, 0.6) 0%,
+      rgba(7, 28, 38, 0.8) 100%
+    ),
+    #071c26;
+  font-family: "DM Sans", sans-serif;
+}
+
+/* Stye for AR Model Viewer for WooCommerce - Settings Page*/
+.cmb2-options-page {
+  max-width: 100% !important;
+}
+
+.cmb2-options-page .cmb2-metabox > .cmb-row {
+  border: none !important;
+}
+
+/* Style for icons in CMB2 Field */
+.icon-in-title {
+  width: 24px;
+  vertical-align: middle;
+}
+
+.logo-ar-model-viewer-for-woocommerce {
+  width: 200px;
+  height: auto;
+}
+
+input#submit-cmb {
+  background-image: linear-gradient(90deg, #a658f2 0%, #00e087 100%) !important;
+  border: none !important;
+}
+
+div#wpfooter {
+  color: white;
+}
+
+div#wpfooter > p > span > a {
+  color: #00e087 !important;
+}
+
+p > a {
+  color: #00e087 !important;
+}
+
+p.cmb2-metabox-description {
+  color: #071c26;
+}
+
+.switch-field .cmb2-radio-list li:last-of-type label {
+  color: #071c26;
+}
+
+/* Create two equal columns that floats next to each other */
+
+.ar-model-viewer-for-woocommerce-card {
+  padding: 14px;
+  /*border: 1px solid #e9e9e9;*/
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.ar-model-viewer-for-woocommerce-cards {
+  margin: 0 auto;
+  display: grid;
+  color: white;
+  /* If you need gap grid-gap: 1%;*/
+}
+
+/* Screen larger than 600px? 2 column */
+@media (min-width: 600px) {
+  .ar-model-viewer-for-woocommerce-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Screen larger than 900px? 3 columns */
+@media (min-width: 900px) {
+  .ar-model-viewer-for-woocommerce-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+h3 {
+  color: white;
+}
+
+a.button.button-primary {
+  background-image: linear-gradient(90deg, #a658f2 0%, #00e087 100%) !important;
+  border: none !important;
+}
+
+#ar-model-viewer-for-woocommerce-render-model {
+  display: grid;
+  /* Activar Grid */
+  place-items: center;
+  /* Centrar horizontal y verticalmente */
+  height: 100vh;
+  /* Ajustar la altura al 100% de la ventana */
+}
+
+model-viewer {
+  width: 100%;
+  /* Ajustar el ancho al 100% del contenedor */
+  max-width: 800px;
+  /* Limitar el ancho máximo a 800px */
+  height: 500px;
+  /* Establecer una altura fija */
+}
+
+.cmb2-options-page .cmb2-wrap .cmb-type-title {
+  background-image: linear-gradient(90deg, #a658f2 0%, #00e087 100%) !important;
+}
+
+/* Style to CMB2 Radio in Line field to change for Switch Style*/
+
+/* Start Switch field */
+.switch-field .cmb2-radio-list li {
+  padding-right: 0 !important;
+  margin: 0;
+}
+
+.switch-field .cmb2-radio-list input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field .cmb2-radio-list input:checked + label {
+  background-image: linear-gradient(90deg, #a658f2 0%, #00e087 100%) !important;
+}
+
+.switch-field .cmb2-radio-list label {
+  float: left;
+}
+
+.switch-field .cmb2-radio-list label {
+  margin: 0 -0.25rem;
+  background-color: #e4e4e4;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field .cmb2-radio-list input:checked + label {
+  color: #fff;
+  background-color: #0073aa;
+}
+
+.switch-field .cmb2-radio-list li:first-of-type label {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.switch-field .cmb2-radio-list li:last-of-type label {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* End Switch field */
+
+/* Change the vertical align of the Dashicons*/
+span.dashicons {
+  vertical-align: middle;
+}
+
+.cmb2-wrap .cmb-multicheck-toggle {
+  background-image: linear-gradient(90deg, #a658f2 0%, #00e087 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Estilos generales para todas las notices */
+.notice {
+  padding: 15px 20px;
+  /* Añadir más espacio interno */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  border-left: 6px solid;
+  /* Línea de color a la izquierda */
+  margin: 20px 0;
+  /* Separación vertical entre notices */
+  font-size: 16px;
+  /* Tamaño de fuente más grande */
+  position: relative;
+  /* Para que el botón "dismiss" flote correctamente */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Sombra sutil para darle profundidad */
+  transition: all 0.3s ease;
+  /* Suavizar la transición para efectos */
+}
+
+/* Notice de éxito */
+.notice-success {
+  background-color: #e8f8f1;
+  /* Fondo verde claro */
+  border-color: #00c853;
+  /* Color verde en el borde */
+  color: #2e7d32;
+  /* Texto verde más oscuro */
+}
+
+.notice-success strong {
+  color: #1b5e20;
+  /* Color más oscuro para el texto en negrita */
+}
+
+/* Notice de error */
+.notice-error {
+  background-color: #ffe8e8;
+  /* Fondo rojo claro */
+  border-color: #f44336;
+  /* Color rojo en el borde */
+  color: #d32f2f;
+  /* Texto rojo más oscuro */
+}
+
+.notice-error strong {
+  color: #b71c1c;
+  /* Texto en negrita en un rojo más oscuro */
+}
+
+/* Notice de advertencia */
+.notice-warning {
+  background-color: #fff3e0;
+  /* Fondo naranja claro */
+  border-color: #ff9800;
+  /* Color naranja en el borde */
+  color: #e65100;
+  /* Texto naranja más oscuro */
+}
+
+.notice-warning strong {
+  color: #bf360c;
+  /* Texto en negrita más oscuro */
+}
+
+/* Notice informativa */
+.notice-info {
+  background-color: #e3f2fd;
+  /* Fondo azul claro */
+  border-color: #2196f3;
+  /* Color azul en el borde */
+  color: #1565c0;
+  /* Texto azul más oscuro */
+}
+
+.notice-info strong {
+  color: #0d47a1;
+  /* Texto en negrita más oscuro */
+}
+
+/* Botón de dismiss (cerrar aviso) */
+.notice-dismiss {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.notice-dismiss:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Mejoras de accesibilidad para el botón */
+.notice-dismiss .screen-reader-text {
+  clip: auto;
+  position: static;
+  height: auto;
+  width: auto;
+  margin: 0;
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Media query para pantallas grandes (mayor a 767px) */
+@media (min-width: 768px) {
+  form#ar_model_viewer_for_woocommerce_settings {
+    width: 85% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+#ar-model-viewer-for-woocommerce-preview-content {
+  padding: 0%;
+  color: #071c26;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+}
+
+input#submit-cmb {
+  width: 20% !important;
+  height: 32px !important;
+}
+
+/* Card for Get Pro Version */
+.ar-modelviewer-for-woocommerce-pro-edition-card {
+  background: radial-gradient(
+    50% 75% at center, /* Cambiamos la posición a "top right" */
+    rgba(0, 224, 135, 0.6) 0%,
+    rgba(7, 28, 38, 0.8) 100%
+  ),
+  #071c26;
+  color: white !important;
+  padding: 6%;
+  border-radius: 6px;
+}
+
+/* Estilos generales para la lista */
+.ar-modelviewer-for-woocommerce-pro-edition-card ul {
+  list-style: none; /* Elimina los puntos de la lista por defecto */
+  padding-left: 0; /* Elimina el padding por defecto */
+  margin: 10px 0; /* Margen superior e inferior */
+}
+
+/* Estilo para los elementos de la lista */
+.ar-modelviewer-for-woocommerce-pro-edition-card ul li {
+  padding: 10px; /* Espaciado interno cómodo */
+  margin-bottom: 10px; /* Espaciado entre elementos */
+  border-radius: 8px; /* Bordes redondeados */
+  font-size: 12px; /* Tamaño de fuente adecuado */
+  color: white; /* Color de texto más oscuro para buena legibilidad */
+  display: flex; /* Para centrar icono y texto */
+  align-items: center; /* Alinea verticalmente icono y texto */
+  transition: transform 0.2s ease; /* Animación al hacer hover */
+}
+
+/* Icono decorativo en cada elemento (puedes agregar un ícono si quieres) */
+.ar-modelviewer-for-woocommerce-pro-edition-card ul li::before {
+  content: "✔"; /* Puedes reemplazar este símbolo o usar Font Awesome */
+  font-size: 18px;
+  color: #00e087;
+  margin-right: 10px; /* Separación entre el icono y el texto */
+}
+
+/* Efecto hover para los elementos */
+.ar-modelviewer-for-woocommerce-pro-edition-card ul li:hover {
+  transform: translateY(-5px); /* Levanta el item ligeramente */
+}
+
+/* Sublistas estilizadas */
+.ar-modelviewer-for-woocommerce-pro-edition-card ul ul {
+  list-style-type: none; /* Elimina los puntos de las sublistas también */
+  margin-left: 20px; /* Un poco de separación izquierda */
+}
+
+.ar-modelviewer-for-woocommerce-pro-edition-card ul ul li {
+  background: #eef3f9; /* Un color de fondo más suave para las sublistas */
+  color: #34495e; /* Un color de texto ligeramente diferente */
+  font-size: 15px; /* Tamaño de fuente ligeramente menor */
+  margin-bottom: 8px; /* Menor separación entre subitems */
+  padding: 10px; /* Menor padding para subitems */
+  border-radius: 6px; /* Bordes también redondeados pero menos */
+}

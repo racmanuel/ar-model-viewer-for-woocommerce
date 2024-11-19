@@ -1,0 +1,189 @@
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d > div.inside {
+  background: radial-gradient(
+      50% 75% at bottom left,
+      rgba(144, 46, 239, 0.6) 0%,
+      /* Púrpura */ rgba(7, 28, 38, 0.8) 90%
+        /* Oscuro al 90% para que el púrpura domine */
+    ),
+    radial-gradient(
+      50% 75% at top right,
+      rgba(0, 224, 135, 1) 0%,
+      /* Verde */ rgba(7, 28, 38, 0.8) 70%
+        /* El verde cubre hasta el 70%, antes de mezclarse con el oscuro */
+    ),
+    $background-color; /* Fondo base */
+  margin-top: 0px !important;
+}
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d > div.postbox-header {
+  background-image: $gradient-colors !important;
+  margin-top: 0px !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d > div.postbox-header > h2 {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d > div.postbox-header {
+  border-bottom: none !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d
+  > div.postbox-header
+  > div
+  > button.handle-order-higher {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d
+  > div.postbox-header
+  > div
+  > button.handle-order-lower {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handlediv {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metaboxes
+  > div.postbox-header
+  > div
+  > button.handlediv
+  > span.toggle-indicator {
+  color: $text-color;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_text_to_3d
+  > div.postbox-header
+  > div
+  > button.handlediv
+  > span.toggle-indicator {
+  color: $text-color;
+}
+
+#text-to-3d-title {
+  display: none !important;
+}
+
+/* Estilo general del componente de formulario */
+#meshy-ai-text-to-3d-form {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+}
+
+.meshy-ai-text-to-3d-form .form-group {
+  margin-bottom: 20px;
+}
+
+.meshy-ai-text-to-3d-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: $text-color;
+}
+
+#meshy-ai-text-to-3d-form input[type="number"],
+#meshy-ai-text-to-3d-form textarea {
+  border: none !important;
+  background-image: $gradient-colors;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  color: $text-color;
+  font-weight: 500;
+  width: 100%;
+
+  &:focus {
+    color: black !important;
+    background-color: white;
+    background-image: none !important;
+  }
+
+  &::placeholder {
+    color: $text-color;
+  }
+}
+
+#meshy-ai-text-to-3d-form select {
+  width: 100%;
+}
+
+.meshy-ai-text-to-3d-form ul {
+  margin-left: 20px;
+  list-style-type: circle; /* Puedes usar 'none', 'circle', 'square', etc., según tu preferencia */
+}
+
+.meshy-ai-text-to-3d-form li {
+  color: white; /* Hacemos el texto de la lista blanco para que coincida con el diseño */
+  margin-bottom: 5px;
+}
+
+.meshy-ai-text-to-3d-form small {
+  font-size: 12px;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .meshy-ai-text-to-3d-form {
+    padding: 15px;
+  }
+
+  .meshy-ai-text-to-3d-form textarea,
+  .meshy-ai-text-to-3d-form input[type="number"],
+  .meshy-ai-text-to-3d-form select {
+    font-size: 14px;
+  }
+
+  .meshy-ai-text-to-3d-form label {
+    font-size: 14px;
+  }
+
+  .meshy-ai-text-to-3d-form small {
+    font-size: 11px;
+  }
+}
+
+.cmb2-wrap ul {
+  margin: 10px !important;
+}
+
+#generate-text-to-3d {
+  background-image: $gradient-colors !important;
+  color: $text-color !important;
+  border: none !important;
+}
+
+#tutorial-text-to-3d {
+  background-image: $gradient-colors !important;
+  color: $text-color !important;
+  border: none !important;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.meshy-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.meshy-logo {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.meshy-container p {
+  width: 100%;
+  margin: 0;
+}
+
+.meshy-container p {
+  color: white;
+}

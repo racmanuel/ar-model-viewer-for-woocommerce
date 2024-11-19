@@ -13,21 +13,23 @@
  *
  * @wordpress-plugin
  * Plugin Name:       AR Model Viewer for WooCommerce
- * Plugin URI:        https://racmanuel.dev/
- * Description:       AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin support formats .glb
- * Version:           1.0.8
+ * Plugin URI:        https://racmanuel.dev/plugins-wordpress/ar-model-viewer-for-woocommerce/
+ * Description:       Display 3D models of your products in augmented reality (AR) directly in the browser on iOS and Android devices. Supports .glb files and AI-powered features to generate 3D models from text or images with meshy.ai.
+ * Version:           2.0.0
  * Author:            Manuel Ramirez Coronel
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Tested up to:      6.6
- * Requires Plugins: woocommerce
+ * Requires Plugins:  woocommerce
  * WC requires at least: 3.9
- * WC tested up to: 8.8
+ * WC tested up to:   9.3
  * Author URI:        https://racmanuel.dev/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       ar-model-viewer-for-woocommerce
  * Domain Path:       /languages
+ * 
+ * @fs_premium_only /admin/class-ar-model-viewer-for-woocommerce-admin-pro.php
  *
  */
 
@@ -53,24 +55,24 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
             // Include Freemius SDK.
             require_once dirname(__FILE__) . '/vendor/freemius/wordpress-sdk/start.php';
 
-            $ar_model_viewer_for_woocommerce_fs = fs_dynamic_init(array(
-                'id' => '16088',
-                'slug' => 'ar-model-viewer-for-woocommerce',
-                'type' => 'plugin',
-                'public_key' => 'pk_5143076d3ed4661ac299aa66baabc',
-                'is_premium' => true,
-                'premium_suffix' => 'Pro',
+            $ar_model_viewer_for_woocommerce_fs = fs_dynamic_init( array(
+                'id'                  => '16088',
+                'slug'                => 'ar-model-viewer-for-woocommerce',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_5143076d3ed4661ac299aa66baabc',
+                'is_premium'          => true,
+                'premium_suffix'      => 'pro',
                 // If your plugin is a serviceware, set this option to false.
                 'has_premium_version' => true,
-                'has_addons' => false,
-                'has_paid_plans' => true,
-                'menu' => array(
-                    'slug' => 'ar_model_viewer_for_woocommerce_settings',
-                    'parent' => array(
+                'has_addons'          => false,
+                'has_paid_plans'      => true,
+                'menu'                => array(
+                    'slug'           => 'ar_model_viewer_for_woocommerce_settings',
+                    'parent'         => array(
                         'slug' => 'options-general.php',
                     ),
                 ),
-            ));
+            ) );
         }
 
         return $ar_model_viewer_for_woocommerce_fs;
@@ -87,7 +89,7 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '1.0.8');
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.0');
 
 /**
  * Define the Plugin basename
@@ -145,6 +147,12 @@ function ar_model_viewer_for_woocommerce_uninstall()
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path(__FILE__) . 'includes/class-ar-model-viewer-for-woocommerce.php';
+
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
 
 /**
  * Begins execution of the plugin.

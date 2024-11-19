@@ -1,15 +1,14 @@
 {
     "name": "racmanuel/ar-model-viewer-for-woocommerce",
-    "description": "AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin support formats .glb",
+    "description": "AR Model Viewer for WooCommerce plugin is an all in one solution to allow you to present your 3D models in an interactive AR view directly in your browser on both iOS and Android devices and all the products you have a 3D model, this plugin supports formats .glb.",
+    "type": "wordpress-plugin",
     "autoload": {
         "files": ["vendor/cmb2/cmb2/init.php"]
     },
-    "authors": [
-        {
-            "name": "Manuel Ramirez Coronel",
-            "email": "developer@racmanuel.dev"
-        }
-    ],
+    "authors": [{
+        "name": "Manuel Ramirez Coronel",
+        "email": "developer@racmanuel.dev"
+    }],
     "minimum-stability": "dev",
     "require": {
         "cmb2/cmb2": "v2.10.1",

@@ -1,0 +1,71 @@
+/* <fs_premium_only> */
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d > div.inside {
+  background: radial-gradient(
+      50% 75% at bottom left,
+      rgba(144, 46, 239, 0.6) 0%,
+      /* Púrpura */ rgba(7, 28, 38, 0.8) 90%
+        /* Oscuro al 90% para que el púrpura domine */
+    ),
+    radial-gradient(
+      50% 75% at top right,
+      rgba(0, 224, 135, 1) 0%,
+      /* Verde */ rgba(7, 28, 38, 0.8) 70%
+        /* El verde cubre hasta el 70%, antes de mezclarse con el oscuro */
+    ),
+    $background-color; /* Fondo base */
+  margin-top: 0px !important;
+}
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d > div.postbox-header {
+  background-image: $gradient-colors !important;
+  margin-top: 0px !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d > div.postbox-header > h2 {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d > div.postbox-header {
+  border-bottom: none !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d
+  > div.postbox-header
+  > div
+  > button.handle-order-higher {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d
+  > div.postbox-header
+  > div
+  > button.handle-order-lower {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d
+  > div.postbox-header
+  > div
+  > button.handlediv {
+  color: $text-color !important;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d
+  > div.postbox-header
+  > div
+  > button.handlediv
+  > span.toggle-indicator {
+  color: $text-color;
+}
+
+#ar_model_viewer_for_woocommerce_metabox_image_to_3d
+  > div.postbox-header
+  > div
+  > button.handlediv
+  > span.toggle-indicator {
+  color: $text-color;
+}
+
+#image-to-3d-title {
+  display: none !important;
+}
+/* </fs_premium_only> */
