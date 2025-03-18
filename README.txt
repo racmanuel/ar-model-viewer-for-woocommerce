@@ -187,6 +187,7 @@ We welcome all contributions from the community!
   - Improved user interface for easier model management and configuration.  
   - Compatibility updates to ensure seamless operation with the latest WordPress versions.  
   - Various bug fixes and minor improvements.  
+2.0.1 - Update Freemius SDK to 2.11.0 
 
 == Upgrade Notice ==  
 
@@ -205,3 +206,6 @@ Major update with significant improvements:
 - Enhanced compatibility with the latest WordPress versions.  
 
 This version is highly recommended to simplify your workflow and improve user experience.
+
+= 2.0.1 = 
+Update Freemius SDK to 2.11.0 
