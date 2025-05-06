@@ -345,16 +345,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
 
         $options->add_field(array(
             'name' => 'API Key',
-            'desc' => 'Insert your API Key to start generating stunning 3D models effortlessly. Explore the free API on <a href="app.meshy.ai?via=racmanuel">app.meshy.ai</a> — no credit card required!  <ul style="list-style-type: disc; margin-left: 20px;">
-        <li><strong>200 credits per month</strong></li>
-        <li><strong>1 queued task</strong></li>
-        <li><strong>Limited queue priority</strong></li>
-        <li>Assets licensed under <strong>CC BY 4.0</strong></li>
-        <li><strong>API access</strong></li>
-        <li>Polygon count options: <strong>10k/30k</strong></li>
-    </ul>
-    <p>Ready for more? Take your creations to the next level with <strong>advanced monthly plans</strong>,
-        designed for professionals seeking enhanced features and control. Upgrade today and revolutionize your 3D modeling experience.</p>',
+            'desc' => 'Insert your API Key to start generating stunning 3D models effortlessly.',
             'default' => '',
             'id' => 'ar_model_viewer_for_woocommerce_api_key_meshy',
             'type' => 'text',

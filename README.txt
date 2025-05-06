@@ -1,10 +1,10 @@
 === AR Model Viewer for WooCommerce ===
 Contributors: racmanuel
-Donate link: https://racmanuel.dev 
+Donate link: https://racmanuel.devY 
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
 Tested up to: 6.6
-Stable tag: 2.0.0
+Stable tag: 2.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,27 +53,6 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 - **Generate 3D Models from Text Using AI**: Describe an object in text and let the AI create a 3D model for you.  
 - **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly.  
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
-
-### Pricing Plans 💰  
-
-Choose the plan that best fits your needs:  
-
-#### Single Site  
-- **Monthly Price:** $9.99  
-- **Annual Price:** $99.99 (Save 20%)  
-- **Lifetime Price:** $299.99 (Equivalent to 3 years of annual pricing)  
-
-#### Bulk Pricing  
-
-**3 Sites**  
-- **Monthly Price:** $17.99  
-- **Annual Price:** $149.99  
-- **Lifetime Price:** $499.99  
-
-**Unlimited Sites**  
-- **Monthly Price:** $59.99  
-- **Annual Price:** $599.99  
-- **Lifetime Price:** $1,729.99  
 
 ### Open Source and Community Contribution 🌟  
 
@@ -188,24 +167,9 @@ We welcome all contributions from the community!
   - Compatibility updates to ensure seamless operation with the latest WordPress versions.  
   - Various bug fixes and minor improvements.  
 2.0.1 - Update Freemius SDK to 2.11.0 
+2.0.2 - Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
 
 == Upgrade Notice ==  
 
-= 1.0.8 =  
-Fixes an issue with optional parameters in function signatures for compatibility with PHP 8. This update is required to ensure compatibility with the latest version of WordPress.  
-
-= 1.0.9 =  
-Adds `assets/blueprints/blueprint.json` for execution in WordPress Playground and introduces a one-click "Try Plugin" feature in the README for easier testing.  
-
-= 2.0.0 =  
-Major update with significant improvements:  
-- No longer required to upload both .glb and .usdz files. A single .glb file now supports Android and iOS/Apple devices.  
-- Optimized code for better performance.  
-- Introduced AJAX for dynamic 3D model loading.  
-- Added new modal windows for previewing 3D models.  
-- Enhanced compatibility with the latest WordPress versions.  
-
-This version is highly recommended to simplify your workflow and improve user experience.
-
-= 2.0.1 = 
-Update Freemius SDK to 2.11.0 
+= 2.0.2 = 
+Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.

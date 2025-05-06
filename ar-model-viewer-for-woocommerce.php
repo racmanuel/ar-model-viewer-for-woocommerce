@@ -12,17 +12,17 @@
  * @package           Ar_Model_Viewer_For_Woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       AR Model Viewer for WooCommerce
+ * Plugin Name:       3D/AR/VR Model Viewer for WooCommerce
  * Plugin URI:        https://racmanuel.dev/plugins-wordpress/ar-model-viewer-for-woocommerce/
  * Description:       Display 3D models of your products in augmented reality (AR) directly in the browser on iOS and Android devices. Supports .glb files and AI-powered features to generate 3D models from text or images with meshy.ai.
- * Version:           2.0.1
+ * Version:           2.0.2
  * Author:            Manuel Ramirez Coronel
  * Requires at least: 5.9
  * Requires PHP:      7.4
- * Tested up to:      6.6
+ * Tested up to:      6.8
  * Requires Plugins:  woocommerce
  * WC requires at least: 3.9
- * WC tested up to:   9.3
+ * WC tested up to:   9.8
  * Author URI:        https://racmanuel.dev/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
@@ -89,7 +89,7 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.1');
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.2');
 
 /**
  * Define the Plugin basename
