@@ -4,7 +4,7 @@ Donate link: https://racmanuel.devY
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
 Tested up to: 6.6
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -168,8 +168,9 @@ We welcome all contributions from the community!
   - Various bug fixes and minor improvements.  
 2.0.1 - Update Freemius SDK to 2.11.0 
 2.0.2 - Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
+2.0.3 - Update to Freemius SDK
 
 == Upgrade Notice ==  
 
-= 2.0.2 = 
-Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
+= 2.0.3 = 
+Update to Freemius SDK
