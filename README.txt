@@ -50,7 +50,7 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 - **Elementor Widget**: Display 3D models using a dedicated widget in Elementor.  
 - **Bulk Import and Export**: Easily manage your 3D models by using the native WooCommerce importer/exporter.  
 - **Generate 3D Models from Text Using AI**: Describe an object in text and let the AI create a 3D model for you.  
-- **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly. (Comming Soon).
+- **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly.
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
 
 ### Open Source and Community Contribution 🌟  
@@ -167,9 +167,9 @@ We welcome all contributions from the community!
   - Various bug fixes and minor improvements.  
 2.0.1 - Update Freemius SDK to 2.11.0 
 2.0.2 - Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
-2.0.3 - Update to Freemius SDK
+2.0.3 - Update to Freemius SDK and add support for non-logged users in AJAX call
 
 == Upgrade Notice ==  
 
 = 2.0.3 = 
-Update to Freemius SDK
+Update to Freemius SDK and add support for non-logged users in AJAX call
