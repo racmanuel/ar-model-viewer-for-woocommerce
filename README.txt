@@ -1,9 +1,9 @@
 === AR Model Viewer for WooCommerce ===
 Contributors: racmanuel
-Donate link: https://racmanuel.devY 
+Donate link: https://racmanuel.dev 
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
-Tested up to: 6.6
+Tested up to: 6.8
 Stable tag: 2.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -41,7 +41,6 @@ The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing yo
 - **Stay Ahead of the Competition**: Stand out in the eCommerce market by integrating innovative AR technology into your store.  
 - **Easy to Use**: No advanced technical skills required; integrate and manage 3D models effortlessly.  
 - **Flexible and Scalable**: Works perfectly for both small and large eCommerce businesses with WooCommerce.  
-- **Free Credits for AI Features**: Start with 200 free credits per month to explore the potential of AI-powered 3D model generation.  
 - **Seamless Integration**: Compatible with most WordPress themes and plugins, ensuring a smooth setup.  
 
 ### Pro Version 🚀  
@@ -51,7 +50,7 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 - **Elementor Widget**: Display 3D models using a dedicated widget in Elementor.  
 - **Bulk Import and Export**: Easily manage your 3D models by using the native WooCommerce importer/exporter.  
 - **Generate 3D Models from Text Using AI**: Describe an object in text and let the AI create a 3D model for you.  
-- **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly.  
+- **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly. (Comming Soon).
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
 
 ### Open Source and Community Contribution 🌟  

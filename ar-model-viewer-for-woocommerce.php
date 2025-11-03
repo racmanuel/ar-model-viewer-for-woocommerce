@@ -89,7 +89,7 @@ if (!function_exists('ar_model_viewer_for_woocommerce_fs')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.2');
+define('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION', '2.0.3');
 
 /**
  * Define the Plugin basename

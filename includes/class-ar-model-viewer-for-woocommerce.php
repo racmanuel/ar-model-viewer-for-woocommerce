@@ -442,7 +442,8 @@ class Ar_Model_Viewer_For_Woocommerce
         }
 
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_public, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
-
+        $this->loader->add_action('wp_ajax_nopriv_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_public, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
+        
         $this->loader->add_shortcode($this->plugin_prefix . 'shortcode', $plugin_public_shortcode, 'ar_model_viewer_for_woocommerce_shortcode_func', 10, 1);
     }
 
