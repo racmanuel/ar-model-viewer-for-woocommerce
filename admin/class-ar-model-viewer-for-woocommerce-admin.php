@@ -68,6 +68,94 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     }
 
     /**
+     * Build a cache busting version for an asset.
+     *
+     * The file modification time is used so browsers keep the file cached until it really
+     * changes. Paths are resolved both relative to this file and to the plugin root, and the
+     * plugin version is used as a fallback when the file cannot be inspected.
+     *
+     * @since 3.0.0
+     * @param string $relative_path Path of the asset relative to this file or to the plugin root.
+     * @return string Version string, safe for a URL query argument.
+     */
+    private function asset_version($relative_path)
+    {
+        $paths = array(
+            plugin_dir_path(__FILE__) . $relative_path,
+            plugin_dir_path(dirname(__FILE__)) . $relative_path,
+        );
+
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                return (string) filemtime($path);
+            }
+        }
+
+        return $this->version;
+    }
+
+    /**
+     * Return the URL of every third party library available to the scripts.
+     *
+     * The files live in `assets/vendor` and are refreshed with `npm run vendors`. Libraries
+     * that are missing are simply not published, so no screen breaks because of them.
+     *
+     * @since 3.0.0
+     * @return array<string, string> Library URLs keyed by vendor name.
+     */
+    private function vendor_files()
+    {
+        $files = array();
+
+        foreach (array('model-viewer', 'alertify', 'driver', 'tabulator') as $vendor) {
+            $url = $this->vendor_url($vendor . '.min.js');
+
+            if ($url) {
+                $files[$vendor] = $url;
+            }
+        }
+
+        return $files;
+    }
+
+    /**
+     * Return the URL of a bundled third party library.
+     *
+     * Returns an empty string when the file is missing, so every screen keeps working
+     * without it.
+     *
+     * @since 3.0.0
+     * @param string $file File name inside the `assets/vendor` folder.
+     * @return string Asset URL, or an empty string.
+     */
+    private function vendor_url($file)
+    {
+        $relative = 'assets/vendor/' . $file;
+
+        if (!file_exists(plugin_dir_path(dirname(__FILE__)) . $relative)) {
+            return '';
+        }
+
+        return plugin_dir_url(dirname(__FILE__)) . $relative;
+    }
+
+    /**
+     * Return the CSS that embeds the bundled DM Sans variable font.
+     *
+     * The font lives inside the plugin, so the URL has to be built with
+     * `plugin_dir_url()` instead of a site relative path.
+     *
+     * @since 3.0.0
+     * @return string The `@font-face` rule.
+     */
+    private function font_face_css()
+    {
+        $font_url = plugin_dir_url(__FILE__) . 'fonts/DMSans-VariableFont_opsz,wght.ttf';
+
+        return "@font-face{font-family:'DM Sans';src:url('" . esc_url_raw($font_url) . "') format('truetype');font-weight:100 900;font-style:normal;font-display:swap;}";
+    }
+
+    /**
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
@@ -75,16 +163,82 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
      */
     public function enqueue_styles($hook_suffix)
     {
-        // For debugging the $hook_suffix
-        // echo '<h1 style="color: crimson;">' . esc_html($hook_suffix) . '</h1>';
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        $is_settings_screen = 'settings_page_' . Ar_Model_Viewer_For_Woocommerce_Settings::PAGE_SLUG === $hook_suffix;
+        // `base` is `post` on both the product editor and the "Add new product" screen,
+        // which keeps the product list screen free of plugin assets.
+        $is_product_editor = $screen && 'product' === $screen->post_type && 'post' === $screen->base;
 
-        if ($hook_suffix == 'settings_page_ar_model_viewer_for_woocommerce_settings') {
-            wp_enqueue_style($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css', array(), time(), 'all');
+        if (!$is_settings_screen && !$is_product_editor) {
+            return;
         }
 
-        if ($hook_suffix == 'post.php' || get_post_type(get_the_ID()) == 'product') {
-            wp_enqueue_style($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css', array(), time(), 'all');
+        // The design tokens are shared by both screens.
+        $tokens_handle = $this->plugin_name . '-tokens';
+
+        wp_enqueue_style(
+            $tokens_handle,
+            plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-tokens.css',
+            array(),
+            $this->asset_version('css/ar-model-viewer-for-woocommerce-admin-tokens.css'),
+            'all'
+        );
+
+        if ($is_settings_screen) {
+            /*
+             * The bundled DM Sans variable font is only loaded on the settings screen. The
+             * product editor is a functional screen where the WordPress admin font is enough,
+             * and the font file weighs 233 KB.
+             */
+            wp_add_inline_style($tokens_handle, $this->font_face_css());
+
+            wp_enqueue_style(
+                $this->plugin_name . '-settings',
+                plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css',
+                array($tokens_handle),
+                $this->asset_version('css/ar-model-viewer-for-woocommerce-admin-settings.css'),
+                'all'
+            );
         }
+
+        if ($is_product_editor) {
+            wp_enqueue_style(
+                $this->plugin_name . '-product',
+                plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css',
+                array($tokens_handle),
+                $this->asset_version('css/ar-model-viewer-for-woocommerce-admin-product.css'),
+                'all'
+            );
+        }
+    }
+
+    /**
+     * Add a body class on the screens owned by the plugin.
+     *
+     * The admin styles are scoped with these classes, so the plugin never leaks styles
+     * into other admin pages.
+     *
+     * @since 3.0.0
+     * @param string $classes Space separated list of body classes.
+     * @return string The filtered list of body classes.
+     */
+    public function admin_body_class($classes)
+    {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+        if (!$screen) {
+            return $classes;
+        }
+
+        if ('settings_page_' . Ar_Model_Viewer_For_Woocommerce_Settings::PAGE_SLUG === $screen->id) {
+            $classes .= ' armvw-settings-page';
+        }
+
+        if ('product' === $screen->post_type && 'post' === $screen->base) {
+            $classes .= ' armvw-product-editor';
+        }
+
+        return $classes;
     }
 
     /**
@@ -97,45 +251,82 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     {
 
         // For debug the $hook_suffix echo '<h1 style="color: crimson;">' . esc_html( $hook_suffix ) . '</h1>';
-        if ($hook_suffix === 'settings_page_ar_model_viewer_for_woocommerce_settings') {
-            wp_enqueue_script($this->plugin_name . '-settings', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-settings-dist.js', array('jquery', 'wp-i18n'), time(), false);
-            wp_localize_script($this->plugin_name . '-settings', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+        if ('settings_page_' . Ar_Model_Viewer_For_Woocommerce_Settings::PAGE_SLUG === $hook_suffix) {
+            /*
+             * The model-viewer library weighs around 1 MB, so it is not enqueued here: the
+             * preview card shows the poster and `-settings.js` injects the library when the
+             * visitor asks for the demo. The `<model-viewer>` element upgrades itself as soon
+             * as the library is loaded.
+             */
+            wp_enqueue_script(
+                $this->plugin_name . '-settings',
+                plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-settings.js',
+                array(),
+                $this->asset_version('js/ar-model-viewer-for-woocommerce-settings.js'),
+                array(
+                    'in_footer' => true,
+                    'strategy' => 'defer',
+                )
+            );
 
-            // Overwrite Automattic's Iris color picker to enable alpha channel (transparency) support in the WordPress color picker.
-            // This is done to enhance the color picker functionality to handle RGBA colors, not just RGB.
+            wp_localize_script(
+                $this->plugin_name . '-settings',
+                'armvwSettings',
+                array(
+                    'viewer_url' => $this->vendor_url('model-viewer.min.js'),
+                )
+            );
 
-            // Overwrite WordPress's default color picker to improve implementation and integration of the Iris color picker with alpha channel support.
-            // This is necessary to ensure that the extended functionality of the color picker (alpha channel) works seamlessly with WordPress.
+            // Extends the WordPress color picker with alpha channel support.
+            wp_register_script(
+                'wp-color-picker-alpha',
+                plugin_dir_url(__FILE__) . 'js/wp-color-picker-alpha.js',
+                array('wp-color-picker'),
+                $this->asset_version('js/wp-color-picker-alpha.js'),
+                true
+            );
 
-            // Register the 'wp-color-picker-alpha' script in WordPress.
-            // The script is dependent on the existing 'wp-color-picker' script, ensuring that it integrates properly.
-            // The script is located in the 'js' directory of the plugin, and the URL is constructed using 'plugin_dir_url(__FILE__)'.
-            // '$this->version' specifies the version of the script, which is useful for cache busting.
-            // 'false' as the last parameter indicates that the script should not be loaded in the footer.
-            wp_register_script('wp-color-picker-alpha', plugin_dir_url(__FILE__) . 'js/wp-color-picker-alpha.min.js', array('wp-color-picker'), $this->version, false);
-
-            // Add inline script to initialize the color picker on elements with the class 'color-picker'.
-            // The jQuery function is used to ensure compatibility and proper initialization.
-            // 'wpColorPicker()' is called on elements with the class 'color-picker', initializing the enhanced color picker with alpha channel support.
             wp_add_inline_script(
                 'wp-color-picker-alpha',
                 'jQuery( function() { jQuery( ".color-picker" ).wpColorPicker(); } );'
             );
 
-            // Enqueue the 'wp-color-picker-alpha' script to ensure it is loaded and executed on the WordPress site.
-            // This step is crucial for the script to take effect and enhance the color picker functionality on the site.
             wp_enqueue_script('wp-color-picker-alpha');
-
         }
-        if ($hook_suffix === 'post.php' && get_post_type(get_the_ID()) == 'product' && $_GET['action'] === 'edit') {
-            wp_enqueue_script($this->plugin_name . '-product', plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-admin-product-dist.js', array('jquery', 'wp-i18n'), $this->version, false);
+
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+        if ($screen && 'product' === $screen->post_type && 'post' === $screen->base) {
+            wp_enqueue_script(
+                $this->plugin_name . '-product',
+                plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-product.js',
+                array('jquery', 'wp-i18n'),
+                $this->asset_version('js/ar-model-viewer-for-woocommerce-product.js'),
+                true
+            );
+
             wp_localize_script($this->plugin_name . '-product', 'ajax_object', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'mode_preview_icon' => plugin_dir_url(__FILE__) . 'images/icons8-object-94.png',
                 'mode_refine_icon' => plugin_dir_url(__FILE__) . 'images/icons8-3d-printer-94.png',
                 'status_succeeded_icon' => plugin_dir_url(__FILE__) . 'images/icons8-check-94.png',
-                'api_key_set' => !empty(cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy')), // Check if the API Key is set
+                'api_key_set' => Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key(),
+                // The script injects these libraries on demand, only when a feature needs them.
+                'vendor_files' => $this->vendor_files(),
             ));
+
+            // The alertify and driver.js stylesheets used to be bundled inside the JavaScript.
+            $vendor_style = $this->vendor_url('vendor.css');
+
+            if ($vendor_style) {
+                wp_enqueue_style(
+                    $this->plugin_name . '-vendor',
+                    $vendor_style,
+                    array(),
+                    $this->asset_version('assets/vendor/vendor.css'),
+                    'all'
+                );
+            }
         }
     }
 

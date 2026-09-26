@@ -4,7 +4,7 @@
   "description": "=== AR Model Viewer for WooCommerce === Contributors: Manuel Ramirez Coronel Donate link:  Tags: AR, WooCommerce, model-viewer, Shopping, Shop Requires at least: 1.0.0 Tested up to: 6.0 Stable tag: 1.0.0 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vendors": "node sync-vendors.mjs"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/racmanuel/ar-model-viewer-for-woocommerce#readme",
   "dependencies": {
-    "@google/model-viewer": "^1.12.0",
+    "@google/model-viewer": "^4.3.1",
     "alertifyjs": "^1.14.0",
     "driver.js": "^1.3.1",
     "tabulator-tables": "^6.3.0"

@@ -96,6 +96,30 @@ function armvwCreateTable(selector, config) {
   });
 }
 
+/**
+ * Return the driver.js factory.
+ *
+ * The IIFE build publishes the library as `window.driver.js.driver` while the module
+ * builds export the function directly, so both shapes are accepted here.
+ *
+ * @return {Function|null} The factory, or null when the library is not available.
+ */
+function armvwDriverFactory() {
+  if (typeof window.driver === "function") {
+    return window.driver;
+  }
+
+  if (
+    window.driver &&
+    window.driver.js &&
+    typeof window.driver.js.driver === "function"
+  ) {
+    return window.driver.js.driver;
+  }
+
+  return null;
+}
+
 (function ($) {
   "use strict";
 
@@ -410,8 +434,14 @@ function armvwCreateTable(selector, config) {
     function startProduct3DTutorial() {
       // driver.js is loaded on demand: it is only needed when a tutorial starts.
       window.armvwVendor.ensure(["driver"]).then(function () {
+        const createDriver = armvwDriverFactory();
+
+        if (!createDriver) {
+          return;
+        }
+
         // Create a Driver.js instance with configuration options
-        const driverObj = driver({
+        const driverObj = createDriver({
           showProgress: true, // Displays a progress bar to indicate the current step
           allowClose: false, // Disables the ability to close the tutorial manually
           steps: getProduct3DTutorialSteps(), // Fetches the steps for the 3D product tutorial
@@ -426,8 +456,14 @@ function armvwCreateTable(selector, config) {
     function startTextTo3DTutorial() {
       // driver.js is loaded on demand: it is only needed when a tutorial starts.
       window.armvwVendor.ensure(["driver"]).then(function () {
+        const createDriver = armvwDriverFactory();
+
+        if (!createDriver) {
+          return;
+        }
+
         // Create a Driver.js instance with configuration options
-        const driverObj = driver({
+        const driverObj = createDriver({
           showProgress: true, // Displays a progress bar to indicate the current step
           allowClose: false, // Disables the ability to close the tutorial manually
           steps: getTextTo3DTutorialSteps(), // Fetches the steps for the Text-to-3D tutorial
