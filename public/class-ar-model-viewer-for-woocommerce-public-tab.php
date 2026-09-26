@@ -121,14 +121,16 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
             return;
         }
 
-        // Retrieve the 3D model file from the product's metadata using WooCommerce's get_meta function.
-        $model_3d_file = $this->get_model_3d_file_or_fallback($product);
+        // The model of the product, with the poster and the alt text already defaulted. The tab
+        // shows a message instead of an empty viewer when the product has no file yet, because
+        // the shopper is already inside the product page.
+        $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
 
-        // Retrieve the 3D model poster URL from the product's metadata.
-        $model_poster = $this->get_model_poster_or_fallback($product);
+        if ('' === trim($model['source'])) {
+            echo '<p>' . esc_html__('This product has no 3D model yet.', 'ar-model-viewer-for-woocommerce') . '</p>';
 
-        // Retrieve the 3D model alt text from the product's metadata.
-        $model_alt = $this->get_model_alt_or_fallback($product);
+            return;
+        }
 
         // Retrieve the AR settings from the plugin's options.
         $settings = $this->get_ar_model_viewer_settings();
@@ -136,7 +138,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
         // Initialize AR attributes based on the retrieved settings.
         $ar_attributes = '';
         if ($settings['ar']) {
-            $ar_attributes .= 'ar ar-modes="' . esc_attr(implode(' ', $settings['ar_modes'])) . '" ';
+            $ar_attributes .= 'ar ';
+
+            // An empty mode list would be rendered as `ar-modes=""`, which the library cannot
+            // parse, so the attribute is omitted and the viewer keeps its own default list.
+            if (!empty($settings['ar_modes'])) {
+                $ar_attributes .= 'ar-modes="' . esc_attr(implode(' ', $settings['ar_modes'])) . '" ';
+            }
+
             if (!empty($settings['scale'])) {
                 $ar_attributes .= 'ar-scale="' . esc_attr($settings['scale']) . '" ';
             }
@@ -171,110 +180,30 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
 
         // Generate the HTML for the model-viewer element with all attributes and settings.
         $output = sprintf(
-            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s%8$s>%9$s</model-viewer>',
-            esc_url($model_3d_file),
-            esc_attr($model_alt),
-            esc_url($model_poster),
+            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" %7$s%8$s%9$s%10$s>%11$s</model-viewer>',
+            esc_url($model['source']),
+            esc_attr($model['alt']),
+            esc_url($model['poster']),
             esc_attr($settings['loading']),
             esc_attr($settings['reveal']),
             esc_attr($settings['poster_color']),
             $ar_attributes,
             $extra_attributes,
+            // Lighting and appearance attributes are shared by every placement, so they are
+            // built in one place and appended here instead of being repeated per template.
+            Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes(
+                Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes()
+            ),
+            // These ones belong to the product: where its camera starts, how it is oriented.
+            // A product that overrides nothing prints nothing here.
+            Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes(
+                Ar_Model_Viewer_For_Woocommerce_Product_Model::attributes($product)
+            ),
             $ar_button
         );
 
         // Output the generated model viewer HTML.
         echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Every part is escaped above.
-    }
-
-    /**
-     * Retrieves the 3D model file for the product or sets a fallback file from the plugin's includes directory.
-     *
-     * This function checks if the 3D model file is set for the product. If not, it will log an error and
-     * terminate the execution. The function will attempt to provide a helpful error message for the user.
-     *
-     * @since 1.0.0
-     *
-     * @param WC_Product $product The WooCommerce product object.
-     *
-     * @return string The URL of the 3D model file.
-     */
-    private function get_model_3d_file_or_fallback($product)
-    {
-        // Retrieve the 3D model file from the product's metadata using WooCommerce's get_meta function.
-        $model_3d_file = $product->get_meta('ar_model_viewer_for_woocommerce_file_object', true);
-
-        // Check if the 3D model file exists. If not, log an error and terminate the request.
-        if (!$model_3d_file) {
-            // Log an error indicating that the 3D model file is missing.
-            $this->logger->log_to_woocommerce(
-                sprintf('3D model file missing for product: %s (ID: %d)', $product->get_name(), $product->get_id()),
-                'error'
-            );
-            // Send a JSON error response and stop further execution.
-            wp_send_json_error('3D model file missing for product. Please save the product before attempting to preview.');
-            wp_die(); // End script execution to prevent further errors.
-        }
-
-        // If the 3D model file is found, log success.
-        $this->logger->log_to_woocommerce(
-            sprintf('3D model file found for product: %s (ID: %d) (SKU: %s)', $product->get_name(), $product->get_id(), $product->get_sku()),
-            'info'
-        );
-
-        // Return the URL of the 3D model file.
-        return $model_3d_file;
-    }
-
-    /**
-     * Retrieves the 3D model poster URL or falls back to the product's main image URL.
-     *
-     * This function checks if the 3D model poster URL is set for the product. If not, it attempts to
-     * retrieve the main image URL of the product. In case the product has no main image, it logs an
-     * error and returns an empty string.
-     *
-     * @since 1.0.0
-     *
-     * @param WC_Product $product The WooCommerce product object.
-     *
-     * @return string The URL of the 3D model poster or the product's main image. If neither is available, an empty string is returned.
-     */
-    private function get_model_poster_or_fallback($product)
-    {
-        // Retrieve the 3D model poster URL from the product's metadata.
-        $model_poster = $product->get_meta('ar_model_viewer_for_woocommerce_file_poster', true);
-
-        // If the 3D model poster URL is empty, attempt to retrieve the main product image.
-        if (empty($model_poster)) {
-            // Get the ID of the main image from the product.
-            $main_image_id = $product->get_image_id();
-
-            // If the product has no main image, log an error and return an empty string.
-            if (empty($main_image_id)) {
-                $this->logger->log_to_woocommerce(
-                    sprintf('No poster or main image found for product ID %d', $product->get_id()),
-                    'error'
-                );
-                return ''; // Return an empty string as a fallback.
-            }
-
-            // Retrieve the URL of the main image.
-            $main_image_url = wp_get_attachment_url($main_image_id);
-
-            // Return the main image URL if available. Otherwise, log an error and return an empty string.
-            if ($main_image_url) {
-                return $main_image_url;
-            } else {
-                $this->logger->log_to_woocommerce(
-                    sprintf('Main image URL could not be retrieved for product ID %d', $product->get_id()),
-                    'error'
-                );
-                return ''; // Return an empty string if the URL could not be retrieved.
-            }
-        }
-
-        // If the 3D model poster URL exists, return it.
-        return $model_poster;
     }
 
     /**
@@ -290,55 +219,5 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
     private function get_ar_model_viewer_settings()
     {
         return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
-    }
-
-    /**
-     * Retrieves the alt text for the 3D model or falls back to the product name or short description.
-     *
-     * This function checks if the 3D model alt text is set in the product metadata. If it is not set,
-     * the function will attempt to return the product name. If the product name is also not available,
-     * it will return the short description. If none of these fields are available, an error will be
-     * logged using the WooCommerce logger, and an empty string will be returned as a fallback.
-     *
-     * @since 1.0.0
-     *
-     * @param WC_Product $product The WooCommerce product object.
-     *
-     * @return string The alt text for the 3D model, or the product name, or the short description. If none are available, it returns an empty string.
-     */
-    private function get_model_alt_or_fallback($product)
-    {
-        // Retrieve the 3D model alt text from the product's metadata.
-        $model_alt = $product->get_meta('ar_model_viewer_for_woocommerce_file_alt', true);
-
-        // If the 3D model alt text is not available, fallback to the product name.
-        if (empty($model_alt)) {
-            // Use WooCommerce's native function to get the product name.
-            $product_name = $product->get_name();
-
-            // If the product name is not available, fallback to the short description.
-            if (empty($product_name)) {
-                // Use WooCommerce's native function to get the short description.
-                $short_description = $product->get_short_description();
-
-                // If the short description is not available, log an error and return an empty string.
-                if (empty($short_description)) {
-                    $this->logger->log_to_woocommerce(
-                        sprintf('No alt, product name, or short description found for product ID %d', $product->get_id()),
-                        'error'
-                    );
-                    return ''; // Return empty string as a fallback.
-                }
-
-                // Return the short description if available.
-                return $short_description;
-            }
-
-            // Return the product name if available.
-            return $product_name;
-        }
-
-        // Return the 3D model alt text if it exists.
-        return $model_alt;
     }
 }

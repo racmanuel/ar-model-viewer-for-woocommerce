@@ -88,6 +88,35 @@ class Ar_Model_Viewer_For_Woocommerce_Public
     {
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-public-dist.js', array('jquery'), $this->version, true);
         wp_localize_script($this->plugin_name, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+
+        // The render scale, the power preference, the cache size and the decoder locations are
+        // static properties of the element, not attributes, so they cannot travel in the markup.
+        // They are assigned right after the library is evaluated and before any viewer is
+        // created, which is the only moment the library reads them.
+        $this->add_static_properties_script($this->plugin_name);
+    }
+
+    /**
+     * Print the script that applies the static properties of the viewer element.
+     *
+     * @since 3.0.0
+     * @param string $handle Handle of the script that loads the library.
+     * @return void
+     */
+    private function add_static_properties_script($handle)
+    {
+        $properties = Ar_Model_Viewer_For_Woocommerce_Settings::static_properties();
+
+        if (array() === $properties) {
+            return;
+        }
+
+        $script = sprintf(
+            "customElements.whenDefined('model-viewer').then(function(){var viewer=customElements.get('model-viewer');var values=%s;Object.keys(values).forEach(function(name){viewer[name]=values[name];});});",
+            wp_json_encode($properties)
+        );
+
+        wp_add_inline_script($handle, $script, 'after');
     }
 
     /**
@@ -132,16 +161,19 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $placement = $viewer['placement'];
         $xr_environment = $viewer['xr_environment'];
         $ar_modes = $viewer['ar_modes'];
-        // Obtener el nombre del producto
-        $product_name = get_the_title($product_id);
+        $product = wc_get_product($product_id);
 
-        // Obtener los metadatos del producto
-        $model_3d_file = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_object', true);
-        $model_alt = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_alt', true);
-        $model_poster = get_post_meta($product_id, 'ar_model_viewer_for_woocommerce_file_poster', true);
+        if (!$product) {
+            wp_send_json_error('Product not found.');
+            wp_die();
+        }
 
-        // Comprobar que el archivo 3D existe
-        if (!$model_3d_file) {
+        // The same resolver the shortcode and the product tab use. This endpoint used to read the
+        // meta values on its own, so it returned an empty poster for a product that had no poster
+        // of its own but did have a featured image.
+        $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
+
+        if ('' === trim($model['source'])) {
             wp_send_json_error('3D model file is missing.');
             wp_die();
         }
@@ -157,10 +189,16 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'placement' => $placement,
             'xr_environment' => $xr_environment,
             'ar_modes' => $ar_modes,
-            'product_name' => $product_name,
-            'model_3d_file' => $model_3d_file,
-            'model_alt' => $model_alt,
-            'model_poster' => $model_poster,
+            'product_name' => $product->get_name(),
+            'model_3d_file' => $model['source'],
+            'model_alt' => $model['alt'],
+            'model_poster' => $model['poster'],
+            // Lighting and appearance settings travel as a ready to print list of attributes, so
+            // the front-end modal does not have to know which settings map to which attribute.
+            'attributes' => Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes(),
+            // Overrides of this product, which the modal also receives instead of having to
+            // reach for the meta values on its own.
+            'product_attributes' => Ar_Model_Viewer_For_Woocommerce_Product_Model::attributes($product),
         );
 
         // Enviar la respuesta en formato JSON
