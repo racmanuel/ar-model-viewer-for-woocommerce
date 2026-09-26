@@ -140,22 +140,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     }
 
     /**
-     * Return the CSS that embeds the bundled DM Sans variable font.
-     *
-     * The font lives inside the plugin, so the URL has to be built with
-     * `plugin_dir_url()` instead of a site relative path.
-     *
-     * @since 3.0.0
-     * @return string The `@font-face` rule.
-     */
-    private function font_face_css()
-    {
-        $font_url = plugin_dir_url(__FILE__) . 'fonts/DMSans-VariableFont_opsz,wght.ttf';
-
-        return "@font-face{font-family:'DM Sans';src:url('" . esc_url_raw($font_url) . "') format('truetype');font-weight:100 900;font-style:normal;font-display:swap;}";
-    }
-
-    /**
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
@@ -185,13 +169,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         );
 
         if ($is_settings_screen) {
-            /*
-             * The bundled DM Sans variable font is only loaded on the settings screen. The
-             * product editor is a functional screen where the WordPress admin font is enough,
-             * and the font file weighs 233 KB.
-             */
-            wp_add_inline_style($tokens_handle, $this->font_face_css());
-
             wp_enqueue_style(
                 $this->plugin_name . '-settings',
                 plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css',

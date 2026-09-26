@@ -77,9 +77,9 @@
 	--armvw-space-6: 32px;
 	--armvw-space-7: 48px;
 
-	/* Typography */
-	--armvw-font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-		"Helvetica Neue", Arial, sans-serif;
+	/* Typography: the same stack the WordPress admin uses, so no font file is downloaded. */
+	--armvw-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans,
+		Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	--armvw-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 	--armvw-font-size-xs: 11px;
 	--armvw-font-size-sm: 12px;
