@@ -1,1 +1,497 @@
-@charset "UTF-8";@import "../../node_modules/tabulator-tables/dist/css/tabulator.min.css";@import "../../node_modules/tabulator-tables/dist/css/tabulator_semanticui.min.css";#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.inside{background:radial-gradient(50% 75% at bottom left,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 90%),radial-gradient(50% 75% at top right,rgb(0,224,135) 0%,rgba(7,28,38,0.8) 70%),#071c26;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header>h2{color:white!important}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header{border-bottom:none!important}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header>div>button.handle-order-higher{color:white!important}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header>div>button.handle-order-lower{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handlediv{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#ar_model_viewer_for_woocommerce_metabox_text_to_3d>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#text-to-3d-title{display:none!important}#meshy-ai-text-to-3d-form{max-width:100%;margin:0 auto;padding:20px;background-color:transparent}.meshy-ai-text-to-3d-form .form-group{margin-bottom:20px}.meshy-ai-text-to-3d-form label{display:block;font-weight:bold;margin-bottom:5px;color:white}#meshy-ai-text-to-3d-form input[type=number],#meshy-ai-text-to-3d-form textarea{border:none!important;background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087));background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%);background-origin:border-box;background-clip:padding-box,border-box;color:white;font-weight:500;width:100%}#meshy-ai-text-to-3d-form input[type=number]:focus,#meshy-ai-text-to-3d-form textarea:focus{color:black!important;background-color:white;background-image:none!important}#meshy-ai-text-to-3d-form input[type=number]::-webkit-input-placeholder,#meshy-ai-text-to-3d-form textarea::-webkit-input-placeholder{color:white}#meshy-ai-text-to-3d-form input[type=number]::-moz-placeholder,#meshy-ai-text-to-3d-form textarea::-moz-placeholder{color:white}#meshy-ai-text-to-3d-form input[type=number]:-ms-input-placeholder,#meshy-ai-text-to-3d-form textarea:-ms-input-placeholder{color:white}#meshy-ai-text-to-3d-form input[type=number]::-ms-input-placeholder,#meshy-ai-text-to-3d-form textarea::-ms-input-placeholder{color:white}#meshy-ai-text-to-3d-form input[type=number]::placeholder,#meshy-ai-text-to-3d-form textarea::placeholder{color:white}#meshy-ai-text-to-3d-form select{width:100%}.meshy-ai-text-to-3d-form ul{margin-left:20px;list-style-type:circle}.meshy-ai-text-to-3d-form li{color:white;margin-bottom:5px}.meshy-ai-text-to-3d-form small{font-size:12px;color:white}@media (max-width:768px){.meshy-ai-text-to-3d-form{padding:15px}.meshy-ai-text-to-3d-form input[type=number],.meshy-ai-text-to-3d-form select,.meshy-ai-text-to-3d-form textarea{font-size:14px}.meshy-ai-text-to-3d-form label{font-size:14px}.meshy-ai-text-to-3d-form small{font-size:11px}}.cmb2-wrap ul{margin:10px!important}#generate-text-to-3d{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important}#tutorial-text-to-3d{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important;margin-bottom:10px;margin-top:10px}.meshy-container{width:100%;margin:0 auto;text-align:left}.meshy-logo{-ms-flex-item-align:start;align-self:flex-start;width:100%;max-width:150px;height:auto;margin-bottom:10px}.meshy-container p{width:100%;margin:0}.meshy-container p{color:white}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.inside{background:radial-gradient(50% 75% at bottom left,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 90%),radial-gradient(50% 75% at top right,rgb(0,224,135) 0%,rgba(7,28,38,0.8) 70%),#071c26;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>h2{color:white!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header{border-bottom:none!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>div>button.handle-order-higher{color:white!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>div>button.handle-order-lower{color:white!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>div>button.handlediv{color:white!important}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#ar_model_viewer_for_woocommerce_metabox_image_to_3d>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#image-to-3d-title{display:none!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.inside{background:radial-gradient(50% 75% at bottom left,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 90%),radial-gradient(50% 75% at top right,rgb(0,224,135) 0%,rgba(7,28,38,0.8) 70%),#071c26;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>h2{color:white!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header{border-bottom:none!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>div>button.handle-order-higher{color:white!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>div>button.handle-order-lower{color:white!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>div>button.handlediv{color:white!important}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#ar_model_viewer_for_woocommerce_metabox_tasks>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#text-to-3d-tasks-title{color:white!important}.download-btn{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important}.video-preview{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important}.refine-btn{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important}.icon-in-field{width:18px;vertical-align:middle}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;margin-top:0px!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>h2{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header{border-bottom:none!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handle-order-higher{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handle-order-lower{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handlediv{color:white!important}#ar_model_viewer_for_woocommerce_metaboxes>div.postbox-header>div>button.handlediv>span.toggle-indicator{color:white}#ar_model_viewer_for_woocommerce_metaboxes>div.inside{background:radial-gradient(50% 75% at bottom left,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 90%),radial-gradient(50% 75% at top right,rgb(0,224,135) 0%,rgba(7,28,38,0.8) 70%),#071c26;margin-top:0px!important}.cmb-th>label,div.cmb-td>p{font-weight:600;color:white!important}.ar-model-viewer-logo{width:200px;height:auto}div.cmb-td>input{border:none!important;background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087));background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%);background-origin:border-box;background-clip:padding-box,border-box;color:white;font-weight:500}div.cmb-td>input:focus{color:black!important}#ar_model_viewer_for_woocommerce_product_preview,#ar_model_viewer_for_woocommerce_product_settings,#ar_model_viewer_for_woocommerce_product_tutorial,#cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes input.cmb2-upload-button.button-secondary{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none}.cmb-type-group .cmb-repeatable-group:not(:last-of-type),.cmb-type-group .cmb-row:not(:last-of-type),.cmb2-postbox .cmb-repeatable-group:not(:last-of-type),.cmb2-postbox .cmb-row:not(:last-of-type){border-bottom:1px solid rgba(204,204,204,0.14)!important}.file-status.cmb2-media-item{color:#00e087}#ar_model_viewer_for_woocommerce_file_object-status>div>a.cmb2-remove-file-button,#ar_model_viewer_for_woocommerce_file_object-status>div>a:nth-child(2){color:#a658f2}#ar-model-viewer-for-woocommerce-shortcode-table{width:100%;margin:0 auto;text-align:center}#ar-model-viewer-for-woocommerce-shortcode-table table{width:100%;border-collapse:collapse}#ar-model-viewer-for-woocommerce-shortcode-table table th{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087));background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%);color:white;padding:15px}#ar-model-viewer-for-woocommerce-shortcode-table table td{padding:20px;vertical-align:top;color:white}.shortcode-box{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087));background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%);border:none;padding:10px;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}code{background-color:white;padding:10px;font-size:14px;font-family:monospace;border-radius:4px;color:#071c26}.copy-button{margin-left:10px;padding:5px 10px;background-color:#a658f2;color:white;border:none;border-radius:5px;cursor:pointer;-webkit-transition:background-color 0.3s ease;transition:background-color 0.3s ease}.copy-button:hover{background-color:#7d3bdb}.driver-popover-next-btn,.driver-popover-prev-btn{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none}.driver-popover-progress-text{color:white!important}.driver-popover-footer button{text-shadow:none!important;color:white!important;border:none!important;border-radius:3px}.alertify-notifier .ajs-message.ajs-success{color:white!important;background:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;text-shadow:-1px -1px 0 rgba(0,0,0,0.5);border:none;border-color:none;font-weight:500}.alertify .ajs-modal{z-index:999999!important}.alertify .ajs-dialog{background:radial-gradient(50% 75% at bottom left,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 90%),radial-gradient(50% 75% at top right,rgb(0,224,135) 0%,rgba(7,28,38,0.8) 70%),#071c26!important;color:#ede7f6!important}.ajs-header{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:#ede7f6!important;border-bottom:none!important}.ajs-footer{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:#ede7f6!important;border-top:none!important}.alertify .ajs-body{color:white!important}.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok{color:#ffffff!important;background-color:#a658f2!important;border-radius:5px}.alertify .ajs-footer .ajs-buttons .ajs-button{color:#ffffff!important;background-color:#a658f2!important;border-radius:5px}.alertify .ajs-commands button{background-color:none!important}
+/**
+ * Product editor styles.
+ *
+ * Plain CSS built on the design tokens of `...-admin-tokens.css`. It replaces the former
+ * Sass sources (product, text-to-3D, image-to-3D and tasks) and, in particular, the two
+ * `@import` rules that pointed to `node_modules/tabulator-tables`: those files are not
+ * shipped with the plugin, so the tasks table had no styling on real installs.
+ *
+ * Every selector is scoped with `body.armvw-product-editor`, the body class added on this
+ * screen only.
+ *
+ * @link       https://racmanuel.dev
+ * @since      3.0.0
+ * @package    Ar_Model_Viewer_For_Woocommerce
+ */
+
+/* -------------------------------------------------------------------------
+ * Metabox chrome: brand gradient header and dark canvas
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d > .postbox-header,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks > .postbox-header,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d > .postbox-header {
+	margin-top: 0 !important;
+	border-bottom: none !important;
+	background-image: var(--armvw-gradient);
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header > h2,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d > .postbox-header > h2,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks > .postbox-header > h2,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d > .postbox-header > h2 {
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-higher,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-lower,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handlediv,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d .postbox-header button.handle-order-higher,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d .postbox-header button.handle-order-lower,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d .postbox-header button.handlediv,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks .postbox-header button.handle-order-higher,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks .postbox-header button.handle-order-lower,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks .postbox-header button.handlediv,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d .postbox-header button.handle-order-higher,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d .postbox-header button.handle-order-lower,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d .postbox-header button.handlediv {
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header .toggle-indicator,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d > .postbox-header .toggle-indicator,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks > .postbox-header .toggle-indicator,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d > .postbox-header .toggle-indicator {
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .inside,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_text_to_3d > .inside,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_tasks > .inside,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_metabox_image_to_3d > .inside {
+	margin-top: 0 !important;
+	background: var(--armvw-glow-violet), var(--armvw-glow-mint), var(--armvw-ink);
+}
+
+/* -------------------------------------------------------------------------
+ * Field text and CMB2 helpers
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor .cmb-th > label,
+body.armvw-product-editor div.cmb-td > p {
+	font-weight: 600;
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor .cmb2-wrap ul {
+	margin: 10px !important;
+}
+
+body.armvw-product-editor .icon-in-field {
+	width: 18px;
+	vertical-align: middle;
+}
+
+body.armvw-product-editor .ar-model-viewer-logo {
+	width: 200px;
+	height: auto;
+}
+
+body.armvw-product-editor .cmb-type-group .cmb-repeatable-group:not(:last-of-type),
+body.armvw-product-editor .cmb-type-group .cmb-row:not(:last-of-type),
+body.armvw-product-editor .cmb2-postbox .cmb-repeatable-group:not(:last-of-type),
+body.armvw-product-editor .cmb2-postbox .cmb-row:not(:last-of-type) {
+	border-bottom: 1px solid var(--armvw-border) !important;
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object-status > div > a:nth-child(2),
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object-status > div > a.cmb2-remove-file-button {
+	color: var(--armvw-violet);
+}
+
+body.armvw-product-editor .file-status.cmb2-media-item {
+	color: var(--armvw-mint);
+}
+
+/* CMB2 title fields used only as containers */
+body.armvw-product-editor #text-to-3d-title,
+body.armvw-product-editor #image-to-3d-title {
+	display: none !important;
+}
+
+body.armvw-product-editor #text-to-3d-tasks-title {
+	color: var(--armvw-text) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * Gradients buttons
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_tutorial,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_settings,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_preview,
+body.armvw-product-editor #generate-text-to-3d,
+body.armvw-product-editor #tutorial-text-to-3d,
+body.armvw-product-editor #table-task-3d .download-btn,
+body.armvw-product-editor #table-task-3d .video-preview,
+body.armvw-product-editor #table-task-3d .refine-btn,
+body.armvw-product-editor #cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes input.cmb2-upload-button.button-secondary {
+	border: none;
+	background-image: var(--armvw-gradient) !important;
+	color: var(--armvw-text) !important;
+	font-weight: 500;
+	cursor: pointer;
+	transition: filter 0.15s ease;
+}
+
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_tutorial:hover,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_settings:hover,
+body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_preview:hover,
+body.armvw-product-editor #generate-text-to-3d:hover,
+body.armvw-product-editor #tutorial-text-to-3d:hover,
+body.armvw-product-editor #table-task-3d .download-btn:hover,
+body.armvw-product-editor #table-task-3d .video-preview:hover,
+body.armvw-product-editor #table-task-3d .refine-btn:hover,
+body.armvw-product-editor #cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes input.cmb2-upload-button.button-secondary:hover {
+	filter: brightness(1.08);
+}
+
+body.armvw-product-editor #tutorial-text-to-3d {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/* -------------------------------------------------------------------------
+ * Text inputs
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor div.cmb-td > input,
+body.armvw-product-editor #meshy-ai-text-to-3d-form input[type="number"],
+body.armvw-product-editor #meshy-ai-text-to-3d-form textarea {
+	border: none !important;
+	background-image: var(--armvw-gradient);
+	background-origin: border-box;
+	color: var(--armvw-text);
+	font-weight: 500;
+	width: 100%;
+}
+
+body.armvw-product-editor #meshy-ai-text-to-3d-form input[type="number"]::placeholder,
+body.armvw-product-editor #meshy-ai-text-to-3d-form textarea::placeholder {
+	color: var(--armvw-text);
+}
+
+/* On focus the gradient is dropped for a readable white field. */
+body.armvw-product-editor div.cmb-td > input:focus,
+body.armvw-product-editor #meshy-ai-text-to-3d-form input[type="number"]:focus,
+body.armvw-product-editor #meshy-ai-text-to-3d-form textarea:focus {
+	background-color: var(--armvw-white);
+	background-image: none !important;
+	color: var(--armvw-ink) !important;
+}
+
+body.armvw-product-editor #meshy-ai-text-to-3d-form input[type="number"],
+body.armvw-product-editor #meshy-ai-text-to-3d-form textarea {
+	box-shadow: none;
+}
+
+body.armvw-product-editor #meshy-ai-text-to-3d-form select {
+	width: 100%;
+	border-color: var(--armvw-border-strong);
+	background-color: rgba(4, 18, 24, 0.6);
+	color: var(--armvw-text);
+	box-shadow: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Text to 3D form
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor #meshy-ai-text-to-3d-form {
+	max-width: 100%;
+	margin: 0 auto;
+	padding: var(--armvw-space-5);
+	background-color: transparent;
+}
+
+body.armvw-product-editor .meshy-ai-text-to-3d-form .form-group {
+	margin-bottom: var(--armvw-space-5);
+}
+
+body.armvw-product-editor .meshy-ai-text-to-3d-form label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: 700;
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor .meshy-ai-text-to-3d-form small {
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-muted);
+}
+
+body.armvw-product-editor .meshy-ai-text-to-3d-form ul {
+	margin-left: 20px;
+	list-style-type: circle;
+}
+
+body.armvw-product-editor .meshy-ai-text-to-3d-form li {
+	margin-bottom: 5px;
+	color: var(--armvw-text-muted);
+}
+
+body.armvw-product-editor .meshy-container {
+	width: 100%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+body.armvw-product-editor .meshy-container p {
+	width: 100%;
+	margin: 0;
+	color: var(--armvw-text-muted);
+}
+
+body.armvw-product-editor .meshy-logo {
+	align-self: flex-start;
+	width: 100%;
+	max-width: 150px;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+	body.armvw-product-editor #meshy-ai-text-to-3d-form {
+		padding: var(--armvw-space-3);
+	}
+
+	body.armvw-product-editor .meshy-ai-text-to-3d-form input[type="number"],
+	body.armvw-product-editor .meshy-ai-text-to-3d-form select,
+	body.armvw-product-editor .meshy-ai-text-to-3d-form textarea,
+	body.armvw-product-editor .meshy-ai-text-to-3d-form label {
+		font-size: 14px;
+	}
+
+	body.armvw-product-editor .meshy-ai-text-to-3d-form small {
+		font-size: var(--armvw-font-size-xs);
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Shortcode helper boxes
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor .shortcode-box {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: 100%;
+	padding: 10px;
+	border: none;
+	border-radius: var(--armvw-radius-sm);
+	background-image: var(--armvw-gradient);
+}
+
+body.armvw-product-editor .shortcode-box code {
+	padding: 10px;
+	border-radius: 4px;
+	background-color: var(--armvw-white);
+	font-family: var(--armvw-font-mono);
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-ink);
+	overflow-x: auto;
+}
+
+body.armvw-product-editor .copy-button {
+	margin-left: 10px;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--armvw-violet);
+	color: var(--armvw-text);
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+body.armvw-product-editor .copy-button:hover {
+	background-color: var(--armvw-violet-dark);
+}
+
+/* -------------------------------------------------------------------------
+ * Tasks table
+ *
+ * Minimal layout for the table rendered by the tasks library, replacing the
+ * stylesheet that was previously loaded from `node_modules`.
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor #table-task-3d.tabulator {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-sm);
+	background-color: rgba(4, 18, 24, 0.5);
+	font-family: var(--armvw-font);
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-header {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	border-bottom: 1px solid var(--armvw-border-strong);
+	background-image: var(--armvw-gradient);
+	font-weight: 700;
+	color: var(--armvw-ink);
+	white-space: nowrap;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-header .tabulator-col {
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	height: 100%;
+	overflow: hidden;
+	border-right: 1px solid rgba(7, 28, 38, 0.18);
+	text-align: left;
+	vertical-align: bottom;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-header .tabulator-col .tabulator-col-content {
+	position: relative;
+	box-sizing: border-box;
+	padding: 6px 8px;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-header .tabulator-col.tabulator-frozen {
+	position: sticky;
+	left: 0;
+	z-index: 2;
+	background-image: var(--armvw-gradient);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-tableholder {
+	position: relative;
+	width: 100%;
+	overflow: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-tableholder .tabulator-table {
+	position: relative;
+	display: inline-block;
+	overflow: visible;
+	background-color: transparent;
+	white-space: nowrap;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row {
+	position: relative;
+	box-sizing: border-box;
+	min-height: 34px;
+	background-color: transparent;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row.tabulator-row-even {
+	background-color: rgba(255, 255, 255, 0.04);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row:hover {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row .tabulator-cell {
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding: 6px 8px;
+	border-right: 1px solid var(--armvw-border);
+	vertical-align: middle;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row .tabulator-cell.tabulator-frozen {
+	position: sticky;
+	left: 0;
+	z-index: 1;
+	background-color: var(--armvw-ink);
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-row .tabulator-cell img {
+	height: 32px;
+	width: 32px;
+	object-fit: cover;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+body.armvw-product-editor #table-task-3d .tabulator-placeholder {
+	box-sizing: border-box;
+	width: 100%;
+	padding: var(--armvw-space-4);
+	color: var(--armvw-text-faint);
+	text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+ * Tutorial popovers
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor .driver-popover-next-btn,
+body.armvw-product-editor .driver-popover-prev-btn {
+	border: none;
+	background-image: var(--armvw-gradient) !important;
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor .driver-popover-progress-text {
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor .driver-popover-footer button {
+	border: none;
+	border-radius: 3px;
+	color: var(--armvw-text) !important;
+	text-shadow: none !important;
+}
+
+/* -------------------------------------------------------------------------
+ * Notifications and preview modal
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor .alertify-notifier .ajs-message.ajs-success {
+	border: none;
+	background: var(--armvw-gradient) !important;
+	color: var(--armvw-text) !important;
+	font-weight: 500;
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+body.armvw-product-editor .alertify .ajs-modal {
+	z-index: 999999 !important;
+}
+
+body.armvw-product-editor .alertify .ajs-dialog {
+	background: var(--armvw-glow-violet), var(--armvw-glow-mint), var(--armvw-ink) !important;
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor .alertify .ajs-header,
+body.armvw-product-editor .alertify .ajs-footer {
+	border: none !important;
+	background-image: var(--armvw-gradient) !important;
+	color: var(--armvw-ink) !important;
+}
+
+body.armvw-product-editor .alertify .ajs-body {
+	color: var(--armvw-text) !important;
+}
+
+body.armvw-product-editor .alertify .ajs-footer .ajs-buttons .ajs-button {
+	border-radius: 5px;
+	background-color: var(--armvw-violet) !important;
+	color: var(--armvw-text) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.armvw-product-editor * {
+		transition: none !important;
+		animation: none !important;
+	}
+}

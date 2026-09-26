@@ -8,7 +8,7 @@
 <div class="cmb-row">
     <div class="cmb-th">
         <!-- Display a logo image for the AR Model Viewer with proper escaping for the image URL and alt attribute. -->
-        <img src="<?php echo esc_url(plugin_dir_url(__DIR__) . 'images/armvw-logo-transparent.png'); ?>"
+        <img src="<?php echo esc_url(plugin_dir_url(__DIR__) . 'images/armvw-logo-400.png'); ?>"
                 alt="<?php esc_attr_e('Logo - AR Model Viewer for WooCommerce', 'ar-model-viewer-for-woocommerce');?>"
                 class="ar-model-viewer-logo">
     </div>
