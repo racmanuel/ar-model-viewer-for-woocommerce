@@ -140,6 +140,46 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     }
 
     /**
+     * Return the CSS that loads the bundled DM Sans variable font.
+     *
+     * The files are the latin subsets published by Fontsource and copied by
+     * `npm run vendors`. Each face declares its unicode range, so a browser only downloads
+     * the subset the page needs, and the pair is four times smaller than the full font.
+     *
+     * @since 3.0.0
+     * @return string The `@font-face` rules.
+     */
+    private function font_face_css()
+    {
+        $base = plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/fonts/';
+
+        $faces = array(
+            array(
+                'file' => 'dm-sans-latin.woff2',
+                'range' => 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD',
+            ),
+            array(
+                'file' => 'dm-sans-latin-ext.woff2',
+                'range' => 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF',
+            ),
+        );
+
+        $css = '';
+
+        foreach ($faces as $face) {
+            // Single quotes on purpose: inside a double quoted string PHP would interpolate
+            // the `$s` of the `%1$s` placeholders and break the format.
+            $css .= sprintf(
+                '@font-face{font-family:\'DM Sans Variable\';font-style:normal;font-display:swap;font-weight:100 1000;src:url(\'%1$s\') format(\'woff2-variations\');unicode-range:%2$s;}',
+                esc_url_raw($base . $face['file']),
+                $face['range']
+            );
+        }
+
+        return $css;
+    }
+
+    /**
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
@@ -169,6 +209,12 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         );
 
         if ($is_settings_screen) {
+            /*
+             * DM Sans is only used on the settings screen, and only the subset the page needs
+             * is downloaded: the font files live in assets/vendor/fonts.
+             */
+            wp_add_inline_style($tokens_handle, $this->font_face_css());
+
             wp_enqueue_style(
                 $this->plugin_name . '-settings',
                 plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css',

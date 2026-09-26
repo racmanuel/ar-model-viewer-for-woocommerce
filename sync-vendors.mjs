@@ -51,12 +51,39 @@ const styles = [
 	'node_modules/driver.js/dist/driver.css',
 ];
 
+/**
+ * Fonts copied from the Fontsource packages: [source, file name].
+ *
+ * Only the latin subsets of the variable font are copied. They are declared with their
+ * `unicode-range`, so a browser downloads the latin file for an English screen and only
+ * fetches the latin extended one when the page actually contains those characters.
+ *
+ * @type {Array<Array<string>>}
+ */
+const fonts = [
+	[
+		'node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2',
+		'fonts/dm-sans-latin.woff2',
+	],
+	[
+		'node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-ext-wght-normal.woff2',
+		'fonts/dm-sans-latin-ext.woff2',
+	],
+];
+
 mkdirSync(target, { recursive: true });
 
 scripts.forEach(([source, name]) => {
 	// Read and write instead of copying: `copyFileSync` keeps the modification time of the
 	// source, and WordPress builds the cache busting version of an asset from that time. A
 	// stale timestamp would keep serving the previous file from the browser cache.
+	writeFileSync(`${target}/${name}`, readFileSync(source));
+	console.log(`${name} <- ${source}`);
+});
+
+mkdirSync(`${target}/fonts`, { recursive: true });
+
+fonts.forEach(([source, name]) => {
 	writeFileSync(`${target}/${name}`, readFileSync(source));
 	console.log(`${name} <- ${source}`);
 });
