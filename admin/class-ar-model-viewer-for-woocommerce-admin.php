@@ -297,6 +297,10 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 'armvwSettings',
                 array(
                     'viewer_url' => $this->vendor_url('model-viewer.min.js'),
+                    // The render scale, the power preference, the cache size and the decoder
+                    // locations are static properties of the element, so the script has to apply
+                    // them instead of printing them in the markup.
+                    'static_properties' => Ar_Model_Viewer_For_Woocommerce_Settings::static_properties(),
                 )
             );
 
@@ -320,6 +324,10 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
         if ($screen && 'product' === $screen->post_type && 'post' === $screen->base) {
+            // The file fields of the metabox open the WordPress media library, so the scripts
+            // that build the modal are needed on this screen.
+            wp_enqueue_media();
+
             wp_enqueue_script(
                 $this->plugin_name . '-product',
                 plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-product.js',
@@ -336,6 +344,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
                 'api_key_set' => Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key(),
                 // The script injects these libraries on demand, only when a feature needs them.
                 'vendor_files' => $this->vendor_files(),
+                // Static properties of the viewer element, applied by the script once the library
+                // is loaded: they cannot be printed as attributes.
+                'static_properties' => Ar_Model_Viewer_For_Woocommerce_Settings::static_properties(),
             ));
 
             // The alertify and driver.js stylesheets used to be bundled inside the JavaScript.

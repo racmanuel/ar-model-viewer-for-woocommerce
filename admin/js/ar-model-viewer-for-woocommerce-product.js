@@ -80,6 +80,31 @@ var armvwVendor = (function (window, document) {
   };
 })(window, document);
 
+/**
+ * Apply the static properties of the viewer element.
+ *
+ * The render scale, the power preference, the cache size and the decoder locations are static
+ * properties of the element class and not attributes, so they cannot travel in the markup. They
+ * are assigned as soon as the library is defined and before any viewer is created.
+ *
+ * @return {void}
+ */
+function armvwApplyStaticProperties() {
+  var values = (window.ajax_object && window.ajax_object.static_properties) || {};
+
+  if (Object.keys(values).length === 0 || !window.customElements) {
+    return;
+  }
+
+  window.customElements.whenDefined("model-viewer").then(function () {
+    var viewer = window.customElements.get("model-viewer");
+
+    Object.keys(values).forEach(function (name) {
+      viewer[name] = values[name];
+    });
+  });
+}
+
 // Notifications are used by every interaction, so this one is requested right away.
 armvwVendor.ensure(["alertify"]);
 
@@ -520,6 +545,94 @@ function armvwDriverFactory() {
       );
     });
 
+    /*
+     * Open the WordPress media library from the file fields of the metabox.
+     *
+     * The fields are plain text inputs on purpose: a URL can be typed, pasted or picked, which is
+     * what a store that keeps its models on a CDN needs. The button only fills the input, so what
+     * gets saved is always the same kind of value.
+     */
+    $(document).on("click", ".armvw-media", function (event) {
+      event.preventDefault();
+
+      var button = $(this);
+      var input = document.getElementById(button.data("armvw-target"));
+      var isModel = "model" === button.data("armvw-kind");
+
+      if (!input || !window.wp || !window.wp.media) {
+        return;
+      }
+
+      var frame = window.wp.media({
+        title: button.data("armvw-title"),
+        button: { text: button.data("armvw-button") },
+        // The model is not filtered by type: the browser of the media library only lists the
+        // MIME types WordPress knows, and `model/gltf-binary` is not one of them by default, so a
+        // filter would show an empty library to a store that does have its .glb files uploaded.
+        library: isModel
+          ? {}
+          : { type: ["image/jpeg", "image/png", "image/webp", "image/gif"] },
+        multiple: false,
+      });
+
+      frame.on("select", function () {
+        var attachment = frame.state().get("selection").first().toJSON();
+
+        input.value = attachment.url;
+        input.dispatchEvent(new Event("change"));
+      });
+
+      frame.open();
+    });
+
+    /*
+     * Copy the camera of the preview into the fields of the metabox.
+     *
+     * Guessing a `camera-orbit` by hand is the kind of task nobody enjoys and everybody gets
+     * wrong, so the values are read from the viewer the visitor has just moved. The three
+     * getters return strings ready to be used as attribute values.
+     */
+    $(document).on("click", "#armvw-use-current-view", function () {
+      var viewer = document.getElementById("model-viewer");
+
+      if (!viewer || typeof viewer.getCameraOrbit !== "function") {
+        alertify.error(
+          __(
+            "Open the 3D preview first: there is no viewer to read the camera from.",
+            "ar-model-viewer-for-woocommerce"
+          )
+        );
+        return;
+      }
+
+      var values = {
+        "armvw-product-camera-orbit": viewer.getCameraOrbit().toString(),
+        "armvw-product-camera-target": viewer.getCameraTarget().toString(),
+        "armvw-product-field-of-view": Math.round(viewer.getFieldOfView() * 100) / 100 + "deg",
+      };
+      var written = 0;
+
+      Object.keys(values).forEach(function (id) {
+        var input = document.getElementById(id);
+
+        if (input) {
+          input.value = values[id];
+          written++;
+        }
+      });
+
+      if (written === 0) {
+        alertify.error(
+          __("The fields of the 3D viewer were not found on this page.", "ar-model-viewer-for-woocommerce")
+        );
+        return;
+      }
+
+      alertify.success(
+        __("Camera copied. Save the product to keep it.", "ar-model-viewer-for-woocommerce")
+      );
+    });
+
     // Handles the click event for the 3D product preview button
     $("#ar_model_viewer_for_woocommerce_product_preview").click(function (e) {
       e.preventDefault(); // Prevents the default button behavior
@@ -534,8 +647,9 @@ function armvwDriverFactory() {
       }
 
       // The viewer library is requested now so it downloads while the settings request is
-      // in flight. The custom element upgrades itself as soon as the library is loaded.
-      window.armvwVendor.ensure(["model-viewer"]);
+      // in flight. The custom element upgrades itself as soon as the library is loaded, and the
+      // static properties have to be assigned before that happens.
+      window.armvwVendor.ensure(["model-viewer"]).then(armvwApplyStaticProperties);
 
       // Custom HTML content for the 3D viewer with centered styling and camera controls
       var htmlContent = `

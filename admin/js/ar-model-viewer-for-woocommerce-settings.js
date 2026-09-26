@@ -230,6 +230,32 @@
 	}
 
 	/**
+	 * Apply the static properties of the viewer element.
+	 *
+	 * The render scale, the power preference, the cache size and the decoder locations are static
+	 * properties of the element class and not attributes, so they cannot travel in the markup.
+	 * They have to be assigned once the library is defined and before a viewer is created, which
+	 * is why this runs right after the library finishes loading.
+	 *
+	 * @return {void}
+	 */
+	function applyStaticProperties() {
+		var values = (window.armvwSettings || {}).static_properties || {};
+
+		if (Object.keys(values).length === 0 || !window.customElements) {
+			return;
+		}
+
+		window.customElements.whenDefined("model-viewer").then(function () {
+			var viewer = window.customElements.get("model-viewer");
+
+			Object.keys(values).forEach(function (name) {
+				viewer[name] = values[name];
+			});
+		});
+	}
+
+	/**
 	 * Load the 3D viewer only when the visitor asks for the demo.
 	 *
 	 * The library weighs around 1 MB, so the card shows the poster until it is clicked. The
@@ -255,6 +281,7 @@
 			script.src = url;
 			script.async = true;
 			script.onload = function () {
+				applyStaticProperties();
 				wrapper.classList.add("is-ready");
 			};
 			script.onerror = function () {

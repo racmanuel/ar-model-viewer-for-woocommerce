@@ -74,137 +74,167 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
     }
 
     /**
-     * Define the metabox and field configurations.
+     * Register the metabox with the options of the viewer for a single product.
+     *
+     * It is a native metabox on purpose: these fields belong to the viewer, not to the metabox
+     * library that still owns the file fields, so they can be maintained, tested and documented
+     * without a dependency in between.
+     *
+     * @since 3.0.0
+     * @return void
      */
-    public function ar_model_viewer_for_woocommerce_cmb2_metaboxes()
+    public function ar_model_viewer_for_woocommerce_register_3d_options_metabox()
     {
-        /**
-         * Initiate the metabox
-         */
-        $main_metabox = new_cmb2_box(array(
-            'id' => 'ar_model_viewer_for_woocommerce_metaboxes',
-            'title' => __('AR Model Viewer for WooCommerce', 'cmb2'),
-            'object_types' => array('product'), // Post type
-            'context' => 'normal',
-            'priority' => 'low',
-            'show_names' => true, // Show field names on the left
-            'cmb_styles' => true, // false to disable the CMB stylesheet
-            'closed' => false, // Keep the metabox closed by default
-        ));
+        add_meta_box(
+            'ar-model-viewer-for-woocommerce-3d-options',
+            __('3D viewer: camera and model', 'ar-model-viewer-for-woocommerce'),
+            array($this, 'ar_model_viewer_for_woocommerce_render_3d_options_metabox'),
+            'product',
+            'normal',
+            'default'
+        );
+    }
 
-        // Regular File field - Android .glb
-        $main_metabox->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-3d-94.png' . '" class="icon-in-field"></img> 3D Object File',
-            'desc' => 'Upload or enter an URL to 3D object (with .glb  or .glTF extension).',
-            'id' => 'ar_model_viewer_for_woocommerce_file_object',
-            'type' => 'file',
-            // Optional:
-            'options' => array(
-                'url' => true, // Hide the text input for the url
-            ),
-            'text' => array(
-                'add_upload_file_text' => 'Add URL or File', // Change upload button text. Default: "Add or Upload File"
-            ),
-            // query_args are passed to wp.media's library query.
-            'query_args' => array(
-                'type' => 'model/gltf-binary', // Make library only display .glb files.
-            ),
-            'before_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_before_title_row'),
-        ));
+    /**
+     * Render the metabox of the viewer options.
+     *
+     * @since 3.0.0
+     * @param WP_Post $post Product being edited.
+     * @return void
+     */
+    public function ar_model_viewer_for_woocommerce_render_3d_options_metabox($post)
+    {
+        $product = wc_get_product($post->ID);
 
-        //Regular File Field to Poster
-        $main_metabox->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-photo-gallery-94.png' . '" class="icon-in-field"></img> Poster',
-            'desc' => 'Upload an image or enter an URL. If the image field (alt) is left empty, the photo of the product is taken. This field displays an image instead of the model, useful for showing the user something before a model is loaded and ready to render.',
-            'id' => 'ar_model_viewer_for_woocommerce_file_poster',
-            'type' => 'file',
-            // Optional:
-            'options' => array(
-                'url' => true, // Hide the text input for the url
-            ),
-            'text' => array(
-                'add_upload_file_text' => 'Add Image', // Change upload button text. Default: "Add or Upload File"
-            ),
-            // query_args are passed to wp.media's library query.
-            'query_args' => array(
-                // Or only allow gif, jpg, or png images
-                'type' => array(
-                    'image/gif',
-                    'image/jpeg',
-                    'image/png',
-                    'image/webp',
-                ),
-            ),
-            'preview_size' => 'thumbnail', // Image size to use when previewing in the admin.
-        ));
-
-        // Regular Text field - alt for models
-        $main_metabox->add_field(array(
-            'name' => '<img src="' . plugin_dir_url(__FILE__) . 'images/icons8-info-94.png' . '" class="icon-in-field"></img> alt',
-            'desc' => 'Insert a text. if the text field is left empty, the name of the product is taken. Configures the model with custom text that will be used to describe the model to viewers who use a screen reader or otherwise depend on additional semantic context to understand what they are viewing.',
-            'id' => 'ar_model_viewer_for_woocommerce_file_alt',
-            'type' => 'text',
-            'after_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_after_title_row'),
-        ));
-
-        $meshyAi = Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key();
-
-        if (!empty($meshyAi)) {
-            # code...
-            $text_to_3d = new_cmb2_box(array(
-            'id' => 'ar_model_viewer_for_woocommerce_metabox_text_to_3d',
-            'title' => __('Text to 3D Model', 'cmb2'),
-            'object_types' => array('product'), // Post type
-            'context' => 'normal',
-            'priority' => 'low',
-            'show_names' => false, // Show field names on the left
-            'cmb_styles' => true, // false to disable the CMB stylesheet
-            'closed' => false, // Keep the metabox closed by default
-        ));
-
-        $text_to_3d->add_field(array(
-            'name' => '3D Model with Text',
-            'desc' => '',
-            'type' => 'title',
-            'id' => 'text_to_3d_title',
-            'after' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_text_to_3d_content'),
-        ));
-
-        $tasks_ai = new_cmb2_box(array(
-            'id' => 'ar_model_viewer_for_woocommerce_metabox_tasks',
-            'title' => __('Tasks of Meshy AI', 'cmb2'),
-            'object_types' => array('product'), // Post type
-            'context' => 'normal',
-            'priority' => 'low',
-            'show_names' => false, // Show field names on the left
-            'cmb_styles' => true, // false to disable the CMB stylesheet
-            'closed' => false, // Keep the metabox closed by default
-        ));
-
-        $tasks_ai->add_field(array(
-            'name' => 'Text to 3D Tasks',
-            'desc' => '',
-            'type' => 'title',
-            'id' => 'text_to_3d_tasks_title',
-            'after' => '<div id="table-task-3d"></div>',
-        ));
+        if (!$product) {
+            return;
         }
-        
+
+        include plugin_dir_path(__FILE__) . 'partials/ar-model-viewer-for-woocommerce-admin-display-product-3d-options.php';
     }
 
-    public static function ar_model_viewer_for_woocommerce_before_title_row()
+    /**
+     * Save the viewer options of a product.
+     *
+     * An emptied field deletes its meta, so a product that inherits every value carries nothing
+     * in the database. Values are validated by the model class, which is also what reads them,
+     * so what is stored and what is printed can never disagree.
+     *
+     * @since 3.0.0
+     * @param int $post_id Product id.
+     * @return void
+     */
+    public function ar_model_viewer_for_woocommerce_save_3d_options($post_id)
     {
-        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-header.php';
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (!isset($_POST['armvw_3d_options_nonce'])) {
+            return;
+        }
+
+        $nonce = sanitize_text_field(wp_unslash($_POST['armvw_3d_options_nonce']));
+
+        if (!wp_verify_nonce($nonce, 'armvw_save_3d_options')) {
+            return;
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+
+        $input = array();
+
+        if (isset($_POST['armvw_product']) && is_array($_POST['armvw_product'])) {
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is validated by type in the model class.
+            $input = wp_unslash($_POST['armvw_product']);
+        }
+
+        Ar_Model_Viewer_For_Woocommerce_Product_Model::save($post_id, $input);
+
+        $this->logger->log_to_woocommerce(
+            sprintf('Viewer options updated for product ID: %d', $post_id),
+            'info'
+        );
     }
 
-    public static function ar_model_viewer_for_woocommerce_after_title_row()
+    /**
+     * Register the metabox that attaches the model file to a product.
+     *
+     * This is the native replacement of the first metabox the plugin used to build with the
+     * metabox library. It is registered with `add_meta_box()` so the plugin no longer needs a
+     * third party dependency to ask for a file, and it keeps the same meta keys, which means no
+     * product loses the model it already had.
+     *
+     * @since 3.0.0
+     * @return void
+     */
+    public function ar_model_viewer_for_woocommerce_register_model_metabox()
     {
-        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-footer.php';
+        add_meta_box(
+            'ar-model-viewer-for-woocommerce-model',
+            __('AR Model Viewer for WooCommerce', 'ar-model-viewer-for-woocommerce'),
+            array($this, 'ar_model_viewer_for_woocommerce_render_model_metabox'),
+            'product',
+            'normal',
+            'high'
+        );
     }
 
-    public static function ar_model_viewer_for_woocommerce_text_to_3d_content()
+    /**
+     * Render the metabox that attaches the model file to a product.
+     *
+     * @since 3.0.0
+     * @param WP_Post $post Product being edited.
+     * @return void
+     */
+    public function ar_model_viewer_for_woocommerce_render_model_metabox($post)
     {
-        include_once 'partials/ar-model-viewer-for-woocommerce-admin-display-product-text-to-3d.php';
+        $product = wc_get_product($post->ID);
+
+        if (!$product) {
+            return;
+        }
+
+        include plugin_dir_path(__FILE__) . 'partials/ar-model-viewer-for-woocommerce-admin-display-product-model.php';
+    }
+
+    /**
+     * Save the three values that attach a model to a product.
+     *
+     * @since 3.0.0
+     * @param int $post_id Product id.
+     * @return void
+     */
+    public function ar_model_viewer_for_woocommerce_save_model_files($post_id)
+    {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (!isset($_POST['armvw_model_files_nonce'])) {
+            return;
+        }
+
+        $nonce = sanitize_text_field(wp_unslash($_POST['armvw_model_files_nonce']));
+
+        if (!wp_verify_nonce($nonce, 'armvw_save_model_files')) {
+            return;
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+
+        $input = array();
+
+        if (isset($_POST['armvw_files']) && is_array($_POST['armvw_files'])) {
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is sanitized in the model class.
+            $input = wp_unslash($_POST['armvw_files']);
+        }
+
+        Ar_Model_Viewer_For_Woocommerce_Product_Model::save_files($post_id, $input);
     }
 
     /**
@@ -239,23 +269,37 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
         // Retrieve individual settings
         $settings = $this->get_ar_model_viewer_settings();
 
-        // Get the product name
-        $product_name = get_the_title($product_id);
+        // The product is fetched once and handed to the resolver, which is the same one the
+        // shortcode, the product tab and the public endpoint use. This handler used to call
+        // three local copies of that logic, and each copy fetched the product again.
+        $product = wc_get_product($product_id);
+
+        if (!$product) {
+            $this->logger->log_to_woocommerce("Product not found for ID $product_id", 'error');
+            wp_send_json_error('Product not found.');
+            wp_die();
+        }
+
+        $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
+        $product_name = $product->get_name();
+
+        // The preview needs a file to show, so the editor keeps receiving the same message it
+        // already handles when the product has none.
+        if ('' === trim($model['source'])) {
+            $this->logger->log_to_woocommerce("3D model file missing for product: {$product_name} (ID: $product_id)", 'error');
+            wp_send_json_error('3D model file missing for product. Try save the product before view a preview.');
+            wp_die();
+        }
 
         // Log product retrieval
         $this->logger->log_to_woocommerce("Product retrieved: $product_name (ID: $product_id)", 'info'); // Log info
 
-        // Retrieve product metadata
-        $model_alt = $this->get_model_alt_or_fallback($product_id);
-        $model_poster = $this->get_model_poster_or_fallback($product_id);
-        $model_3d_file = $this->get_model_3d_file_or_fallback($product_id);
-
         // Prepare data for response
         $data = array_merge($settings, [
             'product_name' => $product_name,
-            'model_3d_file' => $model_3d_file,
-            'model_alt' => $model_alt,
-            'model_poster' => $model_poster,
+            'model_3d_file' => $model['source'],
+            'model_alt' => $model['alt'],
+            'model_poster' => $model['poster'],
         ]);
 
         // Send JSON response and log success
@@ -275,145 +319,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
     private function get_ar_model_viewer_settings()
     {
         return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
-    }
-
-    /**
-     * Retrieves the alt text for the 3D model or falls back to the product name or short description.
-     *
-     * This function checks if the 3D model alt text is set. If not, it will try to return the product name.
-     * If the product name is also not set, it will return the short description.
-     * If none of these fields are available, it will log an error using the WooCommerce logger.
-     *
-     * @since    1.0.0
-     * @param    int    $product_id    The product ID.
-     * @return   string The alt text for the 3D model, or the product name, or the short description.
-     */
-    private function get_model_alt_or_fallback($product_id)
-    {
-        // Retrieve the WooCommerce product object
-        $product = wc_get_product($product_id);
-
-        // If the product doesn't exist, log an error and return an empty string
-        if (!$product) {
-            $this->logger->log_to_woocommerce('Product not found for ID ' . $product_id, 'error'); // Log error
-            return '';
-        }
-
-        // Get the 3D model alt text using WooCommerce's get_meta function
-        $model_alt = $product->get_meta('ar_model_viewer_for_woocommerce_file_alt', true);
-
-        // If the 3D model alt text is not available, fallback to the product name
-        if (empty($model_alt)) {
-            $product_name = $product->get_name(); // Use WooCommerce's native function to get the product name
-
-            // If the product name is also not available, fallback to the short description
-            if (empty($product_name)) {
-                $short_description = $product->get_short_description(); // Use WooCommerce's native function to get the short description
-
-                // If the short description is not available, log an error and return an empty string
-                if (empty($short_description)) {
-                    $this->logger->log_to_woocommerce('No alt, product name, or short description found for product ID ' . $product_id, 'error'); // Log error
-                    return ''; // Return empty string as fallback
-                }
-
-                // Return the short description if available
-                return $short_description;
-            }
-
-            // Return the product name if available
-            return $product_name;
-        }
-
-        // Return the 3D model alt text if it exists
-        return $model_alt;
-    }
-
-    /**
-     * Retrieves the 3D model poster URL or falls back to the product's main image URL.
-     *
-     * This function checks if the 3D model poster URL is set. If not, it will try to return the product's main image URL.
-     * If the product doesn't have a main image, it will log an error using the WooCommerce logger.
-     *
-     * @since    1.0.0
-     * @param    int    $product_id    The product ID.
-     * @return   string The URL of the poster image or the product's main image.
-     */
-    private function get_model_poster_or_fallback($product_id)
-    {
-        // Retrieve the WooCommerce product object
-        $product = wc_get_product($product_id);
-
-        // If the product doesn't exist, log an error and return an empty string
-        if (!$product) {
-            $this->logger->log_to_woocommerce('Product not found for ID ' . $product_id, 'error');
-            return '';
-        }
-
-        // Get the 3D model poster URL using WooCommerce's get_meta function
-        $model_poster = $product->get_meta('ar_model_viewer_for_woocommerce_file_poster', true);
-
-        // If the 3D model poster URL is empty or null, try to get the product's main image URL
-        if (empty($model_poster)) {
-            $main_image_id = $product->get_image_id(); // Get the ID of the main image
-
-            // If the product has no main image, log an error and return empty
-            if (empty($main_image_id)) {
-                $this->logger->log_to_woocommerce('No poster or main image found for product ID ' . $product_id, 'error');
-                return ''; // Return empty string as fallback
-            }
-
-            // Get the URL of the main image
-            $main_image_url = wp_get_attachment_url($main_image_id);
-
-            // Return the main image URL if available
-            if ($main_image_url) {
-                return $main_image_url;
-            } else {
-                $this->logger->log_to_woocommerce('Main image URL could not be retrieved for product ID ' . $product_id, 'error');
-                return ''; // Return empty if no URL could be retrieved
-            }
-        }
-
-        // Return the 3D model poster URL if it exists
-        return $model_poster;
-    }
-
-    /**
-     * Retrieves the 3D model file for the product or sets a fallback file from the plugin's includes directory.
-     *
-     * This function checks if the 3D model file is set for the product. If not, it will use a default 3D model
-     * file located in the includes folder of the plugin. It also logs an error if the model is missing.
-     *
-     * @since    1.0.0
-     * @param    int    $product_id    The product ID.
-     * @return   string The URL of the 3D model file.
-     */
-    public function get_model_3d_file_or_fallback($product_id)
-    {
-        // Retrieve the WooCommerce product object
-        $product = wc_get_product($product_id);
-
-        // If the product doesn't exist, log an error and return an empty string
-        if (!$product) {
-            $this->logger->log_to_woocommerce("Product not found for ID $product_id", 'error');
-            return '';
-        }
-
-        // Get the 3D model file using WooCommerce's get_meta function
-        $model_3d_file = $product->get_meta('ar_model_viewer_for_woocommerce_file_object', true);
-
-        // Check if the 3D model file exists
-        if (!$model_3d_file) {
-            $this->logger->log_to_woocommerce("3D model file missing for product: {$product->get_name()} (ID: $product_id)", 'error'); // Log error
-            wp_send_json_error('3D model file missing for product. Try save the product before view a preview.');
-            wp_die();
-        }
-
-        // Log success if the 3D model file is found
-        $this->logger->log_to_woocommerce("3D model file found for product: {$product->get_name()} (ID: $product_id)", 'info'); // Log info
-
-        // Return the 3D model file URL
-        return $model_3d_file;
     }
 
     /**
