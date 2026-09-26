@@ -68,10 +68,10 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
     }
 
     /**
-     * Handles the [ar-model-viewer-for-woocommerce-shortcode] shortcode.
+     * Handles the [ar_model_viewer_for_woocommerce_shortcode] shortcode.
      *
-     * Shortcode usage: [ar-model-viewer-for-woocommerce-shortcode id='123']
-     * Enclosing content: [ar-model-viewer-for-woocommerce-shortcode id='123']custom content[/ar-model-viewer-for-woocommerce-shortcode]
+     * Shortcode usage: [ar_model_viewer_for_woocommerce_shortcode id='123']
+     * Enclosing content: [ar_model_viewer_for_woocommerce_shortcode id='123']custom content[/ar_model_viewer_for_woocommerce_shortcode]
      *
      * @since 1.0.0
      *
@@ -138,16 +138,39 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
             }
         }
 
+        // The browser sends cookies and authorization headers when the model is fetched from
+        // a server that requires authentication.
+        $extra_attributes = '';
+
+        if ('true' === $settings['with_credentials']) {
+            $extra_attributes .= 'with-credentials ';
+        }
+
+        // The custom AR button replaces the default "Enter AR" icon of the viewer. It only
+        // makes sense when AR is enabled and the button has a label.
+        $ar_button = '';
+
+        if ('active' === $settings['ar'] && 'active' === $settings['ar_button'] && '' !== trim((string) $settings['ar_button_text'])) {
+            $ar_button = sprintf(
+                '<button slot="ar-button" style="background-color:%1$s;color:%2$s;border:none;border-radius:999px;padding:8px 14px;cursor:pointer;">%3$s</button>',
+                esc_attr($settings['ar_button_background_color']),
+                esc_attr($settings['ar_button_text_color']),
+                esc_html($settings['ar_button_text'])
+            );
+        }
+
         // Generate the HTML for the model-viewer element with all attributes and settings.
         $output = sprintf(
-            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s></model-viewer>',
+            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s%8$s>%9$s</model-viewer>',
             esc_url($file_object),
             esc_attr($file_alt),
             esc_url($file_poster),
             esc_attr($settings['loading']),
             esc_attr($settings['reveal']),
             esc_attr($settings['poster_color']),
-            $ar_attributes
+            $ar_attributes,
+            $extra_attributes,
+            $ar_button
         );
 
         /**

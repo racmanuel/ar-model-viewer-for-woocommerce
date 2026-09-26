@@ -81,9 +81,16 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
      */
     public function ar_model_viewer_for_woocommerce_tab($tabs)
     {
-        // Adds the new "View Product on 3D" tab to the WooCommerce product page.
+        // The tab title is configurable in the settings, with a translated fallback.
+        $tab_title = (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_tab_title');
+
+        if ('' === trim($tab_title)) {
+            $tab_title = __('View Product on 3D', 'ar-model-viewer-for-woocommerce');
+        }
+
+        // Adds the new tab to the WooCommerce product page.
         $tabs['ar_model_viewer'] = array(
-            'title' => __('View Product on 3D', 'woocommerce'), // Title of the tab.
+            'title' => $tab_title, // Title of the tab.
             'priority' => 50, // Priority of the tab (controls the order of appearance).
             'callback' => array($this, 'ar_model_viewer_for_woocommerce_tab_content'), // Callback to render the tab content.
         );
@@ -141,20 +148,43 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
             }
         }
 
+        // The browser sends cookies and authorization headers when the model is fetched from
+        // a server that requires authentication.
+        $extra_attributes = '';
+
+        if ('true' === $settings['with_credentials']) {
+            $extra_attributes .= 'with-credentials ';
+        }
+
+        // The custom AR button replaces the default "Enter AR" icon of the viewer. It only
+        // makes sense when AR is enabled and the button has a label.
+        $ar_button = '';
+
+        if ('active' === $settings['ar'] && 'active' === $settings['ar_button'] && '' !== trim((string) $settings['ar_button_text'])) {
+            $ar_button = sprintf(
+                '<button slot="ar-button" style="background-color:%1$s;color:%2$s;border:none;border-radius:999px;padding:8px 14px;cursor:pointer;">%3$s</button>',
+                esc_attr($settings['ar_button_background_color']),
+                esc_attr($settings['ar_button_text_color']),
+                esc_html($settings['ar_button_text'])
+            );
+        }
+
         // Generate the HTML for the model-viewer element with all attributes and settings.
         $output = sprintf(
-            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s></model-viewer>',
+            '<model-viewer src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" camera-controls auto-rotate %7$s%8$s>%9$s</model-viewer>',
             esc_url($model_3d_file),
             esc_attr($model_alt),
             esc_url($model_poster),
             esc_attr($settings['loading']),
             esc_attr($settings['reveal']),
             esc_attr($settings['poster_color']),
-            $ar_attributes
+            $ar_attributes,
+            $extra_attributes,
+            $ar_button
         );
 
         // Output the generated model viewer HTML.
-        echo $output;
+        echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Every part is escaped above.
     }
 
     /**

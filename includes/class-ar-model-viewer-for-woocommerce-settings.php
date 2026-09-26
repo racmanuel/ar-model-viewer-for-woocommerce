@@ -117,6 +117,14 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                     'default' => 'yes',
                     'choices' => array('yes', 'no'),
                 ),
+                'ar_model_viewer_for_woocommerce_button_text' => array(
+                    'type' => 'text',
+                    'default' => 'View in 3D',
+                ),
+                'ar_model_viewer_for_woocommerce_tab_title' => array(
+                    'type' => 'text',
+                    'default' => 'View Product on 3D',
+                ),
                 'ar_model_viewer_for_woocommerce_loading' => array(
                     'type' => 'radio',
                     'default' => 'auto',
@@ -273,6 +281,10 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 'scale' => self::get('ar_model_viewer_for_woocommerce_ar_scale'),
                 'placement' => self::get('ar_model_viewer_for_woocommerce_ar_placement'),
                 'xr_environment' => self::get('ar_model_viewer_for_woocommerce_xr_environment'),
+                'ar_button' => self::get('ar_model_viewer_for_woocommerce_ar_button'),
+                'ar_button_text' => self::get('ar_model_viewer_for_woocommerce_ar_button_text'),
+                'ar_button_background_color' => self::get('ar_model_viewer_for_woocommerce_ar_button_background_color'),
+                'ar_button_text_color' => self::get('ar_model_viewer_for_woocommerce_ar_button_text_color'),
             );
         }
 

@@ -197,6 +197,15 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                             'ar_model_viewer_for_woocommerce_single_product_tabs',
                         ),
                     ),
+                    array(
+                        'title' => esc_html__('Labels', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-editor-textcolor',
+                        'desc' => esc_html__('Texts shown to the shopper on the product page. They are translated by default and can be renamed per store.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_button_text',
+                            'ar_model_viewer_for_woocommerce_tab_title',
+                        ),
+                    ),
                 ),
             ),
             'loading' => array(
@@ -315,6 +324,14 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
                     'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
                 ),
+            ),
+            'ar_model_viewer_for_woocommerce_button_text' => array(
+                'label' => esc_html__('Button label', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Text of the button that opens the 3D viewer. Use something specific for your catalogue, like “See it in your room”.', 'ar-model-viewer-for-woocommerce'),
+            ),
+            'ar_model_viewer_for_woocommerce_tab_title' => array(
+                'label' => esc_html__('Tab title', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Title of the product tab that contains the viewer.', 'ar-model-viewer-for-woocommerce'),
             ),
             'ar_model_viewer_for_woocommerce_loading' => array(
                 'label' => esc_html__('Loading', 'ar-model-viewer-for-woocommerce'),
