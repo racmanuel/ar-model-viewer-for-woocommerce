@@ -1,1 +1,1025 @@
-@charset "UTF-8";@import url("/admin/fonts/DMSans-VariableFont_opsz,wght.ttf");#wpcontent{background:radial-gradient(50% 75% at center,rgba(144,46,239,0.6) 0%,rgba(7,28,38,0.8) 100%),#071c26;font-family:"DM Sans",sans-serif}.cmb2-options-page{max-width:100%!important}.cmb2-options-page .cmb2-metabox>.cmb-row{border:none!important}.icon-in-title{width:24px;vertical-align:middle}.logo-ar-model-viewer-for-woocommerce{width:200px;height:auto}input#submit-cmb{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;border:none!important}div#wpfooter{color:white}div#wpfooter>p>span>a{color:#00e087!important}p>a{color:#00e087!important}p.cmb2-metabox-description{color:#071c26}.switch-field .cmb2-radio-list li:last-of-type label{color:#071c26}.ar-model-viewer-for-woocommerce-card{padding:14px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.05);box-shadow:0 1px 1px rgba(0,0,0,0.05)}.ar-model-viewer-for-woocommerce-cards{margin:0 auto;display:-ms-grid;display:grid;color:white}@media (min-width:600px){.ar-model-viewer-for-woocommerce-cards{-ms-grid-columns:(1fr)[2];grid-template-columns:repeat(2,1fr)}}@media (min-width:900px){.ar-model-viewer-for-woocommerce-cards{-ms-grid-columns:(1fr)[2];grid-template-columns:repeat(2,1fr)}}h3{color:white}a.button.button-primary{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;border:none!important}#ar-model-viewer-for-woocommerce-render-model{display:-ms-grid;display:grid;place-items:center;height:100vh}model-viewer{width:100%;max-width:800px;height:500px}.cmb2-options-page .cmb2-wrap .cmb-type-title{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important}.switch-field .cmb2-radio-list li{padding-right:0!important;margin:0}.switch-field .cmb2-radio-list input{position:absolute!important;clip:rect(0,0,0,0);height:1px;width:1px;border:0;overflow:hidden}.switch-field .cmb2-radio-list input:checked+label{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important}.switch-field .cmb2-radio-list label{float:left}.switch-field .cmb2-radio-list label{margin:0 -0.25rem;background-color:#e4e4e4;padding:0.25rem 0.75rem;border:1px solid rgba(0,0,0,0.2);-webkit-transition:all 0.1s ease-in-out;transition:all 0.1s ease-in-out}.switch-field .cmb2-radio-list input:checked+label{color:#fff;background-color:#0073aa}.switch-field .cmb2-radio-list li:first-of-type label{border-radius:0.25rem 0 0 0.25rem}.switch-field .cmb2-radio-list li:last-of-type label{border-radius:0 0.25rem 0.25rem 0}span.dashicons{vertical-align:middle}.cmb2-wrap .cmb-multicheck-toggle{background-image:-webkit-gradient(linear,left top,right top,from(#a658f2),to(#00e087))!important;background-image:linear-gradient(90deg,#a658f2 0%,#00e087 100%)!important;color:white!important;border:none!important}.notice{padding:15px 20px;border-radius:8px;border-left:6px solid;margin:20px 0;font-size:16px;position:relative;-webkit-box-shadow:0 2px 10px rgba(0,0,0,0.1);box-shadow:0 2px 10px rgba(0,0,0,0.1);-webkit-transition:all 0.3s ease;transition:all 0.3s ease}.notice-success{background-color:#e8f8f1;border-color:#00c853;color:#2e7d32}.notice-success strong{color:#1b5e20}.notice-error{background-color:#ffe8e8;border-color:#f44336;color:#d32f2f}.notice-error strong{color:#b71c1c}.notice-warning{background-color:#fff3e0;border-color:#ff9800;color:#e65100}.notice-warning strong{color:#bf360c}.notice-info{background-color:#e3f2fd;border-color:#2196f3;color:#1565c0}.notice-info strong{color:#0d47a1}.notice-dismiss{position:absolute;top:10px;right:10px;background:transparent;border:none;cursor:pointer;padding:5px;border-radius:50%;-webkit-transition:background-color 0.3s ease;transition:background-color 0.3s ease}.notice-dismiss:hover{background-color:rgba(0,0,0,0.1)}.notice-dismiss .screen-reader-text{clip:auto;position:static;height:auto;width:auto;margin:0;overflow:visible;white-space:normal}@media (min-width:768px){form#ar_model_viewer_for_woocommerce_settings{width:85%!important;margin-left:auto!important;margin-right:auto!important}}#ar-model-viewer-for-woocommerce-preview-content{padding:0%;color:#071c26;border-left:1px solid white;border-bottom:1px solid white;border-right:1px solid white}input#submit-cmb{width:20%!important;height:32px!important}.ar-modelviewer-for-woocommerce-pro-edition-card{background:radial-gradient(50% 75% at center,rgba(0,224,135,0.6) 0%,rgba(7,28,38,0.8) 100%),#071c26;color:white!important;padding:6%;border-radius:6px}.ar-modelviewer-for-woocommerce-pro-edition-card ul{list-style:none;padding-left:0;margin:10px 0}.ar-modelviewer-for-woocommerce-pro-edition-card ul li{padding:10px;margin-bottom:10px;border-radius:8px;font-size:12px;color:white;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:-webkit-transform 0.2s ease;transition:-webkit-transform 0.2s ease;transition:transform 0.2s ease;transition:transform 0.2s ease,-webkit-transform 0.2s ease}.ar-modelviewer-for-woocommerce-pro-edition-card ul li:before{content:"✔";font-size:18px;color:#00e087;margin-right:10px}.ar-modelviewer-for-woocommerce-pro-edition-card ul li:hover{-webkit-transform:translateY(-5px);transform:translateY(-5px)}.ar-modelviewer-for-woocommerce-pro-edition-card ul ul{list-style-type:none;margin-left:20px}.ar-modelviewer-for-woocommerce-pro-edition-card ul ul li{background:#eef3f9;color:#34495e;font-size:15px;margin-bottom:8px;padding:10px;border-radius:6px}
+/**
+ * Settings screen styles.
+ *
+ * Plain CSS built on the design tokens of `...-admin-tokens.css`. Every selector is
+ * scoped with `.armvw-settings-page`, the body class added on this screen only, so the
+ * plugin never leaks styles into other admin pages.
+ *
+ * @link       https://racmanuel.dev
+ * @since      3.0.0
+ * @package    Ar_Model_Viewer_For_Woocommerce
+ */
+
+/* -------------------------------------------------------------------------
+ * Page shell
+ * ---------------------------------------------------------------------- */
+
+.armvw-settings-page #wpcontent {
+	background: var(--armvw-page-background);
+	font-family: var(--armvw-font);
+	color: var(--armvw-text);
+}
+
+.armvw-settings-page #wpbody-content {
+	padding-bottom: var(--armvw-space-6);
+}
+
+.armvw-settings-page #wpfooter {
+	color: var(--armvw-text-muted);
+}
+
+.armvw-settings-page #wpfooter a,
+.armvw-settings-page a:not(.button):not(.armvw-tab):not(.armvw-link) {
+	color: var(--armvw-mint);
+}
+
+/*
+ * Single column shell: the form takes the full width and the status, preview and
+ * resource cards flow below it in their own two column grid.
+ */
+.armvw-shell {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--armvw-space-5);
+	max-width: var(--armvw-shell-max);
+	margin: var(--armvw-space-5) auto 0;
+	padding: 0 var(--armvw-space-5);
+	box-sizing: border-box;
+}
+
+.armvw-main {
+	min-width: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Hero
+ * ---------------------------------------------------------------------- */
+
+.armvw-hero {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+	overflow: hidden;
+	padding: var(--armvw-space-5) var(--armvw-space-6);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-lg);
+	background: var(--armvw-surface-raised);
+	box-shadow: var(--armvw-shadow);
+}
+
+.armvw-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--armvw-gradient-soft);
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+.armvw-hero > * {
+	position: relative;
+}
+
+.armvw-hero__brand {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--armvw-space-4);
+}
+
+.armvw-hero__logo {
+	width: 168px;
+	height: auto;
+}
+
+.armvw-hero__title {
+	margin: 0;
+	font-size: var(--armvw-font-size-xl);
+	line-height: var(--armvw-line-tight);
+	font-weight: 700;
+	color: var(--armvw-text);
+}
+
+.armvw-hero__tagline {
+	margin: var(--armvw-space-2) 0 0;
+	max-width: 68ch;
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-text-muted);
+}
+
+.armvw-hero__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	margin-top: var(--armvw-space-4);
+}
+
+/* -------------------------------------------------------------------------
+ * Chips
+ * ---------------------------------------------------------------------- */
+
+.armvw-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	padding: 3px 10px;
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius-pill);
+	background: var(--armvw-surface);
+	font-size: var(--armvw-font-size-xs);
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	color: var(--armvw-text-muted);
+	white-space: nowrap;
+}
+
+.armvw-chip .dashicons {
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.armvw-chip--ok {
+	border-color: rgba(0, 224, 135, 0.45);
+	color: var(--armvw-success);
+}
+
+.armvw-chip--warn {
+	border-color: rgba(255, 196, 107, 0.45);
+	color: var(--armvw-warning);
+}
+
+.armvw-chip--off {
+	border-color: var(--armvw-border);
+	color: var(--armvw-text-faint);
+}
+
+.armvw-chip--brand {
+	border-color: transparent;
+	background-image: var(--armvw-gradient);
+	color: var(--armvw-ink);
+	font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+ * Tabs
+ * ---------------------------------------------------------------------- */
+
+.armvw-tabs {
+	position: sticky;
+	top: 32px;
+	z-index: 20;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--armvw-space-1);
+	margin: var(--armvw-space-5) 0 var(--armvw-space-4);
+	padding: var(--armvw-space-2);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius);
+	background: rgba(4, 18, 24, 0.86);
+	backdrop-filter: blur(8px);
+}
+
+.armvw-tab {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	padding: 8px 14px;
+	border: 1px solid transparent;
+	border-radius: var(--armvw-radius-sm);
+	background: transparent;
+	font-family: inherit;
+	font-size: var(--armvw-font-size-base);
+	font-weight: 500;
+	color: var(--armvw-text-muted);
+	cursor: pointer;
+	transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.armvw-tab .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+.armvw-tab:hover {
+	background: var(--armvw-surface);
+	color: var(--armvw-text);
+}
+
+.armvw-tab.is-active {
+	background: var(--armvw-surface-strong);
+	color: var(--armvw-text);
+}
+
+.armvw-tab.is-active::after {
+	content: "";
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: -3px;
+	height: 2px;
+	border-radius: 2px;
+	background-image: var(--armvw-gradient);
+}
+
+.armvw-tab:focus-visible,
+.armvw-shell :focus-visible {
+	outline: none;
+	box-shadow: var(--armvw-focus-ring);
+}
+
+/* -------------------------------------------------------------------------
+ * Panels and cards
+ * ---------------------------------------------------------------------- */
+
+.armvw-panel[hidden] {
+	display: none;
+}
+
+.armvw-panel__intro {
+	margin: 0 0 var(--armvw-space-4);
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-text-muted);
+}
+
+.armvw-card {
+	margin-bottom: var(--armvw-space-4);
+	padding: var(--armvw-space-5);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-lg);
+	background: var(--armvw-surface-raised);
+	box-shadow: var(--armvw-shadow-sm);
+}
+
+.armvw-card__header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--armvw-space-3);
+	margin-bottom: var(--armvw-space-4);
+	padding-bottom: var(--armvw-space-3);
+	border-bottom: 1px solid var(--armvw-border);
+}
+
+.armvw-card__title {
+	margin: 0;
+	font-size: var(--armvw-font-size-md);
+	font-weight: 700;
+	color: var(--armvw-text);
+}
+
+.armvw-card__title .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 18px;
+	vertical-align: text-bottom;
+	background-image: var(--armvw-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.armvw-card__desc {
+	margin: var(--armvw-space-1) 0 0;
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-faint);
+}
+
+/* -------------------------------------------------------------------------
+ * Fields
+ * ---------------------------------------------------------------------- */
+
+.armvw-field {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: var(--armvw-space-5);
+	align-items: start;
+	padding: var(--armvw-space-4) 0;
+	border-bottom: 1px dashed var(--armvw-border);
+}
+
+.armvw-field:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.armvw-field[hidden] {
+	display: none;
+}
+
+.armvw-field__label {
+	display: block;
+	margin-bottom: var(--armvw-space-2);
+	font-size: var(--armvw-font-size-base);
+	font-weight: 700;
+	color: var(--armvw-text);
+}
+
+.armvw-field__desc {
+	margin: 0;
+	max-width: 60ch;
+	font-size: var(--armvw-font-size-sm);
+	line-height: var(--armvw-line-base);
+	color: var(--armvw-text-faint);
+}
+
+.armvw-field__desc code {
+	padding: 1px 5px;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.08);
+	font-family: var(--armvw-font-mono);
+	font-size: var(--armvw-font-size-xs);
+	color: var(--armvw-text);
+}
+
+.armvw-field__control {
+	min-width: 0;
+}
+
+@media screen and (max-width: 1100px) {
+	.armvw-field {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--armvw-space-3);
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Controls
+ * ---------------------------------------------------------------------- */
+
+.armvw-input,
+.armvw-select {
+	width: 100%;
+	max-width: 420px;
+	min-height: 36px;
+	padding: 6px 10px;
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius-sm);
+	background: rgba(4, 18, 24, 0.72);
+	font-family: inherit;
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-text);
+	box-shadow: none;
+	transition: border-color 0.15s ease;
+}
+
+.armvw-input:hover,
+.armvw-select:hover {
+	border-color: rgba(255, 255, 255, 0.32);
+}
+
+.armvw-input:focus,
+.armvw-select:focus {
+	border-color: var(--armvw-violet);
+	box-shadow: 0 0 0 1px var(--armvw-violet);
+	outline: none;
+}
+
+.armvw-input::placeholder {
+	color: var(--armvw-text-faint);
+}
+
+.armvw-select {
+	appearance: none;
+	padding-right: 30px;
+	background-image: linear-gradient(45deg, transparent 50%, var(--armvw-text-muted) 50%),
+		linear-gradient(135deg, var(--armvw-text-muted) 50%, transparent 50%);
+	background-position: calc(100% - 16px) 15px, calc(100% - 11px) 15px;
+	background-size: 5px 5px, 5px 5px;
+	background-repeat: no-repeat;
+}
+
+/* Segmented switch built from native radio inputs */
+.armvw-switch,
+.armvw-chips {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: var(--armvw-space-2);
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.armvw-switch {
+	gap: 0;
+	padding: 3px;
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-pill);
+	background: rgba(4, 18, 24, 0.72);
+}
+
+.armvw-switch__item {
+	position: relative;
+	display: inline-flex;
+}
+
+.armvw-switch__item input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+}
+
+.armvw-switch__item span {
+	display: inline-block;
+	min-width: 76px;
+	padding: 6px 14px;
+	border-radius: var(--armvw-radius-pill);
+	font-size: var(--armvw-font-size-sm);
+	font-weight: 500;
+	text-align: center;
+	color: var(--armvw-text-muted);
+	cursor: pointer;
+	transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.armvw-switch__item:hover span {
+	color: var(--armvw-text);
+}
+
+.armvw-switch__item input:checked + span {
+	background-image: var(--armvw-gradient);
+	color: var(--armvw-ink);
+	font-weight: 700;
+}
+
+.armvw-switch__item input:focus-visible + span {
+	box-shadow: var(--armvw-focus-ring);
+}
+
+/* Check list rendered as chips */
+.armvw-chips__item {
+	position: relative;
+	display: inline-flex;
+}
+
+.armvw-chips__item input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+}
+
+.armvw-chips__item span {
+	display: inline-block;
+	padding: 6px 12px;
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius-pill);
+	background: rgba(4, 18, 24, 0.6);
+	font-family: var(--armvw-font-mono);
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-muted);
+	cursor: pointer;
+	transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.armvw-chips__item:hover span {
+	border-color: rgba(255, 255, 255, 0.35);
+	color: var(--armvw-text);
+}
+
+.armvw-chips__item input:checked + span {
+	border-color: var(--armvw-mint);
+	color: var(--armvw-success);
+	box-shadow: inset 0 0 0 1px rgba(0, 224, 135, 0.35);
+}
+
+.armvw-chips__item input:focus-visible + span {
+	box-shadow: var(--armvw-focus-ring);
+}
+
+/* Single checkbox */
+.armvw-checkbox {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: var(--armvw-space-2);
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-text-muted);
+	cursor: pointer;
+}
+
+.armvw-checkbox input {
+	width: 18px;
+	height: 18px;
+	margin: 1px 0 0;
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: 4px;
+	background: rgba(4, 18, 24, 0.72);
+	box-shadow: none;
+	appearance: none;
+	position: relative;
+	flex: 0 0 auto;
+}
+
+.armvw-checkbox input:checked {
+	border-color: transparent;
+	background-image: var(--armvw-gradient);
+}
+
+.armvw-checkbox input:checked::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--armvw-ink);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.8 5.6 8.4 13 5.2 9.9l-1.4 1.4 4.6 4.5 7.8-8.8z'/%3E%3C/svg%3E")
+		center / 14px 14px no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.8 5.6 8.4 13 5.2 9.9l-1.4 1.4 4.6 4.5 7.8-8.8z'/%3E%3C/svg%3E")
+		center / 14px 14px no-repeat;
+}
+
+.armvw-checkbox input:focus-visible {
+	box-shadow: var(--armvw-focus-ring);
+}
+
+/* Color picker rows */
+.armvw-color-row {
+	display: flex;
+	align-items: center;
+	gap: var(--armvw-space-3);
+}
+
+.armvw-color-row .wp-picker-container {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--armvw-space-2);
+}
+
+.armvw-color-row .wp-color-result.button {
+	height: 30px;
+	margin: 0;
+	border-color: var(--armvw-border-strong);
+}
+
+.armvw-color-row .wp-picker-input-wrap input.armvw-input {
+	width: 140px;
+	max-width: 140px;
+	font-family: var(--armvw-font-mono);
+	font-size: var(--armvw-font-size-sm);
+}
+
+.armvw-color-row .wp-picker-clear.button {
+	min-height: 30px;
+}
+
+/* Password field with reveal button */
+.armvw-secret {
+	display: flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	max-width: 420px;
+}
+
+.armvw-secret .armvw-input {
+	flex: 1 1 auto;
+}
+
+.armvw-reveal.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	min-height: 36px;
+	padding: 0 8px;
+	border-color: var(--armvw-border-strong);
+	background: rgba(4, 18, 24, 0.72);
+	line-height: 1;
+	color: var(--armvw-text-muted);
+}
+
+.armvw-reveal.button:hover,
+.armvw-reveal.button.is-active {
+	border-color: var(--armvw-violet);
+	color: var(--armvw-text);
+}
+
+/*
+ * WordPress applies `.wp-core-ui .button .dashicons { line-height: 1.9; vertical-align: top }`,
+ * which pushes the 20px glyph out of a 36px button. The icon is squared and centred here.
+ */
+.armvw-reveal.button .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 18px;
+	vertical-align: middle;
+	color: currentColor;
+}
+
+/* The glyph follows the state of the toggle: show when hidden, hide when shown. */
+.armvw-reveal .armvw-reveal__hide,
+.armvw-reveal.is-active .armvw-reveal__show {
+	display: none;
+}
+
+.armvw-reveal.is-active .armvw-reveal__hide {
+	display: block;
+}
+
+/* -------------------------------------------------------------------------
+ * Actions
+ * ---------------------------------------------------------------------- */
+
+.armvw-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--armvw-space-4);
+	margin-top: var(--armvw-space-4);
+	padding: var(--armvw-space-4) var(--armvw-space-5);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-lg);
+	background: var(--armvw-surface-raised);
+	box-shadow: var(--armvw-shadow-sm);
+}
+
+.armvw-settings-page .armvw-actions p.submit {
+	margin: 0;
+	padding: 0;
+	float: none;
+}
+
+.armvw-settings-page .armvw-actions #submit,
+.armvw-settings-page a.button-primary,
+.armvw-settings-page button.button-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	min-height: 36px;
+	padding: 0 18px;
+	border: none;
+	border-radius: var(--armvw-radius-pill);
+	background: var(--armvw-gradient);
+	font-family: inherit;
+	font-size: var(--armvw-font-size-base);
+	font-weight: 700;
+	color: var(--armvw-ink);
+	text-shadow: none;
+	box-shadow: var(--armvw-shadow-sm);
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.armvw-settings-page .armvw-actions #submit:hover,
+.armvw-settings-page a.button-primary:hover,
+.armvw-settings-page button.button-primary:hover {
+	background: var(--armvw-gradient);
+	color: var(--armvw-ink);
+	filter: brightness(1.06);
+	transform: translateY(-1px);
+}
+
+.armvw-settings-page .armvw-actions #submit:focus-visible,
+.armvw-settings-page a.button-primary:focus-visible,
+.armvw-settings-page button.button-primary:focus-visible {
+	box-shadow: var(--armvw-focus-ring);
+	outline: none;
+}
+
+.armvw-reset {
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-faint) !important;
+	text-decoration: underline;
+}
+
+.armvw-reset:hover {
+	color: var(--armvw-danger) !important;
+}
+
+.armvw-actions__hint {
+	margin-left: auto;
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-faint);
+}
+
+/* -------------------------------------------------------------------------
+ * Top row: hero and preview side by side
+ * ---------------------------------------------------------------------- */
+
+/*
+ * Hero and preview share the row: 50% width each and the same height, because the
+ * grid stretches both items to the tallest one.
+ */
+.armvw-top {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--armvw-space-5);
+	align-items: stretch;
+}
+
+@media screen and (max-width: 1180px) {
+	.armvw-top {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+.armvw-top .armvw-card {
+	margin-bottom: 0;
+}
+
+/* The preview card fills its half, so the viewer takes the leftover height. */
+.armvw-card--preview {
+	display: flex;
+	flex-direction: column;
+}
+
+.armvw-card--preview .armvw-preview {
+	flex: 1 1 auto;
+	min-height: 240px;
+}
+
+.armvw-card--preview .armvw-preview model-viewer {
+	flex: 1 1 auto;
+	width: 100%;
+	min-height: 240px;
+}
+
+/* -------------------------------------------------------------------------
+ * Cards below the form
+ *
+ * Two columns on desktop and one on small screens. They are not sticky on
+ * purpose, so they scroll away with the rest of the page.
+ * ---------------------------------------------------------------------- */
+
+.armvw-cards {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--armvw-space-4);
+	align-content: start;
+}
+
+@media screen and (max-width: 960px) {
+	.armvw-cards {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+.armvw-cards .armvw-card {
+	margin-bottom: 0;
+	padding: var(--armvw-space-4);
+}
+
+.armvw-status {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.armvw-status li {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--armvw-space-3);
+	padding: var(--armvw-space-2) 0;
+	border-bottom: 1px dashed var(--armvw-border);
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-muted);
+}
+
+.armvw-status li:last-child {
+	border-bottom: none;
+}
+
+.armvw-status__label {
+	color: var(--armvw-text-faint);
+}
+
+.armvw-status__value {
+	font-weight: 500;
+	color: var(--armvw-text);
+	text-align: right;
+}
+
+.armvw-preview {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: var(--armvw-space-3);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius);
+	background: var(--armvw-surface);
+}
+
+/*
+ * The viewer library weighs around 1 MB, so the card shows the poster and this button until
+ * the visitor asks for the demo. `-settings.js` injects the library and hides the button.
+ */
+.armvw-preview__load {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 0;
+	border: none;
+	border-radius: var(--armvw-radius);
+	background: transparent;
+	cursor: pointer;
+}
+
+.armvw-preview__poster {
+	width: 100%;
+	height: 100%;
+	max-height: 240px;
+	object-fit: contain;
+}
+
+.armvw-preview__hint {
+	position: absolute;
+	bottom: var(--armvw-space-3);
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 4px 12px;
+	border-radius: var(--armvw-radius-pill);
+	background-image: var(--armvw-gradient);
+	font-size: var(--armvw-font-size-xs);
+	font-weight: 700;
+	color: var(--armvw-ink);
+	white-space: nowrap;
+}
+
+.armvw-preview__load:hover .armvw-preview__hint {
+	filter: brightness(1.08);
+}
+
+.armvw-preview__load:focus-visible {
+	box-shadow: var(--armvw-focus-ring);
+	outline: none;
+}
+
+.armvw-preview__load[disabled] {
+	cursor: progress;
+}
+
+.armvw-preview.is-ready .armvw-preview__load {
+	display: none;
+}
+
+.armvw-preview model-viewer {
+	width: 100%;
+	max-width: 100%;
+	height: 240px;
+	flex: 0 0 auto;
+}
+
+.armvw-links {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.armvw-links li {
+	margin: 0;
+}
+
+.armvw-link {
+	display: flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	padding: var(--armvw-space-2) 0;
+	font-size: var(--armvw-font-size-sm);
+	color: var(--armvw-text-muted) !important;
+	text-decoration: none;
+	border-bottom: 1px dashed var(--armvw-border);
+}
+
+.armvw-links li:last-child .armvw-link {
+	border-bottom: none;
+}
+
+.armvw-link:hover {
+	color: var(--armvw-mint) !important;
+}
+
+.armvw-link .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+	color: var(--armvw-mint);
+}
+
+.armvw-link .armvw-link__external {
+	margin-left: auto;
+	width: 12px;
+	height: 12px;
+	font-size: 12px;
+	line-height: 12px;
+	color: var(--armvw-text-faint);
+}
+
+/* The Pro and services cards close the grid with the two brand glows */
+.armvw-pro {
+	background: var(--armvw-glow-mint), var(--armvw-ink);
+	color: var(--armvw-text);
+}
+
+.armvw-card--custom {
+	background: var(--armvw-glow-violet), var(--armvw-ink);
+	color: var(--armvw-text);
+}
+
+.armvw-card--custom .armvw-card__desc {
+	color: var(--armvw-text-muted);
+}
+
+.armvw-feature-list {
+	margin: var(--armvw-space-3) 0;
+	padding: 0;
+	list-style: none;
+	font-size: var(--armvw-font-size-xs);
+}
+
+.armvw-feature-list li {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--armvw-space-2);
+	padding: var(--armvw-space-1) 0;
+	color: var(--armvw-text-muted);
+}
+
+.armvw-feature-list li::before {
+	content: "\2714";
+	font-size: var(--armvw-font-size-sm);
+	line-height: var(--armvw-line-base);
+	color: var(--armvw-mint);
+}
+
+/* -------------------------------------------------------------------------
+ * Settings notices
+ * ---------------------------------------------------------------------- */
+
+.armvw-settings-page .notice,
+.armvw-settings-page div.updated,
+.armvw-settings-page div.error {
+	position: relative;
+	margin: var(--armvw-space-4) 0;
+	padding: var(--armvw-space-3) var(--armvw-space-4);
+	border: 1px solid var(--armvw-border);
+	border-left: 4px solid var(--armvw-info);
+	border-radius: var(--armvw-radius);
+	background: var(--armvw-surface-raised);
+	box-shadow: var(--armvw-shadow-sm);
+	font-size: var(--armvw-font-size-base);
+	color: var(--armvw-text);
+}
+
+.armvw-settings-page .notice-success,
+.armvw-settings-page div.updated {
+	border-left-color: var(--armvw-success);
+}
+
+.armvw-settings-page .notice-error,
+.armvw-settings-page div.error {
+	border-left-color: var(--armvw-danger);
+}
+
+.armvw-settings-page .notice-warning {
+	border-left-color: var(--armvw-warning);
+}
+
+.armvw-settings-page .notice p {
+	margin: 0;
+	color: inherit;
+}
+
+.armvw-settings-page .notice-dismiss::before {
+	color: var(--armvw-text-faint);
+}
+
+/* -------------------------------------------------------------------------
+ * Utilities and motion
+ * ---------------------------------------------------------------------- */
+
+.armvw-visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	border: 0;
+	white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.armvw-settings-page * {
+		transition: none !important;
+		animation: none !important;
+	}
+}

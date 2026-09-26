@@ -1,0 +1,98 @@
+/**
+ * Design tokens shared by the plugin admin screens.
+ *
+ * Plain CSS custom properties replace the former Sass variables, so a single file
+ * defines the palette, the gradients, the surfaces and the spacing scale used by
+ * both the settings screen and the product editor.
+ *
+ * @link       https://racmanuel.dev
+ * @since      3.0.0
+ * @package    Ar_Model_Viewer_For_Woocommerce
+ */
+
+:root {
+	/* Palette */
+	--armvw-violet: #a658f2;
+	--armvw-violet-deep: #902eef;
+	--armvw-violet-dark: #7d3bdb;
+	--armvw-mint: #00e087;
+	--armvw-ink: #071c26;
+	--armvw-ink-deep: #041218;
+	--armvw-white: #ffffff;
+
+	/* Gradients */
+	--armvw-gradient: linear-gradient(90deg, var(--armvw-violet) 0%, var(--armvw-mint) 100%);
+	--armvw-gradient-soft: linear-gradient(
+		90deg,
+		rgba(166, 88, 242, 0.16) 0%,
+		rgba(0, 224, 135, 0.16) 100%
+	);
+	--armvw-glow-violet: radial-gradient(
+		50% 75% at center,
+		rgba(144, 46, 239, 0.6) 0%,
+		rgba(7, 28, 38, 0.8) 100%
+	);
+	--armvw-glow-mint: radial-gradient(
+		50% 75% at center,
+		rgba(0, 224, 135, 0.6) 0%,
+		rgba(7, 28, 38, 0.8) 100%
+	);
+	--armvw-page-background: var(--armvw-glow-violet), var(--armvw-ink);
+
+	/* Surfaces and borders */
+	--armvw-surface: rgba(255, 255, 255, 0.045);
+	--armvw-surface-strong: rgba(255, 255, 255, 0.08);
+	--armvw-surface-raised: rgba(4, 18, 24, 0.55);
+	--armvw-border: rgba(255, 255, 255, 0.1);
+	--armvw-border-strong: rgba(255, 255, 255, 0.2);
+
+	/* Text */
+	--armvw-text: var(--armvw-white);
+	--armvw-text-muted: rgba(255, 255, 255, 0.74);
+	--armvw-text-faint: rgba(255, 255, 255, 0.52);
+
+	/* States */
+	--armvw-success: var(--armvw-mint);
+	--armvw-warning: #ffc46b;
+	--armvw-danger: #ff7a7a;
+	--armvw-info: #7cc9f5;
+
+	/* Radii */
+	--armvw-radius-sm: 6px;
+	--armvw-radius: 10px;
+	--armvw-radius-lg: 16px;
+	--armvw-radius-pill: 999px;
+
+	/* Elevation */
+	--armvw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+	--armvw-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+	--armvw-shadow-strong: 0 20px 48px rgba(0, 0, 0, 0.42);
+
+	/* Spacing scale */
+	--armvw-space-1: 4px;
+	--armvw-space-2: 8px;
+	--armvw-space-3: 12px;
+	--armvw-space-4: 16px;
+	--armvw-space-5: 24px;
+	--armvw-space-6: 32px;
+	--armvw-space-7: 48px;
+
+	/* Typography */
+	--armvw-font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
+	--armvw-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+	--armvw-font-size-xs: 11px;
+	--armvw-font-size-sm: 12px;
+	--armvw-font-size-base: 13px;
+	--armvw-font-size-md: 15px;
+	--armvw-font-size-lg: 18px;
+	--armvw-font-size-xl: 24px;
+	--armvw-line-tight: 1.3;
+	--armvw-line-base: 1.55;
+
+	/* Focus ring */
+	--armvw-focus-ring: 0 0 0 2px var(--armvw-ink), 0 0 0 4px var(--armvw-violet);
+
+	/* Layout */
+	--armvw-shell-max: 1440px;
+}
