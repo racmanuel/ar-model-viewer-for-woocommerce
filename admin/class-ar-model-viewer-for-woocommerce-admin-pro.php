@@ -264,7 +264,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
 
     public function ar_model_viewer_for_woocommerce_pro_metaboxes()
     {
-        $meshyAi = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+        $meshyAi = Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key();
 
         if (!empty($meshyAi)) {
             $image_to_3d = new_cmb2_box(array(

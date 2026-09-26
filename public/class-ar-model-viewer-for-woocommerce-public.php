@@ -121,19 +121,17 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             wp_die();
         }
 
-        // Obtener las configuraciones globales
-        $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
-
-        // Recuperar los campos configurados en la página de opciones usando CMB2
-        $loading = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_loading', 'auto');
-        $reveal = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_reveal', 'auto');
-        $with_credentials = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_with_credentials', 'false');
-        $poster_color = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_poster_color', 'rgba(255,255,255,0)');
-        $ar = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar', 'active');
-        $scale = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_scale', 'auto');
-        $placement = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_placement', 'floor');
-        $xr_environment = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_xr_environment', 'deactive');
-        $ar_modes = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_modes', ['webxr', 'scene-viewer']);
+        // Retrieve the global settings and expand them into the local variables used below.
+        $viewer = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+        $loading = $viewer['loading'];
+        $reveal = $viewer['reveal'];
+        $with_credentials = $viewer['with_credentials'];
+        $poster_color = $viewer['poster_color'];
+        $ar = $viewer['ar'];
+        $scale = $viewer['scale'];
+        $placement = $viewer['placement'];
+        $xr_environment = $viewer['xr_environment'];
+        $ar_modes = $viewer['ar_modes'];
         // Obtener el nombre del producto
         $product_name = get_the_title($product_id);
 

@@ -92,8 +92,8 @@ class MeshyApi
         $this->version = $version;
         $this->api_base_url = 'https://api.meshy.ai';
 
-        // Retrieve the API Key from the CMB2 options
-        $this->api_key = CMB2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+        // Retrieve the API key from the plugin settings service.
+        $this->api_key = (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_api_key_meshy');
 
         // Initialize the WooCommerce logger
         $this->logger = new Ar_Model_Viewer_For_Woocommerce_Logger($plugin_name, $plugin_prefix, $version);

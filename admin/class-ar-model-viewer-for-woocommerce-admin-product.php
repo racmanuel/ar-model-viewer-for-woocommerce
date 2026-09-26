@@ -147,7 +147,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
             'after_row' => array(__CLASS__, 'ar_model_viewer_for_woocommerce_after_title_row'),
         ));
 
-        $meshyAi = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_api_key_meshy');
+        $meshyAi = Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key();
 
         if (!empty($meshyAi)) {
             # code...
@@ -274,34 +274,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
      */
     private function get_ar_model_viewer_settings()
     {
-        return [
-            // Determines how the model loads (e.g., "auto" means it starts loading immediately)
-            'loading' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_loading', 'auto'),
-
-            // Controls when the model should be revealed, such as after a specific action or automatically
-            'reveal' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_reveal', 'auto'),
-
-            // Indicates whether the model viewer should send credentials such as cookies when making network requests
-            'with_credentials' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_with_credentials', 'false'),
-
-            // Sets the color of the poster background for the model viewer (default is transparent white)
-            'poster_color' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_poster_color', 'rgba(255,255,255,0)'),
-
-            // Determines if the AR feature should be enabled or not (e.g., "active" enables AR functionality)
-            'ar' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar', 'active'),
-
-            // Defines the scaling behavior of the model in AR (e.g., "auto" lets the viewer decide the best scale)
-            'scale' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_scale', 'auto'),
-
-            // Sets the placement of the model in AR (e.g., "floor" means the model is placed on the floor)
-            'placement' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_placement', 'floor'),
-
-            // Indicates whether an XR (Extended Reality) environment is used (e.g., "deactive" means no XR environment)
-            'xr_environment' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_xr_environment', 'deactive'),
-
-            // Defines which AR modes are supported, such as "webxr" or "scene-viewer" (these determine how the AR experience is presented)
-            'ar_modes' => cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_ar_modes', ['webxr', 'scene-viewer']),
-        ];
+        return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
     }
 
     /**

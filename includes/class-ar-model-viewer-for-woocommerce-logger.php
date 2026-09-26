@@ -68,8 +68,8 @@ class Ar_Model_Viewer_For_Woocommerce_Logger
      */
     public function log_to_woocommerce($message, $level = 'info')
     {
-        // Retrieve the logging setting from the plugin options using CMB2 library.
-        $log_active = cmb2_get_option('ar_model_viewer_for_woocommerce_settings', 'ar_model_viewer_for_woocommerce_logger');
+        // Retrieve the logging setting from the plugin settings service.
+        $log_active = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_logger');
 
         // Check if logging is enabled in the plugin's settings.
         if (!$log_active) {

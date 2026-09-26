@@ -130,6 +130,14 @@ class Ar_Model_Viewer_For_Woocommerce
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-i18n.php';
 
         /**
+         * The class that owns the settings: defaults, validation and storage.
+         *
+         * It is loaded first because the logger, the AI client and both the admin and
+         * the public side read their configuration from it.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-settings.php';
+
+        /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
@@ -254,13 +262,22 @@ class Ar_Model_Viewer_For_Woocommerce
          * It hooks into the `upload_mimes` filter.
          */
 
-        // Define and initialize custom metaboxes and field configurations.
+        // Define and initialize the product metaboxes.
         $this->loader->add_action('cmb2_admin_init', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
-        $this->loader->add_action('cmb2_admin_init', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_cmb2_settings');
         /**
-         * Registers and configures custom metaboxes for the plugin using the CMB2 library.
-         * The function `ar_model_viewer_for_woocommerce_cmb2_metaboxes` sets up fields for products where users can input 3D model file URLs and other details.
-         * It hooks into the `cmb2_admin_init` action to ensure the fields are initialized when needed.
+         * Registers and configures the product metaboxes where the 3D model files are attached.
+         */
+
+        // Register the settings screen built on the WordPress Settings API.
+        $this->loader->add_action('admin_menu', $plugin_admin_settings, 'register_settings_page');
+        $this->loader->add_action('admin_init', $plugin_admin_settings, 'register_settings');
+        $this->loader->add_action('admin_init', $plugin_admin_settings, 'handle_reset');
+        $this->loader->add_filter('admin_body_class', $plugin_admin, 'admin_body_class');
+        /**
+         * The settings screen is a native options page: `add_options_page()` reproduces the
+         * same `settings_page_ar_model_viewer_for_woocommerce_settings` hook suffix the previous
+         * implementation generated, so bookmarks, the Freemius menu entry and the enqueued assets
+         * keep working after the migration.
          */
 
         // Get the currently active theme.
@@ -408,37 +425,25 @@ class Ar_Model_Viewer_For_Woocommerce
         // Include the scripts for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
-        // Check options of the plugin
-        $ar_model_viewer_settings = get_option('ar_model_viewer_for_woocommerce_settings');
+        // Placement of the 3D button. An empty value means the button is not printed at all.
+        $button_position = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
 
-        // Check the option where the button is avaible
-        switch (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_btn'])) {
-            case 1:
-                $this->loader->add_action('woocommerce_before_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
-            case 2:
-                $this->loader->add_action('woocommerce_after_single_product_summary', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
-            case 3:
-                $this->loader->add_action('woocommerce_before_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
-            case 4:
-                $this->loader->add_action('woocommerce_after_single_product', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
-            case 5:
-                $this->loader->add_action('woocommerce_after_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
-            case 6:
-                $this->loader->add_action('woocommerce_before_add_to_cart_form', $plugin_public, 'ar_model_viewer_for_woocommerce_button');
-                break;
+        $button_hooks = array(
+            '1' => 'woocommerce_before_single_product_summary',
+            '2' => 'woocommerce_after_single_product_summary',
+            '3' => 'woocommerce_before_single_product',
+            '4' => 'woocommerce_after_single_product',
+            '5' => 'woocommerce_after_add_to_cart_form',
+            '6' => 'woocommerce_before_add_to_cart_form',
+        );
+
+        if (isset($button_hooks[$button_position])) {
+            $this->loader->add_action($button_hooks[$button_position], $plugin_public, 'ar_model_viewer_for_woocommerce_button');
         }
 
-        // Check if in settings show in tabs is active
-        if (isset($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'])) {
-            if ($ar_model_viewer_settings['ar_model_viewer_for_woocommerce_single_product_tabs'] == 'yes') {
-                // Show a button before single_product
-                $this->loader->add_filter('woocommerce_product_tabs', $plugin_public_tab, 'ar_model_viewer_for_woocommerce_tab');
-            }
+        // Check if the product tab is enabled in the settings.
+        if ('yes' === Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_single_product_tabs')) {
+            $this->loader->add_filter('woocommerce_product_tabs', $plugin_public_tab, 'ar_model_viewer_for_woocommerce_tab');
         }
 
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_public, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
