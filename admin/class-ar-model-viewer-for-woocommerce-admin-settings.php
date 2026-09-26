@@ -992,12 +992,12 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         }
 
         /*
-         * The preview always uses `lazy` + `interaction` regardless of the saved settings:
-         * the demo model weighs around 4 MB and there is no reason to download it every
-         * time the settings screen is opened. Clicking the poster loads it.
+         * The library and the demo model are only requested after the visitor asks for the
+         * preview, so this one loads eagerly: asking for a second interaction inside the
+         * viewer (reveal="interaction") would look like nothing happened after the click.
          */
         return sprintf(
-            '<model-viewer src="%1$s" poster="%2$s" alt="%3$s" loading="lazy" reveal="interaction" style="background-color:%4$s;" camera-controls auto-rotate%5$s>%6$s</model-viewer>',
+            '<model-viewer src="%1$s" poster="%2$s" alt="%3$s" loading="eager" reveal="auto" style="background-color:%4$s;" camera-controls auto-rotate%5$s>%6$s</model-viewer>',
             esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/models/witch_potion.glb'),
             esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/images/armvw-logo-400.png'),
             esc_attr__('Preview of the 3D model viewer', 'ar-model-viewer-for-woocommerce'),
