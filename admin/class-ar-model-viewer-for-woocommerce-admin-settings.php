@@ -216,11 +216,115 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     array(
                         'title' => esc_html__('Loading and reveal', 'ar-model-viewer-for-woocommerce'),
                         'icon' => 'dashicons-download',
-                        'desc' => esc_html__('`lazy` plus `interaction` is the recommended combination for stores with large models: the file is only requested after the shopper interacts with the poster.', 'ar-model-viewer-for-woocommerce'),
+                        'desc' => esc_html__('Leaving the loading condition in `auto` is the recommended default: the file is requested when the viewer approaches the viewport, so nothing is downloaded on pages the shopper never scrolls to.', 'ar-model-viewer-for-woocommerce'),
                         'fields' => array(
                             'ar_model_viewer_for_woocommerce_loading',
                             'ar_model_viewer_for_woocommerce_reveal',
                             'ar_model_viewer_for_woocommerce_with_credentials',
+                        ),
+                    ),
+                ),
+            ),
+            'lighting' => array(
+                'label' => esc_html__('Lighting', 'ar-model-viewer-for-woocommerce'),
+                'icon' => 'dashicons-sun',
+                'intro' => esc_html__('Decide how the model is lit and how it sits on the page. These values are the difference between a model that looks flat and one that looks like a product photo.', 'ar-model-viewer-for-woocommerce'),
+                'groups' => array(
+                    array(
+                        'title' => esc_html__('Tone mapping and exposure', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-art',
+                        'desc' => esc_html__('Tone mapping compresses the HDR render into the image a screen can show. The library default, `neutral`, is the one designed for accurate colours in shops; `aces` and `agx` come from film and tend to shift the hue of the product. Exposure brightens or darkens the model and the background together.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_tone_mapping',
+                            'ar_model_viewer_for_woocommerce_exposure',
+                        ),
+                    ),
+                    array(
+                        'title' => esc_html__('Shadow', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-format-image',
+                        'desc' => esc_html__('The viewer draws no shadow by default, which makes objects look like they are floating. Raising the intensity anchors the product to the page. Softer shadows are cheaper to render than hard ones.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_shadow_intensity',
+                            'ar_model_viewer_for_woocommerce_shadow_softness',
+                        ),
+                    ),
+                    array(
+                        'title' => esc_html__('Environment', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-admin-site-alt3',
+                        'desc' => esc_html__('The environment image is what the model reflects and the skybox image is what the shopper sees behind it. Without an environment the model is lit by a neutral light. HDR images (`.hdr`) give the best reflections, and a skybox is also used as the background.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_environment_image',
+                            'ar_model_viewer_for_woocommerce_skybox_image',
+                        ),
+                    ),
+                ),
+            ),
+            'interaction' => array(
+                'label' => esc_html__('Interaction', 'ar-model-viewer-for-woocommerce'),
+                'icon' => 'dashicons-move',
+                'intro' => esc_html__('Control how the shopper moves the model. These settings have the largest impact on how the viewer feels on a phone, where a gesture that fights the page scroll ruins the experience.', 'ar-model-viewer-for-woocommerce'),
+                'groups' => array(
+                    array(
+                        'title' => esc_html__('Camera controls', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-image-rotate',
+                        'desc' => esc_html__('The camera controls are what let the shopper rotate the model with a finger or the mouse. Turning them off leaves a still image, which saves battery but also removes the reason to have a 3D viewer.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_camera_controls',
+                            'ar_model_viewer_for_woocommerce_disable_zoom',
+                            'ar_model_viewer_for_woocommerce_disable_pan',
+                            'ar_model_viewer_for_woocommerce_disable_tap',
+                            'ar_model_viewer_for_woocommerce_touch_action',
+                            'ar_model_viewer_for_woocommerce_orbit_sensitivity',
+                            'ar_model_viewer_for_woocommerce_zoom_sensitivity',
+                            'ar_model_viewer_for_woocommerce_pan_sensitivity',
+                            'ar_model_viewer_for_woocommerce_interpolation_decay',
+                        ),
+                    ),
+                    array(
+                        'title' => esc_html__('Auto rotate', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-update',
+                        'desc' => esc_html__('The model turns on its own until the shopper touches it. It is a good way to show that the image can be moved, but it costs battery and draws attention on a page with several viewers.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_auto_rotate',
+                            'ar_model_viewer_for_woocommerce_auto_rotate_delay',
+                            'ar_model_viewer_for_woocommerce_rotation_per_second',
+                        ),
+                    ),
+                    array(
+                        'title' => esc_html__('Interaction prompt', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-info',
+                        'desc' => esc_html__('The prompt is the hand icon the viewer shows over the model to hint that it can be moved. It appears only while the camera controls are enabled.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_interaction_prompt',
+                            'ar_model_viewer_for_woocommerce_interaction_prompt_style',
+                            'ar_model_viewer_for_woocommerce_interaction_prompt_threshold',
+                        ),
+                    ),
+                ),
+            ),
+            'performance' => array(
+                'label' => esc_html__('Performance', 'ar-model-viewer-for-woocommerce'),
+                'icon' => 'dashicons-performance',
+                'intro' => esc_html__('How the viewer spends the battery and the bandwidth of your visitor. These values are not printed in the HTML of the page: they configure the library itself, which is why they apply to every viewer on the site.', 'ar-model-viewer-for-woocommerce'),
+                'groups' => array(
+                    array(
+                        'title' => esc_html__('Rendering', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-dashboard',
+                        'desc' => esc_html__('Rendering a 3D model in real time is expensive on a phone, so the library measures the frame rate and lowers the resolution on its own when it drops. These options set those limits.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_minimum_render_scale',
+                            'ar_model_viewer_for_woocommerce_power_preference',
+                            'ar_model_viewer_for_woocommerce_model_cache_size',
+                        ),
+                    ),
+                    array(
+                        'title' => esc_html__('Decoders', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-download',
+                        'desc' => esc_html__('Draco, KTX2 and Meshopt are the three ways a model can arrive compressed, and each one needs a decoder that the viewer only downloads when a model actually uses it. By default the library fetches them from a Google CDN, which means a request from the browser of your shopper to a third party that your privacy policy may need to declare. Leaving these fields empty keeps that default; filling them with files hosted on your own server removes the third party.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_draco_decoder_location',
+                            'ar_model_viewer_for_woocommerce_ktx2_transcoder_location',
+                            'ar_model_viewer_for_woocommerce_meshopt_decoder_location',
                         ),
                     ),
                 ),
@@ -266,6 +370,21 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                             'ar_model_viewer_for_woocommerce_ar_button_text',
                             'ar_model_viewer_for_woocommerce_ar_button_background_color',
                             'ar_model_viewer_for_woocommerce_ar_button_text_color',
+                        ),
+                    ),
+                ),
+            ),
+            'accessibility' => array(
+                'label' => esc_html__('Accessibility', 'ar-model-viewer-for-woocommerce'),
+                'icon' => 'dashicons-universal-access',
+                'intro' => esc_html__('A 3D viewer is a canvas, and a canvas says nothing to a screen reader. These options give the model a description in words, so the experience is not lost for someone who cannot see it.', 'ar-model-viewer-for-woocommerce'),
+                'groups' => array(
+                    array(
+                        'title' => esc_html__('Screen readers', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-visibility',
+                        'desc' => esc_html__('When the shopper moves the model with the keyboard, the viewer announces which side of the product they are looking at, and how to move it. The library ships those sentences in English only: here they are generated from the translations of the plugin, so they follow the language of your site instead.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_a11y',
                         ),
                     ),
                 ),
@@ -335,20 +454,18 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             ),
             'ar_model_viewer_for_woocommerce_loading' => array(
                 'label' => esc_html__('Loading', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('Condition used to preload the model file. Accepted values: `auto` (loads near the viewport), `lazy` (loads when needed) and `eager` (loads immediately).', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Condition used to preload the model file. The library documents `auto` and `lazy` as the same value, so only `auto` is offered: the file is requested once the viewer is near the viewport. `eager` downloads it immediately.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
                     'auto' => esc_html__('Auto', 'ar-model-viewer-for-woocommerce'),
-                    'lazy' => esc_html__('Lazy', 'ar-model-viewer-for-woocommerce'),
                     'eager' => esc_html__('Eager', 'ar-model-viewer-for-woocommerce'),
                 ),
             ),
             'ar_model_viewer_for_woocommerce_reveal' => array(
                 'label' => esc_html__('Reveal', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('When the model is revealed. `auto` shows it as soon as it is rendered, `interaction` waits until the shopper interacts with the poster and `manual` waits for the dismissPoster() call.', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('When the model is revealed. `auto` shows it as soon as it is rendered. `manual` keeps the poster until your own code calls `dismissPoster()`, and with this value the file is only downloaded when that method runs, which is the cheapest option for product pages with several viewers. The shopper can always dismiss the poster by interacting with it.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
                     'auto' => esc_html__('Auto', 'ar-model-viewer-for-woocommerce'),
-                    'interaction' => esc_html__('On interaction', 'ar-model-viewer-for-woocommerce'),
-                    'manual' => esc_html__('Manual', 'ar-model-viewer-for-woocommerce'),
+                    'manual' => esc_html__('Manual (dismissPoster)', 'ar-model-viewer-for-woocommerce'),
                 ),
             ),
             'ar_model_viewer_for_woocommerce_with_credentials' => array(
@@ -363,6 +480,197 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'label' => esc_html__('Background color', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Background of the viewer canvas. Set it to transparent when the poster image uses transparency. Accepts hexadecimal and rgba() values.', 'ar-model-viewer-for-woocommerce'),
             ),
+            'ar_model_viewer_for_woocommerce_tone_mapping' => array(
+                'label' => esc_html__('Tone mapping', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Function used to convert the HDR render into the colours of the screen. Leave it on the library default unless you are matching an existing catalogue: `neutral` is the function designed for accurate product colours, `aces` and `agx` are film looks that change how colour is compressed, and `none` disables the conversion altogether.', 'ar-model-viewer-for-woocommerce'),
+                'empty_label' => esc_html__('Library default (neutral)', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'aces' => esc_html__('ACES (film)', 'ar-model-viewer-for-woocommerce'),
+                    'agx' => esc_html__('AgX (film)', 'ar-model-viewer-for-woocommerce'),
+                    'reinhard' => esc_html__('Reinhard', 'ar-model-viewer-for-woocommerce'),
+                    'cineon' => esc_html__('Cineon', 'ar-model-viewer-for-woocommerce'),
+                    'linear' => esc_html__('Linear', 'ar-model-viewer-for-woocommerce'),
+                    'none' => esc_html__('No tone mapping', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_exposure' => array(
+                'label' => esc_html__('Exposure', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Brightness of the model and the background. Values below 1 darken the scene and above 1 brighten it, which is the quickest fix for a model that looks too dark compared to the product photos.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '1',
+            ),
+            'ar_model_viewer_for_woocommerce_shadow_intensity' => array(
+                'label' => esc_html__('Shadow intensity', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Opacity of the shadow under the model, between 0 and 1. The viewer draws no shadow by default, so a value around 0.5 is usually what makes the product look grounded instead of floating.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '0',
+            ),
+            'ar_model_viewer_for_woocommerce_shadow_softness' => array(
+                'label' => esc_html__('Shadow softness', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Blurriness of the shadow, between 0 and 1. Use 0 for a hard shadow and 1 for a diffuse one. Soft shadows render faster, so raising this value also helps the frame rate.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '1',
+            ),
+            'ar_model_viewer_for_woocommerce_environment_image' => array(
+                'label' => esc_html__('Environment image', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Image the model reflects. Accepts the keywords `neutral` (plain studio light) and `legacy` (the environment of model-viewer v3), or a URL to an .hdr or .jpg file. Because it is an equirectangular image, a product on a white background is what gives the most predictable result.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => 'neutral',
+            ),
+            'ar_model_viewer_for_woocommerce_skybox_image' => array(
+                'label' => esc_html__('Skybox image', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Background image of the scene, also used as the environment. Leave it empty to keep the plain background of the canvas: a skybox is only worth it when the model is shown in context, and it adds the weight of the image to every product page that shows it.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => 'https://example.com/studio.hdr',
+            ),
+            'ar_model_viewer_for_woocommerce_camera_controls' => array(
+                'label' => esc_html__('Camera controls', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Enables mouse and touch interaction with the model. This is what turns a static image into something the shopper can inspect, so it is enabled by default. Turn it off for a decorative model that should not capture the scroll gesture.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_disable_zoom' => array(
+                'label' => esc_html__('Disable zoom', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Blocks zooming with the mouse wheel and with a pinch gesture. The wheel then scrolls the page again, which is what a shopper usually expects on a product page.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Zoom disabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Zoom allowed', 'ar-model-viewer-for-woocommerce'),
+                ),
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_disable_pan' => array(
+                'label' => esc_html__('Disable pan', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Blocks moving the model with a two finger drag, or with a right click drag on desktop. Useful when the model has to stay centred in its frame.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Panning disabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Panning allowed', 'ar-model-viewer-for-woocommerce'),
+                ),
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_disable_tap' => array(
+                'label' => esc_html__('Disable tap to recentre', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Blocks the tap that re-centres the model on the tapped point. It has no effect while panning is disabled, because recentring belongs to the pan interaction. Once panning is available, a shopper cannot easily return to the starting view, so leaving this off is usually safer.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Recentring disabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Recentring allowed', 'ar-model-viewer-for-woocommerce'),
+                ),
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_touch_action' => array(
+                'label' => esc_html__('Touch behaviour', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('How touch gestures over the viewer interact with page scrolling. `pan-y` lets the shopper scroll the page by dragging vertically and rotate the model by dragging horizontally, `pan-x` does the opposite and `none` blocks scrolling while the finger is over the model. The CSS value `auto` is not accepted here, and leaving the field empty is the same as `pan-y`.', 'ar-model-viewer-for-woocommerce'),
+                'empty_label' => esc_html__('Library default (pan-y)', 'ar-model-viewer-for-woocommerce'),
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_orbit_sensitivity' => array(
+                'label' => esc_html__('Orbit sensitivity', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Multiplier for the rotation gesture, 1 by default. Negative values reverse the direction of the rotation, which is the documented way of looking at the inside of a model.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '1',
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_zoom_sensitivity' => array(
+                'label' => esc_html__('Zoom sensitivity', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Multiplier for the zoom gesture, 1 by default.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '1',
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_pan_sensitivity' => array(
+                'label' => esc_html__('Pan sensitivity', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Multiplier for the movement gesture, 1 by default.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '1',
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_interpolation_decay' => array(
+                'label' => esc_html__('Movement smoothing', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Milliseconds over which the camera and the model travel to their new position, 50 by default. Raising it makes the movement more cinematic and less responsive, lowering it makes it feel more immediate.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '50',
+                'depends' => 'camera_controls=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_a11y' => array(
+                'label' => esc_html__('Describe the model to screen readers', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Adds the twelve orientations of the model and the text of the interaction prompt to the `a11y` attribute, so an assistive technology can name the side of the product the shopper is looking at. Without this attribute the viewer announces its directions in English whatever the language of the store, which is the reason it is enabled by default. The sentences come from the translation files of the plugin, so they improve as those are completed.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_minimum_render_scale' => array(
+                'label' => esc_html__('Minimum render scale', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Floor of the resolution the library may drop to when the frame rate falls, 0.5 by default, and it climbs back on its own when the device recovers. Raise it towards 1 to keep every model sharp at the cost of battery, lower it when the model has to stay fluid on a low end phone. This is a limit, not a fixed value: the viewer still renders above it when it can.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '0.5',
+            ),
+            'ar_model_viewer_for_woocommerce_power_preference' => array(
+                'label' => esc_html__('Power preference', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Which graphics processor the browser is asked for. `high-performance` is what the library requests by default and gives the smoothest movement while costing more battery, `low-power` prefers the integrated chip and is the polite choice for a store selling to laptops, and `default` lets the browser decide.', 'ar-model-viewer-for-woocommerce'),
+                'empty_label' => esc_html__('Library default (high-performance)', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'high-performance' => esc_html__('High performance', 'ar-model-viewer-for-woocommerce'),
+                    'low-power' => esc_html__('Low power', 'ar-model-viewer-for-woocommerce'),
+                    'default' => esc_html__('Browser default', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_model_cache_size' => array(
+                'label' => esc_html__('Models kept in cache', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('How many models the library keeps in memory at the same time, 5 by default. It matters on a page that shows several viewers: a higher value spares the shopper from downloading and parsing a model again when they open it twice. The cache is counted in models, not in megabytes, and a large model counts exactly like a small one.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '5',
+            ),
+            'ar_model_viewer_for_woocommerce_draco_decoder_location' => array(
+                'label' => esc_html__('Draco decoder URL', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Draco is the most common way of compressing the geometry of a model, and the viewer needs its decoder only when a model uses it. Left empty the decoder is downloaded from a Google CDN; point this field to a copy on your own server to avoid the third party request. The URL is the folder that contains the decoder files, not the file itself, and it has no effect on models that are not compressed with Draco.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => 'https://example.com/decoders/draco/',
+            ),
+            'ar_model_viewer_for_woocommerce_ktx2_transcoder_location' => array(
+                'label' => esc_html__('KTX2 transcoder URL', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('KTX2 is the compressed texture format of glTF, and it also needs a helper file that is downloaded from a Google CDN by default. Filling this field is the same idea as the Draco decoder: host the transcoder yourself and the browser of your shopper never talks to a third party to see your product.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => 'https://example.com/decoders/basis/',
+            ),
+            'ar_model_viewer_for_woocommerce_meshopt_decoder_location' => array(
+                'label' => esc_html__('Meshopt decoder URL', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Meshopt is the third compression format the viewer understands, and it is the only one that is not enabled by default: an empty field means a model compressed with Meshopt will not open. Fill it only if your models come in that format.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => 'https://example.com/decoders/meshopt/',
+            ),
+            'ar_model_viewer_for_woocommerce_auto_rotate' => array(
+                'label' => esc_html__('Auto rotate', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Makes the model turn on its own, which signals that the viewer is interactive. It stops as soon as the shopper interacts with it.', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_auto_rotate_delay' => array(
+                'label' => esc_html__('Auto rotate delay', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Milliseconds to wait before the rotation starts, 3000 by default. A short delay makes the movement obvious, a long one keeps the product still while the page is being read.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '3000',
+                'depends' => 'auto_rotate=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_rotation_per_second' => array(
+                'label' => esc_html__('Rotation speed', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Speed of the rotation. Accepts degrees (`30deg`), radians (`0.5rad`) or a percentage of the default speed (`-100%`, where a negative value turns the other way). Leaving it empty keeps the library default of roughly one turn every 32 seconds.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '30deg',
+                'depends' => 'auto_rotate=yes',
+            ),
+            'ar_model_viewer_for_woocommerce_interaction_prompt' => array(
+                'label' => esc_html__('Interaction prompt', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('The prompt is the hand icon that hints the model can be moved. Set it to `none` to hide it completely.', 'ar-model-viewer-for-woocommerce'),
+                'empty_label' => esc_html__('Library default (shown)', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'auto' => esc_html__('Show the prompt', 'ar-model-viewer-for-woocommerce'),
+                    'none' => esc_html__('Hide the prompt', 'ar-model-viewer-for-woocommerce'),
+                ),
+            ),
+            'ar_model_viewer_for_woocommerce_interaction_prompt_style' => array(
+                'label' => esc_html__('Prompt style', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('`wiggle` animates the prompt and rocks the model with it, `basic` shows a static icon until the shopper interacts.', 'ar-model-viewer-for-woocommerce'),
+                'empty_label' => esc_html__('Library default (wiggle)', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    'wiggle' => esc_html__('Animated (wiggle)', 'ar-model-viewer-for-woocommerce'),
+                    'basic' => esc_html__('Static (basic)', 'ar-model-viewer-for-woocommerce'),
+                ),
+                'depends' => 'interaction_prompt=auto',
+            ),
+            'ar_model_viewer_for_woocommerce_interaction_prompt_threshold' => array(
+                'label' => esc_html__('Prompt delay', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Milliseconds the viewer waits before showing the prompt, 3000 by default. A shorter value gets the hint on screen sooner, a longer one keeps the canvas clean.', 'ar-model-viewer-for-woocommerce'),
+                'placeholder' => '3000',
+                'depends' => 'interaction_prompt=auto',
+            ),
             'ar_model_viewer_for_woocommerce_ar' => array(
                 'label' => esc_html__('Augmented reality', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Enables the AR experience on supported devices. When disabled, the AR fields below stop applying.', 'ar-model-viewer-for-woocommerce'),
@@ -373,7 +681,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             ),
             'ar_model_viewer_for_woocommerce_ar_modes' => array(
                 'label' => esc_html__('AR modes', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('Prioritized list of AR experiences: `webxr` launches AR in the browser, `scene-viewer` opens the Android app and `quick-look` opens the iOS app (it requires an .usdz file).', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Prioritized list of AR experiences: `webxr` launches AR in the browser, `scene-viewer` opens the Android app and `quick-look` opens the iOS app. At least one mode is always kept: deselecting every option restores the default list, because an empty `ar-modes` attribute is not valid. Note that `quick-look` without an .usdz file makes the device generate one on the fly, which adds a delay on iOS.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
                     'webxr' => 'webxr',
                     'scene-viewer' => 'scene-viewer',
@@ -401,7 +709,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             ),
             'ar_model_viewer_for_woocommerce_xr_environment' => array(
                 'label' => esc_html__('XR environment', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('Lighting estimation in WebXR mode. It improves realism but has a rendering cost and makes shiny materials look matte.', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Lighting estimation in WebXR mode. It has a rendering cost, replaces the lighting of the environment image during the AR session and can make shiny materials look matte, so it is off by default. Enable it only when realism inside AR matters more than frame rate.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
                     'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
                     'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
@@ -747,8 +1055,34 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 <?php
                 break;
 
+            case 'number':
+                $placeholder = isset($meta['placeholder']) ? $meta['placeholder'] : '';
+                $bounds = '';
+
+                foreach (array('min', 'max', 'step') as $bound) {
+                    if (isset($definition[$bound])) {
+                        $bounds .= ' ' . $bound . '="' . esc_attr($definition[$bound]) . '"';
+                    }
+                }
+                ?>
+                <input
+                    type="number"
+                    class="armvw-input armvw-input--number"
+                    id="<?php echo esc_attr($id); ?>"
+                    name="<?php echo esc_attr($name); ?>"
+                    value="<?php echo esc_attr(is_string($value) ? $value : ''); ?>"
+                    inputmode="decimal"
+                    <?php echo $bounds; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the loop above. ?>
+                    <?php echo '' !== $placeholder ? ' placeholder="' . esc_attr($placeholder) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the expression. ?>
+                    <?php echo $described; ?>
+                />
+                <?php
+                break;
+
             case 'text':
+            case 'resource':
             default:
+                $placeholder = isset($meta['placeholder']) ? $meta['placeholder'] : '';
                 ?>
                 <input
                     type="text"
@@ -756,6 +1090,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     id="<?php echo esc_attr($id); ?>"
                     name="<?php echo esc_attr($name); ?>"
                     value="<?php echo esc_attr(is_string($value) ? $value : ''); ?>"
+                    <?php echo '' !== $placeholder ? ' placeholder="' . esc_attr($placeholder) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the expression. ?>
                     <?php echo $described; ?>
                 />
                 <?php
@@ -1011,16 +1346,21 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
 
         /*
          * The library and the demo model are only requested after the visitor asks for the
-         * preview, so this one loads eagerly: asking for a second interaction inside the
-         * viewer (reveal="interaction") would look like nothing happened after the click.
+         * preview, so this one loads eagerly: with a lazy condition the click would look like it
+         * did nothing until the file arrives.
          */
         return sprintf(
-            '<model-viewer src="%1$s" poster="%2$s" alt="%3$s" loading="eager" reveal="auto" style="background-color:%4$s;" camera-controls auto-rotate%5$s>%6$s</model-viewer>',
+            '<model-viewer src="%1$s" poster="%2$s" alt="%3$s" loading="eager" reveal="auto" style="background-color:%4$s;"%5$s%6$s>%7$s</model-viewer>',
             esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/models/witch_potion.glb'),
             esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/images/armvw-logo-400.png'),
             esc_attr__('Preview of the 3D model viewer', 'ar-model-viewer-for-woocommerce'),
             esc_attr($settings['poster_color']),
             $attributes,
+            // The preview shows what the storefront renders, so it reads the shared attributes
+            // from the same method the public templates use.
+            Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes(
+                Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes()
+            ),
             $button
         );
     }
