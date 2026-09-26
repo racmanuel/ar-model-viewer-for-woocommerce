@@ -141,6 +141,13 @@ class Ar_Model_Viewer_For_Woocommerce
         Ar_Model_Viewer_For_Woocommerce_Settings::maybe_upgrade();
 
         /**
+         * The class that reads the 3D model of a product and its viewer overrides.
+         *
+         * It validates its values through the settings class, so it is loaded after it.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-product-model.php';
+
+        /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
@@ -259,17 +266,15 @@ class Ar_Model_Viewer_For_Woocommerce
 
         // Allow Android (.glb) and iOS (.usdz) files to be uploaded by adding them to the allowed MIME types.
         $this->loader->add_filter('upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types');
-        /**
-         * Adds `.glb` and `.usdz` to the list of allowed MIME types for file uploads.
-         * The function `ar_model_viewer_for_woocommerce_mime_types` ensures that these file types can be uploaded to the WordPress media library.
-         * It hooks into the `upload_mimes` filter.
-         */
 
-        // Define and initialize the product metaboxes.
-        $this->loader->add_action('cmb2_admin_init', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_cmb2_metaboxes');
-        /**
-         * Registers and configures the product metaboxes where the 3D model files are attached.
-         */
+        // The viewer options of a single product are a plain WordPress metabox, so they do not
+        // depend on the metabox library the file fields still use.
+        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_3d_options_metabox');
+        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_3d_options');
+
+        // The metabox that attaches the model file to a product is native too.
+        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_model_metabox');
+        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_model_files');
 
         // Register the settings screen built on the WordPress Settings API.
         $this->loader->add_action('admin_menu', $plugin_admin_settings, 'register_settings_page');
@@ -324,10 +329,6 @@ class Ar_Model_Viewer_For_Woocommerce
 
                 // Instantiate the admin class for the pro version of the plugin.
                 $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
-
-                //Register the CMB2 Fields to Pro Version
-                $this->loader->add_action('cmb2_admin_init', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_pro_metaboxes');
-
 
                 // Register the AR model viewer widget in Elementor.
                 $this->loader->add_action('elementor/widgets/register', $plugin_admin_pro, 'register_ar_model_viewer_widget');
