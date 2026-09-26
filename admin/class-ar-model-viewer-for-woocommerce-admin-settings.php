@@ -433,8 +433,21 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         return array(
             'ar_model_viewer_for_woocommerce_btn' => array(
                 'label' => esc_html__('Show the 3D button in', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('WooCommerce hook where the "View in 3D" button is printed on a single product page. Leave it empty to hide the button completely.', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Where the button that opens the viewer is printed on a single product page. Leave it empty to hide the button and rely on the product tab or the shortcode instead.', 'ar-model-viewer-for-woocommerce'),
                 'empty_label' => esc_html__('Do not show the button', 'ar-model-viewer-for-woocommerce'),
+                'labels' => array(
+                    '1' => esc_html__('Above the product images', 'ar-model-viewer-for-woocommerce'),
+                    '2' => esc_html__('Below the product summary (default)', 'ar-model-viewer-for-woocommerce'),
+                    '3' => esc_html__('Top of the product page', 'ar-model-viewer-for-woocommerce'),
+                    '4' => esc_html__('Bottom of the product page', 'ar-model-viewer-for-woocommerce'),
+                    '5' => esc_html__('Below the add to cart form', 'ar-model-viewer-for-woocommerce'),
+                    '6' => esc_html__('Above the add to cart form', 'ar-model-viewer-for-woocommerce'),
+                    '7' => esc_html__('Next to the add to cart button', 'ar-model-viewer-for-woocommerce'),
+                    '8' => esc_html__('Above the SKU and categories', 'ar-model-viewer-for-woocommerce'),
+                    '9' => esc_html__('Below the SKU and categories', 'ar-model-viewer-for-woocommerce'),
+                    '10' => esc_html__('Inside the summary, under the buy button', 'ar-model-viewer-for-woocommerce'),
+                    '11' => esc_html__('Over the product image', 'ar-model-viewer-for-woocommerce'),
+                ),
             ),
             'ar_model_viewer_for_woocommerce_single_product_tabs' => array(
                 'label' => esc_html__('Product tab', 'ar-model-viewer-for-woocommerce'),
@@ -1297,15 +1310,17 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
      */
     private function button_position_label()
     {
-        $positions = array(
-            '' => esc_html__('Hidden', 'ar-model-viewer-for-woocommerce'),
-            '1' => 'woocommerce_before_single_product_summary',
-            '2' => 'woocommerce_after_single_product_summary',
-            '3' => 'woocommerce_before_single_product',
-            '4' => 'woocommerce_after_single_product',
-            '5' => 'woocommerce_after_add_to_cart_form',
-            '6' => 'woocommerce_before_add_to_cart_form',
-        );
+        /*
+         * The same wording the selector uses, so the status card and the field can never describe
+         * the same choice in two different ways, which is exactly what happened when this method
+         * returned the name of the WooCommerce hook while the field offered bare numbers.
+         */
+        $fields = $this->fields();
+        $positions = isset($fields['ar_model_viewer_for_woocommerce_btn']['labels'])
+            ? $fields['ar_model_viewer_for_woocommerce_btn']['labels']
+            : array();
+
+        $positions[''] = esc_html__('Hidden', 'ar-model-viewer-for-woocommerce');
 
         $current = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
 

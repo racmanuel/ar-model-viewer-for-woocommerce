@@ -128,7 +128,7 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 'ar_model_viewer_for_woocommerce_btn' => array(
                     'type' => 'select',
                     'default' => '2',
-                    'choices' => array('1', '2', '3', '4', '5', '6'),
+                    'choices' => array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'),
                     'allow_empty' => true,
                 ),
                 'ar_model_viewer_for_woocommerce_single_product_tabs' => array(

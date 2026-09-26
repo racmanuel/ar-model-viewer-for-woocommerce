@@ -322,6 +322,20 @@
 	color: var(--armvw-text);
 }
 
+/*
+ * Labels can carry a dashicon, the same family the cards and the tabs use. The image icons of the
+ * product metabox were replaced by these, so both screens speak one visual language.
+ */
+.armvw-field__label .dashicons {
+	width: 18px;
+	height: 18px;
+	margin-right: var(--armvw-space-1);
+	font-size: 18px;
+	line-height: 1;
+	vertical-align: text-bottom;
+	color: var(--armvw-text);
+}
+
 .armvw-field__desc {
 	margin: 0;
 	max-width: 60ch;
@@ -354,8 +368,15 @@
  * Controls
  * ---------------------------------------------------------------------- */
 
-.armvw-input,
-.armvw-select {
+/*
+ * The `input[type]` in front of the class is not decoration: WordPress styles its fields with
+ * `input[type="text"]`, which is more specific than a bare class, so `.armvw-input` lost every
+ * time and the fields of this screen were painted by the admin stylesheet instead of this one.
+ * `input[type].armvw-input` wins that comparison and covers text, number, password and any other
+ * input that declares a type.
+ */
+input[type].armvw-input,
+select.armvw-select {
 	width: 100%;
 	max-width: 420px;
 	min-height: 36px;
@@ -370,19 +391,19 @@
 	transition: border-color 0.15s ease;
 }
 
-.armvw-input:hover,
-.armvw-select:hover {
+input[type].armvw-input:hover,
+select.armvw-select:hover {
 	border-color: rgba(255, 255, 255, 0.32);
 }
 
-.armvw-input:focus,
-.armvw-select:focus {
+input[type].armvw-input:focus,
+select.armvw-select:focus {
 	border-color: var(--armvw-violet);
 	box-shadow: 0 0 0 1px var(--armvw-violet);
 	outline: none;
 }
 
-.armvw-input::placeholder {
+input[type].armvw-input::placeholder {
 	color: var(--armvw-text-faint);
 }
 

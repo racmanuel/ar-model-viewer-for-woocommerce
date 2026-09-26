@@ -77,105 +77,18 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
      * Register the metabox with the options of the viewer for a single product.
      *
      * It is a native metabox on purpose: these fields belong to the viewer, not to the metabox
-     * library that still owns the file fields, so they can be maintained, tested and documented
-     * without a dependency in between.
+     * Everything the viewer needs for one product lives in a single metabox, so the store does not
+     * have to fill two forms to configure one viewer.
      *
      * @since 3.0.0
      * @return void
      */
-    public function ar_model_viewer_for_woocommerce_register_3d_options_metabox()
+    public function ar_model_viewer_for_woocommerce_register_viewer_metabox()
     {
         add_meta_box(
-            'ar-model-viewer-for-woocommerce-3d-options',
-            __('3D viewer: camera and model', 'ar-model-viewer-for-woocommerce'),
-            array($this, 'ar_model_viewer_for_woocommerce_render_3d_options_metabox'),
-            'product',
-            'normal',
-            'default'
-        );
-    }
-
-    /**
-     * Render the metabox of the viewer options.
-     *
-     * @since 3.0.0
-     * @param WP_Post $post Product being edited.
-     * @return void
-     */
-    public function ar_model_viewer_for_woocommerce_render_3d_options_metabox($post)
-    {
-        $product = wc_get_product($post->ID);
-
-        if (!$product) {
-            return;
-        }
-
-        include plugin_dir_path(__FILE__) . 'partials/ar-model-viewer-for-woocommerce-admin-display-product-3d-options.php';
-    }
-
-    /**
-     * Save the viewer options of a product.
-     *
-     * An emptied field deletes its meta, so a product that inherits every value carries nothing
-     * in the database. Values are validated by the model class, which is also what reads them,
-     * so what is stored and what is printed can never disagree.
-     *
-     * @since 3.0.0
-     * @param int $post_id Product id.
-     * @return void
-     */
-    public function ar_model_viewer_for_woocommerce_save_3d_options($post_id)
-    {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-            return;
-        }
-
-        if (!isset($_POST['armvw_3d_options_nonce'])) {
-            return;
-        }
-
-        $nonce = sanitize_text_field(wp_unslash($_POST['armvw_3d_options_nonce']));
-
-        if (!wp_verify_nonce($nonce, 'armvw_save_3d_options')) {
-            return;
-        }
-
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
-
-        $input = array();
-
-        if (isset($_POST['armvw_product']) && is_array($_POST['armvw_product'])) {
-            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is validated by type in the model class.
-            $input = wp_unslash($_POST['armvw_product']);
-        }
-
-        Ar_Model_Viewer_For_Woocommerce_Product_Model::save($post_id, $input);
-
-        $this->logger->log_to_woocommerce(
-            sprintf('Viewer options updated for product ID: %d', $post_id),
-            'info'
-        );
-    }
-
-    /**
-     * Register the metabox that attaches the model file to a product.
-     *
-     * This is the native replacement of the first metabox the plugin used to build with the
-     * metabox library. It is registered with `add_meta_box()` so the plugin no longer needs a
-     * third party dependency to ask for a file, and it keeps the same meta keys, which means no
-     * product loses the model it already had.
-     *
-     * @since 3.0.0
-     * @return void
-     */
-    public function ar_model_viewer_for_woocommerce_register_model_metabox()
-    {
-        add_meta_box(
-            'ar-model-viewer-for-woocommerce-model',
-            __('AR Model Viewer for WooCommerce', 'ar-model-viewer-for-woocommerce'),
-            array($this, 'ar_model_viewer_for_woocommerce_render_model_metabox'),
+            'ar-model-viewer-for-woocommerce-viewer',
+            __('3D and AR viewer', 'ar-model-viewer-for-woocommerce'),
+            array($this, 'ar_model_viewer_for_woocommerce_render_viewer_metabox'),
             'product',
             'normal',
             'high'
@@ -183,13 +96,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
     }
 
     /**
-     * Render the metabox that attaches the model file to a product.
+     * Render the single metabox of the viewer.
      *
      * @since 3.0.0
      * @param WP_Post $post Product being edited.
      * @return void
      */
-    public function ar_model_viewer_for_woocommerce_render_model_metabox($post)
+    public function ar_model_viewer_for_woocommerce_render_viewer_metabox($post)
     {
         $product = wc_get_product($post->ID);
 
@@ -201,25 +114,31 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
     }
 
     /**
-     * Save the three values that attach a model to a product.
+     * Save every viewer option of a product.
+     *
+     * The file fields and the viewer options are saved together because they share one nonce and
+     * one form: a single metabox means a single round trip. An emptied field deletes its meta, so
+     * a product that inherits every value carries nothing in the database, and the values are
+     * validated by the model class that also reads them, so what is stored and what is printed can
+     * never disagree.
      *
      * @since 3.0.0
      * @param int $post_id Product id.
      * @return void
      */
-    public function ar_model_viewer_for_woocommerce_save_model_files($post_id)
+    public function ar_model_viewer_for_woocommerce_save_viewer_options($post_id)
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
 
-        if (!isset($_POST['armvw_model_files_nonce'])) {
+        if (!isset($_POST['armvw_viewer_nonce'])) {
             return;
         }
 
-        $nonce = sanitize_text_field(wp_unslash($_POST['armvw_model_files_nonce']));
+        $nonce = sanitize_text_field(wp_unslash($_POST['armvw_viewer_nonce']));
 
-        if (!wp_verify_nonce($nonce, 'armvw_save_model_files')) {
+        if (!wp_verify_nonce($nonce, 'armvw_save_viewer_options')) {
             return;
         }
 
@@ -227,98 +146,27 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Product
             return;
         }
 
-        $input = array();
+        $files = array();
 
         if (isset($_POST['armvw_files']) && is_array($_POST['armvw_files'])) {
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is sanitized in the model class.
-            $input = wp_unslash($_POST['armvw_files']);
+            $files = wp_unslash($_POST['armvw_files']);
         }
 
-        Ar_Model_Viewer_For_Woocommerce_Product_Model::save_files($post_id, $input);
-    }
+        $options = array();
 
-    /**
-     * Handles the retrieval of 3D model settings and product details via AJAX request.
-     *
-     * This function is triggered by an AJAX request to get the 3D model settings and product details.
-     * It verifies the validity of the product ID, retrieves global settings, and prepares the data for response.
-     *
-     * @since    1.0.0
-     * @return   void
-     */
-    public function ar_model_viewer_for_woocommerce_get_model_and_settings()
-    {
-        // Verify if the AJAX request includes the product ID
-        if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
-            $this->logger->log_to_woocommerce('Invalid Product ID in AJAX request.', 'error'); // Log error
-            wp_send_json_error('Invalid Product ID.');
-            wp_die();
+        if (isset($_POST['armvw_product']) && is_array($_POST['armvw_product'])) {
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is validated by type in the model class.
+            $options = wp_unslash($_POST['armvw_product']);
         }
 
-        // Retrieve the product ID from the AJAX request
-        $product_id = intval($_POST['product_id']); // Convert to integer
-        if (!$product_id) {
-            $this->logger->log_to_woocommerce('Invalid Product ID after intval conversion.', 'error'); // Log error
-            wp_send_json_error('Invalid Product ID.');
-            wp_die();
-        }
+        Ar_Model_Viewer_For_Woocommerce_Product_Model::save_files($post_id, $files);
+        Ar_Model_Viewer_For_Woocommerce_Product_Model::save($post_id, $options);
 
-        // Log successful retrieval of settings
-        $this->logger->log_to_woocommerce('Global settings retrieved successfully.', 'info'); // Log info
-
-        // Retrieve individual settings
-        $settings = $this->get_ar_model_viewer_settings();
-
-        // The product is fetched once and handed to the resolver, which is the same one the
-        // shortcode, the product tab and the public endpoint use. This handler used to call
-        // three local copies of that logic, and each copy fetched the product again.
-        $product = wc_get_product($product_id);
-
-        if (!$product) {
-            $this->logger->log_to_woocommerce("Product not found for ID $product_id", 'error');
-            wp_send_json_error('Product not found.');
-            wp_die();
-        }
-
-        $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
-        $product_name = $product->get_name();
-
-        // The preview needs a file to show, so the editor keeps receiving the same message it
-        // already handles when the product has none.
-        if ('' === trim($model['source'])) {
-            $this->logger->log_to_woocommerce("3D model file missing for product: {$product_name} (ID: $product_id)", 'error');
-            wp_send_json_error('3D model file missing for product. Try save the product before view a preview.');
-            wp_die();
-        }
-
-        // Log product retrieval
-        $this->logger->log_to_woocommerce("Product retrieved: $product_name (ID: $product_id)", 'info'); // Log info
-
-        // Prepare data for response
-        $data = array_merge($settings, [
-            'product_name' => $product_name,
-            'model_3d_file' => $model['source'],
-            'model_alt' => $model['alt'],
-            'model_poster' => $model['poster'],
-        ]);
-
-        // Send JSON response and log success
-        $this->logger->log_to_woocommerce("Successfully prepared 3D model data for product: $product_name (ID: $product_id)", 'info'); // Log success
-        wp_send_json_success($data);
-        wp_die();
-    }
-
-    /**
-     * Retrieves AR model viewer settings from the options page.
-     *
-     * This function gets the AR model viewer settings configured in the options page using CMB2.
-     *
-     * @since    1.0.0
-     * @return   array    An array of AR model viewer settings.
-     */
-    private function get_ar_model_viewer_settings()
-    {
-        return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+        $this->logger->log_to_woocommerce(
+            sprintf('Viewer options updated for product ID: %d', $post_id),
+            'info'
+        );
     }
 
     /**

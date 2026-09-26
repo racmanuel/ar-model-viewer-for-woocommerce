@@ -37,112 +37,14 @@
 			return;
 		}
 
-		initTabs();
+		// The tab behaviour is shared with the product metabox and lives in `...-tabs.js`.
+		window.armvwInitTabs({
+			storageKey: STORAGE_KEY,
+		});
 		initDependencies(form);
 		initApiKeyReveal(form);
 		initPreviewLoader();
 		initResetConfirmation();
-	}
-
-	/**
-	 * Wire the tab list: click, keyboard navigation, hash and persistence.
-	 *
-	 * @return {void}
-	 */
-	function initTabs() {
-		var list = document.querySelector(".armvw-tabs");
-		var tabs = Array.prototype.slice.call(document.querySelectorAll(".armvw-tab"));
-
-		if (!list || !tabs.length) {
-			return;
-		}
-
-		/**
-		 * Activate a tab and show its panel.
-		 *
-		 * @param {HTMLElement} tab      Tab button to activate.
-		 * @param {boolean}     remember Whether the choice should be persisted.
-		 * @return {void}
-		 */
-		function activate(tab, remember) {
-			var name = tab.getAttribute("data-armvw-tab");
-
-			tabs.forEach(function (item) {
-				var isActive = item === tab;
-				var panel = document.getElementById("armvw-panel-" + item.getAttribute("data-armvw-tab"));
-
-				item.classList.toggle("is-active", isActive);
-				item.setAttribute("aria-selected", isActive ? "true" : "false");
-				item.setAttribute("tabindex", isActive ? "0" : "-1");
-
-				if (panel) {
-					if (isActive) {
-						panel.removeAttribute("hidden");
-					} else {
-						panel.setAttribute("hidden", "hidden");
-					}
-				}
-			});
-
-			if (remember) {
-				try {
-					window.localStorage.setItem(STORAGE_KEY, name);
-				} catch (error) {
-					// Storage can be unavailable in private mode; the tab still switches.
-				}
-			}
-		}
-
-		tabs.forEach(function (tab) {
-			tab.addEventListener("click", function () {
-				activate(tab, true);
-			});
-
-			tab.addEventListener("keydown", function (event) {
-				var index = tabs.indexOf(tab);
-				var next = null;
-
-				if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-					next = tabs[(index + 1) % tabs.length];
-				} else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-					next = tabs[(index - 1 + tabs.length) % tabs.length];
-				} else if (event.key === "Home") {
-					next = tabs[0];
-				} else if (event.key === "End") {
-					next = tabs[tabs.length - 1];
-				}
-
-				if (next) {
-					event.preventDefault();
-					next.focus();
-					activate(next, true);
-				}
-			});
-		});
-
-		// The hash wins over the stored tab so documentation links stay shareable.
-		var hash = window.location.hash.replace("#", "");
-		var requested = tabs.filter(function (tab) {
-			return tab.getAttribute("data-armvw-tab") === hash;
-		})[0];
-
-		if (requested) {
-			activate(requested, false);
-			return;
-		}
-
-		try {
-			var stored = window.localStorage.getItem(STORAGE_KEY);
-			var remembered = tabs.filter(function (tab) {
-				return tab.getAttribute("data-armvw-tab") === stored;
-			})[0];
-
-			if (remembered) {
-				activate(remembered, false);
-			}
-		} catch (error) {
-			// Nothing to restore.
-		}
 	}
 
 	/**

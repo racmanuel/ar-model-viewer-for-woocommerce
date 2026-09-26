@@ -74,9 +74,41 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function enqueue_styles()
     {
+        /*
+         * The design tokens are the ones the admin screens use, so the palette, the radii and the
+         * spacings of the front cannot drift away from the panel that configures them.
+         */
+        $tokens_handle = $this->plugin_name . '-tokens';
+        $tokens_path = plugin_dir_path(dirname(__FILE__)) . 'admin/css/ar-model-viewer-for-woocommerce-admin-tokens.css';
+        $public_path = plugin_dir_path(__FILE__) . 'css/ar-model-viewer-for-woocommerce-public.css';
 
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-public.css', array(), $this->version, 'all');
-        wp_enqueue_style('jquery-ui-theme', plugin_dir_url(__FILE__) . 'css/jquery-ui.min.css', array(), $this->version, 'all');
+        /*
+         * The version is the modification time of the file and not the version of the plugin: with a
+         * fixed version the browser keeps the copy it cached, so a stylesheet that changes in an
+         * update never reaches the shopper who already visited the site.
+         */
+        wp_enqueue_style(
+            $tokens_handle,
+            plugin_dir_url(dirname(__FILE__)) . 'admin/css/ar-model-viewer-for-woocommerce-admin-tokens.css',
+            array(),
+            file_exists($tokens_path) ? (string) filemtime($tokens_path) : $this->version,
+            'all'
+        );
+
+        wp_enqueue_style(
+            $this->plugin_name,
+            plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-public.css',
+            array($tokens_handle),
+            file_exists($public_path) ? (string) filemtime($public_path) : $this->version,
+            'all'
+        );
+
+        /*
+         * A jQuery UI theme used to be enqueued here. Nothing in the plugin uses those widgets any
+         * more (the modal is built with alertify), and that stylesheet pointed at sprite images the
+         * plugin never shipped, so every product page asked for files that do not exist and got a
+         * 404 for each one. The stylesheet was deleted in 3.0.0.
+         */
     }
 
     /**
@@ -86,37 +118,38 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-public-dist.js', array('jquery'), $this->version, true);
-        wp_localize_script($this->plugin_name, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+        $script_path = plugin_dir_path(__FILE__) . 'js/ar-model-viewer-for-woocommerce-front.js';
 
-        // The render scale, the power preference, the cache size and the decoder locations are
-        // static properties of the element, not attributes, so they cannot travel in the markup.
-        // They are assigned right after the library is evaluated and before any viewer is
-        // created, which is the only moment the library reads them.
-        $this->add_static_properties_script($this->plugin_name);
-    }
-
-    /**
-     * Print the script that applies the static properties of the viewer element.
-     *
-     * @since 3.0.0
-     * @param string $handle Handle of the script that loads the library.
-     * @return void
-     */
-    private function add_static_properties_script($handle)
-    {
-        $properties = Ar_Model_Viewer_For_Woocommerce_Settings::static_properties();
-
-        if (array() === $properties) {
-            return;
-        }
-
-        $script = sprintf(
-            "customElements.whenDefined('model-viewer').then(function(){var viewer=customElements.get('model-viewer');var values=%s;Object.keys(values).forEach(function(name){viewer[name]=values[name];});});",
-            wp_json_encode($properties)
+        /*
+         * No jQuery: the modal is a `<dialog>` and the request is a `fetch`. What used to be a
+         * 880 KB bundle with the library, jQuery and alertify inside is this file plus the library,
+         * and the library is requested by the script only when the page has something to render.
+         */
+        wp_enqueue_script(
+            $this->plugin_name,
+            plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-front.js',
+            array(),
+            file_exists($script_path) ? (string) filemtime($script_path) : $this->version,
+            true
         );
 
-        wp_add_inline_script($handle, $script, 'after');
+        wp_localize_script(
+            $this->plugin_name,
+            'armvwFront',
+            array(
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'viewerUrl' => plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/model-viewer.min.js',
+                'action' => 'ar_model_viewer_for_woocommerce_get_model_and_settings',
+                'buttonId' => 'ar_model_viewer_for_woocommerce_btn',
+                // Static properties of the element, which cannot travel in the markup.
+                'staticProperties' => Ar_Model_Viewer_For_Woocommerce_Settings::static_properties(),
+                'i18n' => array(
+                    'loading' => __('Loading the 3D model…', 'ar-model-viewer-for-woocommerce'),
+                    'error' => __('The 3D model could not be loaded.', 'ar-model-viewer-for-woocommerce'),
+                    'close' => __('Close', 'ar-model-viewer-for-woocommerce'),
+                ),
+            )
+        );
     }
 
     /**
@@ -131,6 +164,12 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function ar_model_viewer_for_woocommerce_button()
     {
+        /*
+         * The position decides between the button printed in the flow of the page and the one laid
+         * over the product image, so the template has to know which of the two it is drawing.
+         */
+        $armvw_position = (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
+
         // Include the HTML and PHP logic for displaying the AR model viewer button modal.
         include_once 'partials/ar-model-viewer-for-woocommerce-public-display-button.php';
     }
@@ -161,6 +200,13 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $placement = $viewer['placement'];
         $xr_environment = $viewer['xr_environment'];
         $ar_modes = $viewer['ar_modes'];
+
+        // The custom AR button replaces the default icon of the library, so the modal needs its
+        // label and its colours. It is only offered when AR is enabled and the label is not empty.
+        $ar_button = $viewer['ar'] && $viewer['ar_button'] && '' !== trim((string) $viewer['ar_button_text']);
+        $ar_button_text = $viewer['ar_button_text'];
+        $ar_button_background_color = $viewer['ar_button_background_color'];
+        $ar_button_text_color = $viewer['ar_button_text_color'];
         $product = wc_get_product($product_id);
 
         if (!$product) {
@@ -199,6 +245,10 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             // Overrides of this product, which the modal also receives instead of having to
             // reach for the meta values on its own.
             'product_attributes' => Ar_Model_Viewer_For_Woocommerce_Product_Model::attributes($product),
+            'ar_button' => $ar_button,
+            'ar_button_text' => $ar_button_text,
+            'ar_button_background_color' => $ar_button_background_color,
+            'ar_button_text_color' => $ar_button_text_color,
         );
 
         // Enviar la respuesta en formato JSON

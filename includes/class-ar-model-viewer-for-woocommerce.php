@@ -267,14 +267,10 @@ class Ar_Model_Viewer_For_Woocommerce
         // Allow Android (.glb) and iOS (.usdz) files to be uploaded by adding them to the allowed MIME types.
         $this->loader->add_filter('upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types');
 
-        // The viewer options of a single product are a plain WordPress metabox, so they do not
-        // depend on the metabox library the file fields still use.
-        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_3d_options_metabox');
-        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_3d_options');
-
-        // The metabox that attaches the model file to a product is native too.
-        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_model_metabox');
-        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_model_files');
+        // Every viewer option of a product lives in a single native metabox, so the plugin does
+        // not need a metabox library to ask for a file, for a poster or for a camera.
+        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_viewer_metabox');
+        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_viewer_options');
 
         // Register the settings screen built on the WordPress Settings API.
         $this->loader->add_action('admin_menu', $plugin_admin_settings, 'register_settings_page');
@@ -305,7 +301,15 @@ class Ar_Model_Viewer_For_Woocommerce
              */
         }
 
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_and_settings', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_model_and_settings');
+        /*
+         * The endpoint that serves the model of a product belongs to the public class, which is
+         * registered further down for logged in and anonymous visitors alike.
+         *
+         * It used to be registered here as well. Both callbacks answered the same hook and this one
+         * ran first, so a logged in visitor got the response of this class and a shopper got the
+         * response of the public one: the same page behaved differently depending on who was
+         * looking at it, which is how the front ended up with the modal that ignored the settings.
+         */
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_tasks', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_tasks');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview',$plugin_admin_product,'ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview');
@@ -432,17 +436,34 @@ class Ar_Model_Viewer_For_Woocommerce
         // Placement of the 3D button. An empty value means the button is not printed at all.
         $button_position = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
 
+        /*
+         * Every position is the hook that prints the button plus the priority it uses. The priority
+         * matters in `woocommerce_single_product_summary`, where 35 lands right below the button
+         * that adds the product to the cart instead of above its title.
+         */
         $button_hooks = array(
-            '1' => 'woocommerce_before_single_product_summary',
-            '2' => 'woocommerce_after_single_product_summary',
-            '3' => 'woocommerce_before_single_product',
-            '4' => 'woocommerce_after_single_product',
-            '5' => 'woocommerce_after_add_to_cart_form',
-            '6' => 'woocommerce_before_add_to_cart_form',
+            '1' => array('woocommerce_before_single_product_summary', 10),
+            '2' => array('woocommerce_after_single_product_summary', 10),
+            '3' => array('woocommerce_before_single_product', 10),
+            '4' => array('woocommerce_after_single_product', 10),
+            '5' => array('woocommerce_after_add_to_cart_form', 10),
+            '6' => array('woocommerce_before_add_to_cart_form', 10),
+            '7' => array('woocommerce_after_add_to_cart_button', 10),
+            '8' => array('woocommerce_product_meta_start', 10),
+            '9' => array('woocommerce_product_meta_end', 10),
+            '10' => array('woocommerce_single_product_summary', 35),
+            /*
+             * `woocommerce_product_thumbnails` runs inside the gallery container in every theme that
+             * follows the WooCommerce templates, which is what lets the button be printed over the
+             * product image by the server instead of being injected by a script.
+             */
+            '11' => array('woocommerce_product_thumbnails', 10),
         );
 
         if (isset($button_hooks[$button_position])) {
-            $this->loader->add_action($button_hooks[$button_position], $plugin_public, 'ar_model_viewer_for_woocommerce_button');
+            $button_hook = $button_hooks[$button_position];
+
+            $this->loader->add_action($button_hook[0], $plugin_public, 'ar_model_viewer_for_woocommerce_button', $button_hook[1]);
         }
 
         // Check if the product tab is enabled in the settings.

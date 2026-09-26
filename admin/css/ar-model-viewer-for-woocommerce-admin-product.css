@@ -309,6 +309,183 @@ body.armvw-product-editor .copy-button:hover {
 }
 
 /* -------------------------------------------------------------------------
+ * Viewer metabox
+ *
+ * The metabox reuses the cards, fields and controls of the settings screen,
+ * which is loaded on this screen too. Only what changes in this context lives
+ * here: the editor is a narrow column, so a field stacks its label over its
+ * control instead of placing them side by side.
+ * ---------------------------------------------------------------------- */
+
+/*
+ * The box is painted with the canvas of the settings screen. The cards are dark and on the white
+ * background of the editor they looked like stickers, so the metabox brings its own background
+ * instead. Only this box is painted: the rest of the editor keeps the WordPress colours its own
+ * controls were designed for.
+ */
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer {
+	background: var(--armvw-page-background);
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius-lg);
+	font-family: var(--armvw-font);
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header {
+	border-bottom: 1px solid var(--armvw-border);
+	background: transparent;
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header h2 {
+	font-family: var(--armvw-font);
+	font-size: var(--armvw-font-size-md);
+	color: var(--armvw-text);
+}
+
+/* The handles of the box are WordPress icons drawn with the currentColor. */
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button {
+	color: var(--armvw-text-faint);
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button:hover,
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button:focus {
+	color: var(--armvw-text);
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .order-higher-indicator::before,
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .order-lower-indicator::before,
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .toggle-indicator::before {
+	color: currentColor;
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .inside {
+	margin: 0;
+	padding: var(--armvw-space-5);
+}
+
+/*
+ * The buttons wear the same gradient as the primary action of the settings screen. Those rules are
+ * scoped with `.armvw-settings-page`, which is not the body class of the editor, so the look has to
+ * be declared for this context too instead of leaking the whole panel stylesheet.
+ */
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	min-height: 36px;
+	padding: 0 18px;
+	border: none;
+	border-radius: var(--armvw-radius-pill);
+	background: var(--armvw-gradient);
+	font-family: inherit;
+	font-size: var(--armvw-font-size-base);
+	font-weight: 700;
+	line-height: 1;
+	color: var(--armvw-ink);
+	text-shadow: none;
+	box-shadow: var(--armvw-shadow-sm);
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button:hover {
+	background: var(--armvw-gradient);
+	border: none;
+	color: var(--armvw-ink);
+	filter: brightness(1.06);
+	transform: translateY(-1px);
+}
+
+body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button:focus-visible {
+	box-shadow: var(--armvw-focus-ring);
+	outline: none;
+}
+
+/*
+ * The tab list is sticky on the settings screen because that page is long. Here each panel holds a
+ * handful of fields, so sticking the list would only make it float over its own content.
+ */
+body.armvw-product-editor .armvw-metabox .armvw-tabs {
+	position: static;
+	margin-bottom: var(--armvw-space-4);
+}
+
+body.armvw-product-editor .armvw-metabox .armvw-field {
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--armvw-space-2);
+}
+
+body.armvw-product-editor .armvw-metabox .armvw-card {
+	margin-bottom: var(--armvw-space-4);
+}
+
+body.armvw-product-editor .armvw-metabox .armvw-card:last-child {
+	margin-bottom: 0;
+}
+
+body.armvw-product-editor .armvw-metabox .armvw-input {
+	max-width: none;
+}
+
+body.armvw-product-editor .armvw-field__actions {
+	margin: var(--armvw-space-2) 0 0;
+}
+
+body.armvw-product-editor .armvw-thumb {
+	display: block;
+	max-width: 150px;
+	height: auto;
+	margin: var(--armvw-space-3) 0 var(--armvw-space-1);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-sm);
+}
+
+/* The state line answers what the viewer will do with what this product has. */
+body.armvw-product-editor .armvw-metabox__state {
+	margin: 0 0 var(--armvw-space-4);
+	padding: var(--armvw-space-3) var(--armvw-space-4);
+	border-left: 4px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius-sm);
+	background-color: var(--armvw-surface);
+	font-size: var(--armvw-font-size-sm);
+	font-weight: 500;
+	line-height: var(--armvw-line-base);
+	color: var(--armvw-text-muted);
+}
+
+body.armvw-product-editor .armvw-metabox__state--ok {
+	border-left-color: var(--armvw-success);
+}
+
+body.armvw-product-editor .armvw-metabox__state--warn {
+	border-left-color: var(--armvw-warning);
+}
+
+/* -------------------------------------------------------------------------
+ * Notifications
+ *
+ * The editor tells the store that the model is loading, or that something failed, with a
+ * notification of alertify. These rules used to live in the public stylesheet, where the front
+ * loaded them for a library it no longer uses.
+ * ---------------------------------------------------------------------- */
+
+body.armvw-product-editor .alertify-notifier .ajs-message {
+	border: 1px solid var(--armvw-border-strong);
+	border-radius: var(--armvw-radius);
+	background-color: var(--armvw-ink);
+	font-family: var(--armvw-font);
+	color: var(--armvw-text);
+	box-shadow: var(--armvw-shadow);
+}
+
+body.armvw-product-editor .alertify-notifier .ajs-message.ajs-success {
+	border-left: 4px solid var(--armvw-success);
+}
+
+body.armvw-product-editor .alertify-notifier .ajs-message.ajs-error {
+	border-left: 4px solid var(--armvw-danger);
+}
+
+/* -------------------------------------------------------------------------
  * Tasks table
  *
  * Minimal layout for the table rendered by the tasks library, replacing the

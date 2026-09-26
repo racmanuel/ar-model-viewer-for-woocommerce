@@ -45,5 +45,376 @@
 }
 
 /* jQuery UI Dialog*/
-.ui-dialog { z-index: 1000 !important ;}
+/* -------------------------------------------------------------------------
+ * The viewer on the product page and in the shortcode
+ * ---------------------------------------------------------------------- */
+
+/*
+ * The space is reserved before the model arrives (`aspect-ratio`), so the page does not jump when
+ * the file finishes downloading. That jump was the most visible defect of the front.
+ */
+/*
+ * No border, no shadow, no corners and no background of our own. The viewer takes the shape of the
+ * theme it lives in, and the colour of its canvas comes from the settings, where the default is
+ * transparent: whatever the theme paints behind it shows through.
+ */
+.armvw-viewer {
+	display: block;
+	width: 100%;
+	min-height: 280px;
+	aspect-ratio: 4 / 3;
+	background-color: transparent;
+}
+
+/* The library draws the poster itself, so it fills the rounded box without square corners. */
+.armvw-viewer::part(default-progress-bar) {
+	height: 3px;
+	background-image: var(--armvw-gradient);
+}
+
+/* -------------------------------------------------------------------------
+ * The button that opens the viewer
+ *
+ * `[type]` in the selector is not decoration: themes paint `button` with their own colours, radius
+ * and typeface, and a bare class loses against them. That is exactly why this button used to look
+ * like a grey default button of the theme, sitting next to a viewer whose whole design comes from
+ * the plugin.
+ * ---------------------------------------------------------------------- */
+
+/*
+ * The colour belongs to the theme: no background, no text colour and no border of our own, so a shop
+ * with black buttons gets a black button and a shop with green ones gets a green one. What is ours is
+ * the shape, which is what makes it look current next to any theme without imposing anything.
+ */
+.armvw-button[type] {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6em;
+	min-height: 44px;
+	padding: 0 1.5em;
+	border-radius: 999px;
+	font-family: inherit;
+	font-size: 1em;
+	font-weight: 700;
+	line-height: 1;
+	text-decoration: none;
+	cursor: pointer;
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+/*
+ * `brightness()` darkens whatever colour the theme gave the button, which is the only way to write a
+ * hover without knowing that colour in advance.
+ */
+.armvw-button[type]:hover,
+.armvw-button[type]:focus {
+	filter: brightness(0.94);
+	transform: translateY(-1px);
+}
+
+.armvw-button[type]:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.armvw-button__icon {
+	flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------------------
+ * Over the product image
+ *
+ * The gallery container is `position: relative` in WooCommerce itself, so the button only has to be
+ * absolute to sit on top of the image without asking the theme for anything. It goes to the lower
+ * left corner on purpose: the zoom trigger of the gallery lives in the upper right one.
+ * ---------------------------------------------------------------------- */
+
+/*
+ * Over the product image the button cannot be transparent: what is behind it is a photograph, and a
+ * photograph can be as light as the text. This is the only place with colours of its own, and it is
+ * legibility rather than branding: a frosted white surface stays readable over any image, which is
+ * the same trick a toolbar uses on a phone.
+ */
+.armvw-button--over-image[type] {
+	position: absolute;
+	left: var(--armvw-space-4);
+	bottom: var(--armvw-space-4);
+	z-index: 20;
+	min-height: 38px;
+	padding: 0 1.1em;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.92);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
+	font-size: 0.9em;
+	color: #1e1e1e;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.armvw-button--over-image[type]:hover,
+.armvw-button--over-image[type]:focus {
+	background-color: rgba(255, 255, 255, 0.98);
+	color: #1e1e1e;
+	filter: none;
+}
+
+.armvw-button--over-image[type] .armvw-button__icon {
+	width: 16px;
+	height: 16px;
+}
+
+/*
+ * On a narrow screen the label would cover too much of the product, so it is hidden and the button
+ * becomes a round icon. The accessible name that replaces it is set in the template.
+ */
+@media screen and (max-width: 600px) {
+	.armvw-button--over-image[type] {
+		width: 44px;
+		min-height: 44px;
+		padding: 0;
+		justify-content: center;
+	}
+
+	.armvw-button--over-image[type] > span {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		white-space: nowrap;
+		border: 0;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Live AR feedback
+ *
+ * `ar-status` and `ar-tracking` are read only attributes the library writes on the element, so
+ * these messages need no JavaScript: when WebXR starts, or when the camera cannot find a surface,
+ * the shopper gets told instead of staring at a frozen image.
+ * ---------------------------------------------------------------------- */
+
+.armvw-viewer[ar-status]::after,
+.armvw-viewer[ar-tracking="not-tracking"]::after {
+	display: block;
+	position: absolute;
+	left: 50%;
+	bottom: var(--armvw-space-4);
+	transform: translateX(-50%);
+	max-width: 80%;
+	padding: var(--armvw-space-2) var(--armvw-space-4);
+	border-radius: var(--armvw-radius-pill);
+	background-color: var(--armvw-ink);
+	font-size: var(--armvw-font-size-sm);
+	font-weight: 500;
+	line-height: var(--armvw-line-tight);
+	color: var(--armvw-text);
+	text-align: center;
+	box-shadow: var(--armvw-shadow);
+	pointer-events: none;
+}
+
+.armvw-viewer[ar-status="session-started"]::after {
+	content: "Move the phone slowly to place the product.";
+}
+
+.armvw-viewer[ar-status="object-placed"]::after {
+	content: "Placed. Drag the product to move it and pinch to resize it.";
+}
+
+.armvw-viewer[ar-status="failed"]::after,
+.armvw-viewer[ar-tracking="not-tracking"]::after {
+	content: "Point the camera at the floor and move the phone slowly.";
+}
+
+/* -------------------------------------------------------------------------
+ * The modal
+ *
+ * The dialog is drawn by alertify, which ships a white box, 2px corners, its own typeface and a
+ * button that says OK. These rules repaint it with the palette of the plugin without touching the
+ * script, so the change is visual only for now.
+ * ---------------------------------------------------------------------- */
+
+/*
+ * alertify is no longer used on the front. The modal is a native `<dialog>`, so every override that
+ * had to fight an injected stylesheet with `!important` went away with it, and with them the reason
+ * this file needed a library it did not own. The notifications of the editor of a product are styled
+ * in the admin stylesheet, which is where alertify is still used.
+ */
+
+/* Nothing here paints alertify any more: the front does not load it. */
+
+/* -------------------------------------------------------------------------
+ * The modal
+ *
+ * A native `<dialog>`, so there is no library to load, no stylesheet injected after this file and
+ * no `!important` to fight with. `showModal()` brings the focus trap and the Escape key, and
+ * `::backdrop` paints the dimmed background without an extra element.
+ * ---------------------------------------------------------------------- */
+
+/*
+ * The dialog is deliberately neutral: white, no border, no gradient and no colour of the plugin. It
+ * is opened on top of a theme nobody can predict, so it borrows the typeface and the text colour of
+ * the page it is opened from and looks at home in any shop.
+ */
+.armvw-modal {
+	width: min(1080px, 92vw);
+	max-width: none;
+	max-height: 92vh;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background-color: #ffffff;
+	color: inherit;
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+	overflow: hidden;
+}
+
+.armvw-modal::backdrop {
+	background-color: rgba(0, 0, 0, 0.6);
+	opacity: 1;
+}
+
+.armvw-modal__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--armvw-space-4);
+	padding: var(--armvw-space-4) var(--armvw-space-5);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.armvw-modal__title {
+	margin: 0;
+	font-size: 1.15em;
+	font-weight: 700;
+	color: inherit;
+}
+
+/*
+ * `[type]` again, and for the same reason as the button: the theme paints every `button` with a
+ * background of its own (`#eeeeee` in the theme this was tested against) and a bare class loses
+ * against `button`, which turned the close button into a grey block of the theme.
+ */
+.armvw-modal__close[type] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 999px;
+	background: transparent;
+	background-color: transparent;
+	font-size: 15px;
+	line-height: 1;
+	color: rgba(0, 0, 0, 0.55);
+	cursor: pointer;
+}
+
+/* The theme outlines every click; the keyboard outline is kept and repainted in a neutral tone. */
+.armvw-modal__close[type]:focus {
+	outline: none;
+}
+
+.armvw-modal__close[type]:hover {
+	border-color: rgba(0, 0, 0, 0.3);
+	background-color: transparent;
+	color: rgba(0, 0, 0, 0.85);
+}
+
+.armvw-modal__close[type]:focus-visible {
+	border-color: rgba(0, 0, 0, 0.3);
+	background-color: transparent;
+	color: rgba(0, 0, 0, 0.85);
+	outline: 2px solid rgba(0, 0, 0, 0.35);
+	outline-offset: 2px;
+}
+
+.armvw-modal__body {
+	padding: var(--armvw-space-5);
+}
+
+/*
+ * The waiting state keeps the height the model is going to take, so the dialog does not resize
+ * itself the moment the file lands, and the spinner sits in the middle of that space instead of a
+ * line of grey text in the top left corner.
+ */
+.armvw-modal__status {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--armvw-space-3);
+	min-height: 62vh;
+	margin: 0;
+	padding: var(--armvw-space-5);
+	font-size: 0.95em;
+	line-height: 1.4;
+	color: rgba(0, 0, 0, 0.55);
+	text-align: center;
+}
+
+/* The spinner takes the colour of the theme through `currentColor`, so it is never off palette. */
+.armvw-modal__status::before {
+	content: "";
+	width: 32px;
+	height: 32px;
+	border: 3px solid rgba(0, 0, 0, 0.12);
+	border-top-color: rgba(0, 0, 0, 0.45);
+	border-radius: 50%;
+	animation: armvw-spin 0.9s linear infinite;
+}
+
+@keyframes armvw-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Nobody asked for a spinning thing: with reduced motion the ring stays still and still reads. */
+@media (prefers-reduced-motion: reduce) {
+	.armvw-modal__status::before {
+		animation: none;
+		border-top-color: rgba(0, 0, 0, 0.12);
+		border-left-color: rgba(0, 0, 0, 0.45);
+	}
+}
+
+/* The same element reports a failure, and a failure is not something that spins. */
+.armvw-modal__status--error::before {
+	width: auto;
+	height: auto;
+	border: none;
+	animation: none;
+	font-size: 24px;
+	line-height: 1;
+	content: "!";
+}
+
+.armvw-modal__status--error {
+	color: rgba(0, 0, 0, 0.75);
+	font-weight: 500;
+}
+
+/* Inside the dialog the viewer takes the height of the screen instead of the 4:3 of the page. */
+.armvw-modal__body .armvw-viewer {
+	min-height: 62vh;
+	aspect-ratio: auto;
+}
+
+/* The custom AR button of the settings, painted with its own colours. */
+.armvw-ar-button {
+	border: none;
+	border-radius: var(--armvw-radius-pill);
+	padding: var(--armvw-space-2) var(--armvw-space-4);
+	font: inherit;
+	font-size: var(--armvw-font-size-base);
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: var(--armvw-shadow);
+}
 

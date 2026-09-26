@@ -546,6 +546,15 @@ function armvwDriverFactory() {
     });
 
     /*
+     * The metabox groups the viewer fields in tabs, the same behaviour the settings screen uses.
+     * The key is different from the one of that screen on purpose: opening a tab in a product must
+     * not change the tab the store sees in the panel.
+     */
+    if (typeof window.armvwInitTabs === "function") {
+      window.armvwInitTabs({ storageKey: "armvwProductTab" });
+    }
+
+    /*
      * Open the WordPress media library from the file fields of the metabox.
      *
      * The fields are plain text inputs on purpose: a URL can be typed, pasted or picked, which is

@@ -225,10 +225,24 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
         }
 
         if ($is_product_editor) {
+            /*
+             * The metabox of a product is built with the cards and the fields of the settings
+             * screen, so that stylesheet is loaded here too: one definition, two screens. Its
+             * global rules are scoped with `.armvw-settings-page`, which is not the body class of
+             * this screen, so nothing from the panel leaks into the editor.
+             */
+            wp_enqueue_style(
+                $this->plugin_name . '-settings',
+                plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-settings.css',
+                array($tokens_handle),
+                $this->asset_version('css/ar-model-viewer-for-woocommerce-admin-settings.css'),
+                'all'
+            );
+
             wp_enqueue_style(
                 $this->plugin_name . '-product',
                 plugin_dir_url(__FILE__) . 'css/ar-model-viewer-for-woocommerce-admin-product.css',
-                array($tokens_handle),
+                array($this->plugin_name . '-settings'),
                 $this->asset_version('css/ar-model-viewer-for-woocommerce-admin-product.css'),
                 'all'
             );
@@ -281,10 +295,22 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
              * visitor asks for the demo. The `<model-viewer>` element upgrades itself as soon
              * as the library is loaded.
              */
+            // The tab behaviour is shared with the product metabox instead of being written twice.
+            wp_enqueue_script(
+                $this->plugin_name . '-tabs',
+                plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-tabs.js',
+                array(),
+                $this->asset_version('js/ar-model-viewer-for-woocommerce-tabs.js'),
+                array(
+                    'in_footer' => true,
+                    'strategy' => 'defer',
+                )
+            );
+
             wp_enqueue_script(
                 $this->plugin_name . '-settings',
                 plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-settings.js',
-                array(),
+                array($this->plugin_name . '-tabs'),
                 $this->asset_version('js/ar-model-viewer-for-woocommerce-settings.js'),
                 array(
                     'in_footer' => true,
@@ -328,10 +354,20 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             // that build the modal are needed on this screen.
             wp_enqueue_media();
 
+            // The metabox groups its fields in tabs, and that behaviour is shared with the
+            // settings screen instead of being written twice.
+            wp_enqueue_script(
+                $this->plugin_name . '-tabs',
+                plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-tabs.js',
+                array(),
+                $this->asset_version('js/ar-model-viewer-for-woocommerce-tabs.js'),
+                true
+            );
+
             wp_enqueue_script(
                 $this->plugin_name . '-product',
                 plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-product.js',
-                array('jquery', 'wp-i18n'),
+                array('jquery', 'wp-i18n', $this->plugin_name . '-tabs'),
                 $this->asset_version('js/ar-model-viewer-for-woocommerce-product.js'),
                 true
             );
