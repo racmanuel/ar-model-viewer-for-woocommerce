@@ -69,6 +69,25 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
     const CAPABILITY = 'manage_options';
 
     /**
+     * Version of the settings shape.
+     *
+     * It is bumped whenever a stored value changes meaning, so the migration in
+     * `maybe_upgrade()` runs once per change.
+     *
+     * @since 3.0.0
+     * @var   string
+     */
+    const VERSION = '2';
+
+    /**
+     * Option that remembers the settings shape already migrated.
+     *
+     * @since 3.0.0
+     * @var   string
+     */
+    const VERSION_OPTION = 'ar_model_viewer_for_woocommerce_settings_version';
+
+    /**
      * Memoized definitions for the current request.
      *
      * @since 3.0.0
@@ -137,8 +156,8 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_with_credentials' => array(
                     'type' => 'radio',
-                    'default' => 'false',
-                    'choices' => array('false', 'true'),
+                    'default' => 'no',
+                    'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_poster_color' => array(
                     'type' => 'color',
@@ -147,8 +166,8 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_ar' => array(
                     'type' => 'radio',
-                    'default' => 'active',
-                    'choices' => array('active', 'deactivate'),
+                    'default' => 'yes',
+                    'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_ar_modes' => array(
                     'type' => 'checklist',
@@ -167,13 +186,13 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_xr_environment' => array(
                     'type' => 'radio',
-                    'default' => 'active',
-                    'choices' => array('active', 'deactive'),
+                    'default' => 'yes',
+                    'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_ar_button' => array(
                     'type' => 'radio',
-                    'default' => 'deactive',
-                    'choices' => array('active', 'deactive'),
+                    'default' => 'no',
+                    'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_ar_button_text' => array(
                     'type' => 'text',
@@ -274,21 +293,70 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
             self::$viewer = array(
                 'loading' => self::get('ar_model_viewer_for_woocommerce_loading'),
                 'reveal' => self::get('ar_model_viewer_for_woocommerce_reveal'),
-                'with_credentials' => self::get('ar_model_viewer_for_woocommerce_with_credentials'),
                 'poster_color' => self::get('ar_model_viewer_for_woocommerce_poster_color'),
-                'ar' => self::get('ar_model_viewer_for_woocommerce_ar'),
                 'ar_modes' => self::get('ar_model_viewer_for_woocommerce_ar_modes'),
                 'scale' => self::get('ar_model_viewer_for_woocommerce_ar_scale'),
                 'placement' => self::get('ar_model_viewer_for_woocommerce_ar_placement'),
-                'xr_environment' => self::get('ar_model_viewer_for_woocommerce_xr_environment'),
-                'ar_button' => self::get('ar_model_viewer_for_woocommerce_ar_button'),
                 'ar_button_text' => self::get('ar_model_viewer_for_woocommerce_ar_button_text'),
                 'ar_button_background_color' => self::get('ar_model_viewer_for_woocommerce_ar_button_background_color'),
                 'ar_button_text_color' => self::get('ar_model_viewer_for_woocommerce_ar_button_text_color'),
+                // Toggles are returned as booleans so no consumer has to compare strings.
+                'with_credentials' => 'yes' === self::get('ar_model_viewer_for_woocommerce_with_credentials'),
+                'ar' => 'yes' === self::get('ar_model_viewer_for_woocommerce_ar'),
+                'xr_environment' => 'yes' === self::get('ar_model_viewer_for_woocommerce_xr_environment'),
+                'ar_button' => 'yes' === self::get('ar_model_viewer_for_woocommerce_ar_button'),
             );
         }
 
         return self::$viewer;
+    }
+
+    /**
+     * Migrate stored values when the shape of the settings changes.
+     *
+     * Toggles were stored as `active`, `deactivate`, `deactive`, `true` and `false` depending on
+     * the field. They are all `yes`/`no` now. This runs before anything reads the settings, so
+     * the front end never sees a value it cannot compare.
+     *
+     * @since 3.0.0
+     * @return void
+     */
+    public static function maybe_upgrade()
+    {
+        if (self::VERSION === get_option(self::VERSION_OPTION)) {
+            return;
+        }
+
+        $stored = get_option(self::OPTION_KEY, array());
+
+        if (is_array($stored)) {
+            $map = array(
+                'active' => 'yes',
+                'deactivate' => 'no',
+                'deactive' => 'no',
+                'true' => 'yes',
+                'false' => 'no',
+            );
+
+            $toggles = array(
+                'ar_model_viewer_for_woocommerce_ar',
+                'ar_model_viewer_for_woocommerce_xr_environment',
+                'ar_model_viewer_for_woocommerce_ar_button',
+                'ar_model_viewer_for_woocommerce_with_credentials',
+            );
+
+            foreach ($toggles as $key) {
+                if (isset($stored[$key]) && is_string($stored[$key]) && isset($map[$stored[$key]])) {
+                    $stored[$key] = $map[$stored[$key]];
+                }
+            }
+
+            update_option(self::OPTION_KEY, $stored);
+        }
+
+        self::flush();
+
+        update_option(self::VERSION_OPTION, self::VERSION);
     }
 
     /**

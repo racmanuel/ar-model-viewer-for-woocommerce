@@ -135,7 +135,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
 
         // Initialize AR attributes based on the retrieved settings.
         $ar_attributes = '';
-        if ($settings['ar'] === 'active') {
+        if ($settings['ar']) {
             $ar_attributes .= 'ar ar-modes="' . esc_attr(implode(' ', $settings['ar_modes'])) . '" ';
             if (!empty($settings['scale'])) {
                 $ar_attributes .= 'ar-scale="' . esc_attr($settings['scale']) . '" ';
@@ -143,7 +143,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
             if (!empty($settings['placement'])) {
                 $ar_attributes .= 'ar-placement="' . esc_attr($settings['placement']) . '" ';
             }
-            if ($settings['xr_environment'] === 'active') {
+            if ($settings['xr_environment']) {
                 $ar_attributes .= 'xr-environment ';
             }
         }
@@ -152,7 +152,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
         // a server that requires authentication.
         $extra_attributes = '';
 
-        if ('true' === $settings['with_credentials']) {
+        if ($settings['with_credentials']) {
             $extra_attributes .= 'with-credentials ';
         }
 
@@ -160,7 +160,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
         // makes sense when AR is enabled and the button has a label.
         $ar_button = '';
 
-        if ('active' === $settings['ar'] && 'active' === $settings['ar_button'] && '' !== trim((string) $settings['ar_button_text'])) {
+        if ($settings['ar'] && $settings['ar_button'] && '' !== trim((string) $settings['ar_button_text'])) {
             $ar_button = sprintf(
                 '<button slot="ar-button" style="background-color:%1$s;color:%2$s;border:none;border-radius:999px;padding:8px 14px;cursor:pointer;">%3$s</button>',
                 esc_attr($settings['ar_button_background_color']),

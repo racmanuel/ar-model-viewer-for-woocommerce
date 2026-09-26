@@ -355,8 +355,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'label' => esc_html__('With credentials', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Sends cookies and authorization headers when the model is fetched. Needed when the file lives on a server that requires authentication. It has no effect for local files.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
-                    'false' => esc_html__('No', 'ar-model-viewer-for-woocommerce'),
-                    'true' => esc_html__('Yes', 'ar-model-viewer-for-woocommerce'),
+                    'yes' => esc_html__('Yes', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('No', 'ar-model-viewer-for-woocommerce'),
                 ),
             ),
             'ar_model_viewer_for_woocommerce_poster_color' => array(
@@ -367,8 +367,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'label' => esc_html__('Augmented reality', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Enables the AR experience on supported devices. When disabled, the AR fields below stop applying.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
-                    'active' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
-                    'deactivate' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
                 ),
             ),
             'ar_model_viewer_for_woocommerce_ar_modes' => array(
@@ -379,7 +379,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     'scene-viewer' => 'scene-viewer',
                     'quick-look' => 'quick-look',
                 ),
-                'depends' => 'ar=active',
+                'depends' => 'ar=yes',
             ),
             'ar_model_viewer_for_woocommerce_ar_scale' => array(
                 'label' => esc_html__('AR scale', 'ar-model-viewer-for-woocommerce'),
@@ -388,7 +388,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     'auto' => esc_html__('Auto', 'ar-model-viewer-for-woocommerce'),
                     'fixed' => esc_html__('Fixed', 'ar-model-viewer-for-woocommerce'),
                 ),
-                'depends' => 'ar=active',
+                'depends' => 'ar=yes',
             ),
             'ar_model_viewer_for_woocommerce_ar_placement' => array(
                 'label' => esc_html__('AR placement', 'ar-model-viewer-for-woocommerce'),
@@ -397,39 +397,39 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     'floor' => esc_html__('Floor', 'ar-model-viewer-for-woocommerce'),
                     'wall' => esc_html__('Wall', 'ar-model-viewer-for-woocommerce'),
                 ),
-                'depends' => 'ar=active',
+                'depends' => 'ar=yes',
             ),
             'ar_model_viewer_for_woocommerce_xr_environment' => array(
                 'label' => esc_html__('XR environment', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Lighting estimation in WebXR mode. It improves realism but has a rendering cost and makes shiny materials look matte.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
-                    'active' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
-                    'deactive' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
                 ),
-                'depends' => 'ar=active',
+                'depends' => 'ar=yes',
             ),
             'ar_model_viewer_for_woocommerce_ar_button' => array(
                 'label' => esc_html__('Custom AR button', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Replaces the default AR icon of the viewer with a button you can style. It stays visible while AR is potentially available, which may include false positives until the shopper tries it.', 'ar-model-viewer-for-woocommerce'),
                 'labels' => array(
-                    'active' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
-                    'deactive' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
+                    'yes' => esc_html__('Enabled', 'ar-model-viewer-for-woocommerce'),
+                    'no' => esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
                 ),
             ),
             'ar_model_viewer_for_woocommerce_ar_button_text' => array(
                 'label' => esc_html__('Button text', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Label of the custom AR button. Emoji are allowed.', 'ar-model-viewer-for-woocommerce'),
-                'depends' => 'ar_button=active',
+                'depends' => 'ar_button=yes',
             ),
             'ar_model_viewer_for_woocommerce_ar_button_background_color' => array(
                 'label' => esc_html__('Button background', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Background color of the custom AR button.', 'ar-model-viewer-for-woocommerce'),
-                'depends' => 'ar_button=active',
+                'depends' => 'ar_button=yes',
             ),
             'ar_model_viewer_for_woocommerce_ar_button_text_color' => array(
                 'label' => esc_html__('Button text color', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Color of the label of the custom AR button.', 'ar-model-viewer-for-woocommerce'),
-                'depends' => 'ar_button=active',
+                'depends' => 'ar_button=yes',
             ),
             'ar_model_viewer_for_woocommerce_api_key_meshy' => array(
                 'label' => esc_html__('API key', 'ar-model-viewer-for-woocommerce'),
@@ -917,10 +917,10 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
 
         $items[] = array(
             'label' => esc_html__('Augmented reality', 'ar-model-viewer-for-woocommerce'),
-            'value' => 'active' === $settings['ar']
+            'value' => $settings['ar']
                 ? esc_html__('Enabled', 'ar-model-viewer-for-woocommerce')
                 : esc_html__('Disabled', 'ar-model-viewer-for-woocommerce'),
-            'state' => 'active' === $settings['ar'] ? 'ok' : 'off',
+            'state' => $settings['ar'] ? 'ok' : 'off',
         );
 
         $items[] = array(
@@ -988,23 +988,24 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         $settings = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
         $attributes = '';
 
-        if ('active' === $settings['ar']) {
+        if ($settings['ar']) {
             $attributes .= ' ar ar-modes="' . esc_attr(implode(' ', (array) $settings['ar_modes'])) . '"';
             $attributes .= ' ar-scale="' . esc_attr($settings['scale']) . '"';
             $attributes .= ' ar-placement="' . esc_attr($settings['placement']) . '"';
 
-            if ('active' === $settings['xr_environment']) {
+            if ($settings['xr_environment']) {
                 $attributes .= ' xr-environment';
             }
         }
 
         $button = '';
-        if ('active' === Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar_button')) {
+
+        if ($settings['ar_button'] && '' !== trim((string) $settings['ar_button_text'])) {
             $button = sprintf(
                 '<button slot="ar-button" style="background-color:%1$s;color:%2$s;border:none;border-radius:999px;padding:8px 14px;cursor:pointer;">%3$s</button>',
-                esc_attr(Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar_button_background_color')),
-                esc_attr(Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar_button_text_color')),
-                esc_html(Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar_button_text'))
+                esc_attr($settings['ar_button_background_color']),
+                esc_attr($settings['ar_button_text_color']),
+                esc_html($settings['ar_button_text'])
             );
         }
 

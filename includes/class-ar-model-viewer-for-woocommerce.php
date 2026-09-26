@@ -137,6 +137,9 @@ class Ar_Model_Viewer_For_Woocommerce
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-settings.php';
 
+        // Stored values are migrated before anything reads the settings.
+        Ar_Model_Viewer_For_Woocommerce_Settings::maybe_upgrade();
+
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.

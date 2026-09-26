@@ -50,9 +50,9 @@ $armvw_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_vi
                     <span class="armvw-chip armvw-chip--brand">
                         <?php echo esc_html(sprintf(/* translators: %s: plugin version. */ __('Version %s', 'ar-model-viewer-for-woocommerce'), AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION)); ?>
                     </span>
-                    <span class="armvw-chip armvw-chip--<?php echo 'active' === $armvw_ar_state ? 'ok' : 'off'; ?>">
+                    <span class="armvw-chip armvw-chip--<?php echo 'yes' === $armvw_ar_state ? 'ok' : 'off'; ?>">
                         <span class="dashicons dashicons-smartphone" aria-hidden="true"></span>
-                        <?php echo 'active' === $armvw_ar_state
+                        <?php echo 'yes' === $armvw_ar_state
                             ? esc_html__('AR enabled', 'ar-model-viewer-for-woocommerce')
                             : esc_html__('AR disabled', 'ar-model-viewer-for-woocommerce'); ?>
                     </span>
