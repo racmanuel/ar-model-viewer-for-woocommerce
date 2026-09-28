@@ -127,7 +127,7 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
             self::$definitions = array(
                 'ar_model_viewer_for_woocommerce_btn' => array(
                     'type' => 'select',
-                    'default' => '2',
+                    'default' => '11',
                     'choices' => array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'),
                     'allow_empty' => true,
                 ),
@@ -160,12 +160,12 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_with_credentials' => array(
                     'type' => 'radio',
-                    'default' => 'no',
+                    'default' => 'yes',
                     'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_poster_color' => array(
                     'type' => 'color',
-                    'default' => 'rgba(255,255,255,0)',
+                    'default' => 'rgb(255,255,255)',
                     'alpha' => true,
                 ),
                 // Lighting. Every default is the empty string, which means "do not print the
@@ -265,7 +265,7 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_disable_zoom' => array(
                     'type' => 'radio',
-                    'default' => 'no',
+                    'default' => 'yes',
                     'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_disable_pan' => array(
@@ -380,9 +380,9 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                 ),
                 'ar_model_viewer_for_woocommerce_xr_environment' => array(
                     'type' => 'radio',
-                    // Off by default: the library warns that lighting estimation has a performance
-                    // cost and replaces the configured environment during the AR session.
-                    'default' => 'no',
+                    // Enabled by default to match the store's current AR presentation. It can be
+                    // disabled when frame rate matters more than lighting realism.
+                    'default' => 'yes',
                     'choices' => array('yes', 'no'),
                 ),
                 'ar_model_viewer_for_woocommerce_ar_button' => array(
