@@ -27,6 +27,7 @@ The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing yo
 - **Augmented Reality Viewing**: Allow customers to view your 3D models in augmented reality for an immersive shopping experience.  
 - **Broad File Format Support**: Compatible with **.glb** and **.gltf** file formats for seamless 3D model integration.  
 - **Effortless WooCommerce Integration**: Easily integrates with WooCommerce to enhance your eCommerce platform.  
+- **Public REST Loading**: The viewer requests each product's model and public viewer configuration through a read-only REST endpoint, including for anonymous visitors.
 - **Upload External 3D Files**: Use **.glb** files from external services like Sketchfab or any other source to quickly add 3D models to your store.  
 
 ### Why You Should Install This Plugin ✅  
@@ -106,6 +107,9 @@ You can find comprehensive documentation and support resources here:
 
 = Does the plugin support bulk uploads of models? =  
 Yes. WooCommerce's native CSV importer/exporter supports the 3D model URL, poster URL, alt text, USDZ URL and the per-product viewer overrides. URLs must be publicly accessible; the importer stores them on the product and does not download files to the Media Library.
+
+= Does the public viewer use the WordPress REST API? =
+Yes. The viewer loads a product's public model data at `/wp-json/armvw/v1/products/{product_id}/model` with a read-only `GET` request. Administrative settings are not exposed through this endpoint. The legacy AJAX action remains available for compatibility.
 
 = Is there support for Elementor? =  
 Absolutely! The **Pro Version** includes a dedicated Elementor widget to display 3D models seamlessly on your website.  

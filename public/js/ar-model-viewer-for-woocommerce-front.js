@@ -474,25 +474,20 @@
 	 * @return {Promise<Object>} The data of the endpoint.
 	 */
 	function requestModel(productId) {
-		var body = new window.URLSearchParams();
+		var endpoint = (config.modelEndpoint || "") + encodeURIComponent(productId) + "/model";
 
-		body.append("action", config.action || "ar_model_viewer_for_woocommerce_get_model_and_settings");
-		body.append("product_id", productId);
-
-		return window.fetch(config.ajaxUrl, {
-			method: "POST",
+		return window.fetch(endpoint, {
+			method: "GET",
 			credentials: "same-origin",
-			body: body,
 		})
 			.then(function (response) {
-				return response.json();
-			})
-			.then(function (json) {
-				if (!json || !json.success) {
-					throw new Error((json && json.data) || "The server refused the request.");
-				}
+				return response.json().then(function (json) {
+					if (!response.ok) {
+						throw new Error((json && json.message) || "The server refused the request.");
+					}
 
-				return json.data;
+					return json;
+				});
 			});
 	}
 

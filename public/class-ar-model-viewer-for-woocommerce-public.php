@@ -138,6 +138,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'armvwFront',
             array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
+                'modelEndpoint' => esc_url_raw(rest_url('armvw/v1/products/')),
                 'viewerUrl' => plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/model-viewer.min.js',
                 'action' => 'ar_model_viewer_for_woocommerce_get_model_and_settings',
                 'buttonId' => 'ar_model_viewer_for_woocommerce_btn',
@@ -184,20 +185,76 @@ class Ar_Model_Viewer_For_Woocommerce_Public
 
     public function ar_model_viewer_for_woocommerce_get_model_and_settings()
     {
-        // Verificar si la petición AJAX incluye el ID del producto
         if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
             wp_send_json_error('Invalid Product ID.');
-            wp_die();
         }
 
-        // Obtener la ID del producto desde la petición AJAX
-        $product_id = intval($_POST['product_id']); // Asegúrate de convertir a entero
+        $product_id = absint($_POST['product_id']);
+
         if (!$product_id) {
             wp_send_json_error('Invalid Product ID.');
-            wp_die();
         }
 
-        // Retrieve the global settings and expand them into the local variables used below.
+        $data = $this->get_model_and_settings_data($product_id);
+
+        if (is_wp_error($data)) {
+            wp_send_json_error($data->get_error_message());
+        }
+
+        wp_send_json_success($data);
+    }
+
+    /**
+     * Register the public REST route used by the viewer modal.
+     *
+     * @return void
+     */
+    public function register_rest_routes()
+    {
+        register_rest_route(
+            'armvw/v1',
+            '/products/(?P<product_id>\d+)/model',
+            array(
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => array($this, 'get_model_and_settings_rest'),
+                'permission_callback' => '__return_true',
+                'args' => array(
+                    'product_id' => array(
+                        'validate_callback' => function ($value) {
+                            return absint($value) > 0;
+                        },
+                        'sanitize_callback' => 'absint',
+                    ),
+                ),
+            )
+        );
+    }
+
+    /**
+     * Return one product viewer configuration through REST.
+     *
+     * @param WP_REST_Request $request REST request.
+     * @return array|WP_Error
+     */
+    public function get_model_and_settings_rest(WP_REST_Request $request)
+    {
+        return $this->get_model_and_settings_data(absint($request['product_id']));
+    }
+
+    /**
+     * Build the shared model and viewer response.
+     *
+     * @param int $product_id Product identifier.
+     * @return array|WP_Error
+     */
+    private function get_model_and_settings_data($product_id)
+    {
+        $product = wc_get_product($product_id);
+
+        if (!$product) {
+            return new WP_Error('armvw_product_not_found', __('Product not found.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
+        }
+
         $viewer = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
         $loading = $viewer['loading'];
         $reveal = $viewer['reveal'];
@@ -215,12 +272,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $ar_button_text = $viewer['ar_button_text'];
         $ar_button_background_color = $viewer['ar_button_background_color'];
         $ar_button_text_color = $viewer['ar_button_text_color'];
-        $product = wc_get_product($product_id);
-
-        if (!$product) {
-            wp_send_json_error('Product not found.');
-            wp_die();
-        }
 
         // The same resolver the shortcode and the product tab use. This endpoint used to read the
         // meta values on its own, so it returned an empty poster for a product that had no poster
@@ -228,8 +279,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
         $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
 
         if ('' === trim($model['source'])) {
-            wp_send_json_error('3D model file is missing.');
-            wp_die();
+            return new WP_Error('armvw_model_missing', __('3D model file is missing.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
         }
 
         // Preparar los datos para el retorno
@@ -259,8 +309,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'ar_button_text_color' => $ar_button_text_color,
         );
 
-        // Enviar la respuesta en formato JSON
-        wp_send_json_success($data);
-        wp_die();
+        return $data;
     }
 }

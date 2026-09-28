@@ -375,6 +375,7 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         // Include the scripts for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->add_action('rest_api_init', $plugin_public, 'register_rest_routes');
         $this->loader->add_action('rest_api_init', 'Ar_Model_Viewer_For_Woocommerce_Analytics', 'register_rest_routes');
 
         // Placement of the 3D button. An empty value means the button is not printed at all.
