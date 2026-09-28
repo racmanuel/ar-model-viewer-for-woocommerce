@@ -141,12 +141,20 @@ class Ar_Model_Viewer_For_Woocommerce_Public
                 'viewerUrl' => plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/model-viewer.min.js',
                 'action' => 'ar_model_viewer_for_woocommerce_get_model_and_settings',
                 'buttonId' => 'ar_model_viewer_for_woocommerce_btn',
+                'analytics' => array(
+                    'enabled' => '1' === (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_analytics'),
+                    'showOptOut' => '1' === (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_analytics_opt_out'),
+                    'storageKey' => 'armvwAnalyticsOptOut',
+                    'endpoint' => esc_url_raw(rest_url('armvw/v1/events')),
+                ),
                 // Static properties of the element, which cannot travel in the markup.
                 'staticProperties' => Ar_Model_Viewer_For_Woocommerce_Settings::static_properties(),
                 'i18n' => array(
                     'loading' => __('Loading the 3D model…', 'ar-model-viewer-for-woocommerce'),
                     'error' => __('The 3D model could not be loaded.', 'ar-model-viewer-for-woocommerce'),
                     'close' => __('Close', 'ar-model-viewer-for-woocommerce'),
+                    'analyticsOptOut' => __('Do not measure this browser', 'ar-model-viewer-for-woocommerce'),
+                    'analyticsOptIn' => __('Allow anonymous viewer analytics', 'ar-model-viewer-for-woocommerce'),
                 ),
             )
         );

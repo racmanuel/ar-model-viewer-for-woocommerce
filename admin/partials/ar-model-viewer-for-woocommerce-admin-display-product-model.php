@@ -44,6 +44,7 @@ $armvw_poster = (string) $product->get_meta(constant($armvw_model_class . '::MET
 $armvw_alt = (string) $product->get_meta(constant($armvw_model_class . '::META_ALT'), true);
 
 $armvw_resolved = call_user_func(array($armvw_model_class, 'resolve'), $product);
+$armvw_diagnostics = call_user_func(array($armvw_model_class, 'diagnostics'), $product);
 $armvw_fields = call_user_func(array($armvw_model_class, 'fields'));
 
 // The tabs group the fields the way the settings screen does, so a product does not show one
@@ -81,20 +82,30 @@ $armvw_field_icons = array(
 
 // One line that answers the only question worth answering at a glance: what will the viewer do
 // with what this product has right now.
-if ('' === trim($armvw_source)) {
+if ('missing' === $armvw_diagnostics['status']) {
     $armvw_state = array(
         'tone' => 'warn',
         'text' => __('No 3D file yet. The button and the product tab stay empty until you add one.', 'ar-model-viewer-for-woocommerce'),
     );
-} elseif ('featured' === $armvw_resolved['poster_source']) {
+} elseif ('valid' === $armvw_diagnostics['status'] && 'featured' === $armvw_resolved['poster_source']) {
     $armvw_state = array(
         'tone' => 'ok',
         'text' => __('Ready. The viewer loads with the featured image of the product as poster.', 'ar-model-viewer-for-woocommerce'),
     );
-} elseif ('none' === $armvw_resolved['poster_source']) {
+} elseif ('valid' === $armvw_diagnostics['status'] && 'none' === $armvw_resolved['poster_source']) {
     $armvw_state = array(
         'tone' => 'warn',
         'text' => __('Ready, but there is no poster and the product has no featured image, so the viewer renders on a plain background until the file arrives.', 'ar-model-viewer-for-woocommerce'),
+    );
+} elseif ('unsupported' === $armvw_diagnostics['status']) {
+    $armvw_state = array(
+        'tone' => 'warn',
+        'text' => __('The model resources use an unsupported file format. Use GLB or glTF for the model, an image for the poster and USDZ for iPhone AR.', 'ar-model-viewer-for-woocommerce'),
+    );
+} elseif ('invalid' === $armvw_diagnostics['status']) {
+    $armvw_state = array(
+        'tone' => 'warn',
+        'text' => __('The model URL needs attention. Use an absolute URL with a supported file extension; the product can still be saved while you fix it.', 'ar-model-viewer-for-woocommerce'),
     );
 } else {
     $armvw_state = array(

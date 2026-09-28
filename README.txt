@@ -63,11 +63,16 @@ If you need any customization for the plugin, feel free to send me a message or 
 
 ## Privacy Policy 🔒
 
-AR Model Viewer for WooCommerce uses the Freemius SDK to collect telemetry data, but only with the user's explicit consent. This data collection helps us troubleshoot issues and improve our product.
+The optional viewer analytics in AR Model Viewer for WooCommerce is first-party and disabled by default. A store administrator must enable it in Settings -> AR Model Viewer -> Analytics before the plugin records anything.
 
-- **No data is gathered by default.**
-- Data collection only begins **after user consent via the admin notice**.
-- Collected data ensures a great user experience.
+- The plugin stores anonymous daily counters in the site's own WordPress database.
+- It records only event names, product IDs, AR mode, normalized error codes and duration buckets.
+- It does not store IP addresses, user agents, referrers, names, emails, user IDs, cookies or complete model URLs.
+- Visitors can exclude their browser with the privacy control shown in the viewer. The preference stays in local storage and is never sent to the site.
+- Administrators can review the last 30 days and delete all stored analytics from the Analytics settings tab.
+- The feature does not use a CMP, Google Analytics or another external analytics service.
+
+The Freemius SDK may have its own separate product telemetry and consent flow. The viewer analytics described above is independent of that SDK.
 
 Integrating the Freemius SDK **does not immediately start data collection without user confirmation**.
 

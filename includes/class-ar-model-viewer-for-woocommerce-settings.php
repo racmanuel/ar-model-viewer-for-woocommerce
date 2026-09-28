@@ -408,6 +408,14 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                     'type' => 'checkbox',
                     'default' => '1',
                 ),
+                'ar_model_viewer_for_woocommerce_analytics' => array(
+                    'type' => 'checkbox',
+                    'default' => '0',
+                ),
+                'ar_model_viewer_for_woocommerce_analytics_opt_out' => array(
+                    'type' => 'checkbox',
+                    'default' => '1',
+                ),
             );
         }
 

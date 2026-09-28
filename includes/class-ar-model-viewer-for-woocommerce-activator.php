@@ -66,6 +66,7 @@ class Ar_Model_Viewer_For_Woocommerce_Activator {
 		}
 
 		require_once plugin_dir_path( __FILE__ ) . 'class-ar-model-viewer-for-woocommerce-settings.php';
+		require_once plugin_dir_path( __FILE__ ) . 'class-ar-model-viewer-for-woocommerce-analytics.php';
 
 		if ( false === get_option( Ar_Model_Viewer_For_Woocommerce_Settings::OPTION_KEY, false ) ) {
 			add_option(
@@ -75,6 +76,8 @@ class Ar_Model_Viewer_For_Woocommerce_Activator {
 				'yes'
 			);
 		}
+
+		Ar_Model_Viewer_For_Woocommerce_Analytics::create_table();
 
 		/**
 		 * The plugin is now safely activated.

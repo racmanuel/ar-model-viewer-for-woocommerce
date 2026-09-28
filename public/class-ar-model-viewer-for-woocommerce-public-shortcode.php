@@ -178,7 +178,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
 
         // Generate the HTML for the model-viewer element with all attributes and settings.
         $output = sprintf(
-            '<model-viewer class="armvw-viewer" src="%1$s" alt="%2$s" poster="%3$s" loading="%4$s" reveal="%5$s" style="background-color: %6$s;" %7$s%8$s%9$s%10$s>%11$s</model-viewer>',
+            '<model-viewer class="armvw-viewer" data-product-id="%1$d" src="%2$s" alt="%3$s" poster="%4$s" loading="%5$s" reveal="%6$s" style="background-color: %7$s;" %8$s%9$s%10$s%11$s>%12$s</model-viewer>',
+            $product_id,
             esc_url($model['source']),
             esc_attr($model['alt']),
             esc_url($model['poster']),

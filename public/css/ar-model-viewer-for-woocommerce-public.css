@@ -406,6 +406,24 @@
 	aspect-ratio: auto;
 }
 
+.armvw-modal__privacy[type] {
+	display: block;
+	margin: var(--armvw-space-3) auto 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font: inherit;
+	font-size: var(--armvw-font-size-sm);
+	color: rgba(0, 0, 0, 0.58);
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.armvw-modal__privacy[type]:hover,
+.armvw-modal__privacy[type]:focus-visible {
+	color: rgba(0, 0, 0, 0.9);
+}
+
 /* The custom AR button of the settings, painted with its own colours. */
 .armvw-ar-button {
 	border: none;

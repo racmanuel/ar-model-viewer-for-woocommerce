@@ -170,6 +170,25 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         exit;
     }
 
+    public function handle_clear_analytics()
+    {
+        if (!isset($_GET['page'], $_GET['armvw-clear-analytics'], $_GET['_wpnonce'])) {
+            return;
+        }
+
+        if (Ar_Model_Viewer_For_Woocommerce_Settings::PAGE_SLUG !== sanitize_key(wp_unslash($_GET['page']))) {
+            return;
+        }
+
+        if (!current_user_can(Ar_Model_Viewer_For_Woocommerce_Settings::CAPABILITY) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'armvw-clear-analytics')) {
+            wp_die(esc_html__('The analytics deletion request could not be verified.', 'ar-model-viewer-for-woocommerce'));
+        }
+
+        Ar_Model_Viewer_For_Woocommerce_Analytics::delete_all();
+        wp_safe_redirect(remove_query_arg(array('armvw-clear-analytics', '_wpnonce')));
+        exit;
+    }
+
     /* ---------------------------------------------------------------------
      * Screen definition
      * ------------------------------------------------------------------ */
@@ -400,6 +419,22 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                         'desc' => esc_html__('Enable logging only while you are debugging: it writes one entry per viewer render, which is not desirable on a production site.', 'ar-model-viewer-for-woocommerce'),
                         'fields' => array(
                             'ar_model_viewer_for_woocommerce_logger',
+                        ),
+                    ),
+                ),
+            ),
+            'analytics' => array(
+                'label' => esc_html__('Analytics', 'ar-model-viewer-for-woocommerce'),
+                'icon' => 'dashicons-chart-area',
+                'intro' => esc_html__('Measure how shoppers use the 3D and AR viewer without sending data to an external analytics service.', 'ar-model-viewer-for-woocommerce'),
+                'groups' => array(
+                    array(
+                        'title' => esc_html__('Privacy and measurement', 'ar-model-viewer-for-woocommerce'),
+                        'icon' => 'dashicons-privacy',
+                        'desc' => esc_html__('Analytics is disabled by default. When enabled, the plugin stores only anonymous daily aggregates. Visitors can exclude their browser from measurement using the visible control.', 'ar-model-viewer-for-woocommerce'),
+                        'fields' => array(
+                            'ar_model_viewer_for_woocommerce_analytics',
+                            'ar_model_viewer_for_woocommerce_analytics_opt_out',
                         ),
                     ),
                 ),
@@ -740,6 +775,17 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             'ar_model_viewer_for_woocommerce_logger' => array(
                 'label' => esc_html__('Enable error logs', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Writes plugin events to WooCommerce > Status > Logs, using the source "ar-model-viewer-for-woocommerce". Use it only while troubleshooting.', 'ar-model-viewer-for-woocommerce'),
+                'checkbox_label' => esc_html__('Write technical events to the WooCommerce log.', 'ar-model-viewer-for-woocommerce'),
+            ),
+            'ar_model_viewer_for_woocommerce_analytics' => array(
+                'label' => esc_html__('Enable viewer analytics', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Stores anonymous daily counters for viewer opens, model loads, AR attempts and normalized errors in your own WordPress database. It is disabled by default and does not use third-party services, cookies or personal data.', 'ar-model-viewer-for-woocommerce'),
+                'checkbox_label' => esc_html__('Store anonymous daily viewer counters.', 'ar-model-viewer-for-woocommerce'),
+            ),
+            'ar_model_viewer_for_woocommerce_analytics_opt_out' => array(
+                'label' => esc_html__('Show the visitor privacy control', 'ar-model-viewer-for-woocommerce'),
+                'desc' => esc_html__('Adds a small control to the viewer so visitors can exclude this browser from analytics or opt back in later. This preference stays in local storage and never leaves the browser.', 'ar-model-viewer-for-woocommerce'),
+                'checkbox_label' => esc_html__('Show the visitor control in the viewer.', 'ar-model-viewer-for-woocommerce'),
             ),
         );
     }
@@ -857,7 +903,57 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     ?>
                 </div>
             <?php endforeach; ?>
+            <?php if ('analytics' === $slug) : ?>
+                <?php $this->render_analytics_summary(); ?>
+            <?php endif; ?>
         </section>
+        <?php
+    }
+
+    private function render_analytics_summary()
+    {
+        $summary = Ar_Model_Viewer_For_Woocommerce_Analytics::summary(30);
+        $labels = array(
+            'viewer_open' => array('label' => __('Opens', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Times a viewer was opened.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-visibility'),
+            'viewer_load' => array('label' => __('Successful loads', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Models that loaded successfully.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-yes-alt'),
+            'viewer_close' => array('label' => __('Closes', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Viewer sessions completed.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-no-alt'),
+            'ar_attempt' => array('label' => __('AR attempts', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Times visitors tried AR.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-smartphone'),
+            'ar_object_placed' => array('label' => __('AR placements', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Objects placed in the room.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-location-alt'),
+            'viewer_error' => array('label' => __('Viewer errors', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Models that failed to load.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-warning', 'tone' => 'warning'),
+            'ar_failed' => array('label' => __('AR failures', 'ar-model-viewer-for-woocommerce'), 'hint' => __('AR sessions that could not start.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-warning', 'tone' => 'warning'),
+            'viewer_interaction' => array('label' => __('Interactions', 'ar-model-viewer-for-woocommerce'), 'hint' => __('Camera movements and gestures.', 'ar-model-viewer-for-woocommerce'), 'icon' => 'dashicons-image-rotate', 'tone' => 'brand'),
+        );
+        ?>
+        <div class="armvw-card armvw-analytics-summary">
+            <div class="armvw-card__header">
+                <span class="dashicons dashicons-chart-area" aria-hidden="true"></span>
+                <div>
+                    <h2 class="armvw-card__title"><?php esc_html_e('Last 30 days', 'ar-model-viewer-for-woocommerce'); ?></h2>
+                    <p class="armvw-card__desc"><?php esc_html_e('These are anonymous daily totals stored by this site. No raw visits or personal identifiers are retained.', 'ar-model-viewer-for-woocommerce'); ?></p>
+                </div>
+            </div>
+            <?php if (empty($summary)) : ?>
+                <p class="armvw-card__desc"><?php esc_html_e('No events have been recorded yet. Enable analytics and open a product viewer to start collecting aggregates.', 'ar-model-viewer-for-woocommerce'); ?></p>
+            <?php else : ?>
+                <dl class="armvw-analytics-summary__grid">
+                    <?php foreach ($labels as $event => $label) : ?>
+                        <div class="armvw-analytics-stat<?php echo !empty($label['tone']) ? ' armvw-analytics-stat--' . esc_attr($label['tone']) : ''; ?>">
+                            <dt>
+                                <span class="dashicons <?php echo esc_attr($label['icon']); ?>" aria-hidden="true"></span>
+                                <?php echo esc_html($label['label']); ?>
+                            </dt>
+                            <dd><?php echo esc_html(number_format_i18n(isset($summary[$event]) ? $summary[$event] : 0)); ?></dd>
+                            <small><?php echo esc_html($label['hint']); ?></small>
+                        </div>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
+            <p>
+                <a class="button" href="<?php echo esc_url(wp_nonce_url(add_query_arg('armvw-clear-analytics', '1'), 'armvw-clear-analytics')); ?>" onclick="return window.confirm('<?php echo esc_js(__('Delete all stored analytics?', 'ar-model-viewer-for-woocommerce')); ?>');">
+                    <?php esc_html_e('Delete all analytics', 'ar-model-viewer-for-woocommerce'); ?>
+                </a>
+            </p>
+        </div>
         <?php
     }
 
@@ -1044,7 +1140,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                         <?php checked(!empty($value)); ?>
                         <?php echo $described; ?>
                     />
-                    <span><?php echo esc_html__('Write events to the WooCommerce log while debugging.', 'ar-model-viewer-for-woocommerce'); ?></span>
+                    <span><?php echo esc_html($meta['checkbox_label'] ?? esc_html__('Enabled', 'ar-model-viewer-for-woocommerce')); ?></span>
                 </label>
                 <?php
                 break;

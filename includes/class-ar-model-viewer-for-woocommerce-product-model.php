@@ -222,6 +222,66 @@ class Ar_Model_Viewer_For_Woocommerce_Product_Model
     }
 
     /**
+     * Diagnose the model resources without performing remote requests.
+     *
+     * @param WC_Product $product Product to inspect.
+     * @return array<string, mixed>
+     */
+    public static function diagnostics($product)
+    {
+        $model = self::resolve($product);
+        $issues = array();
+
+        if ('' === trim($model['source'])) {
+            $issues[] = 'missing-model';
+        } else {
+            $source_url = wp_parse_url($model['source']);
+            $source_extension = strtolower(pathinfo((string) wp_parse_url($model['source'], PHP_URL_PATH), PATHINFO_EXTENSION));
+
+            if (empty($source_url['scheme']) || empty($source_url['host'])) {
+                $issues[] = 'invalid-model-url';
+            } elseif (!in_array($source_extension, array('glb', 'gltf'), true)) {
+                $issues[] = 'unsupported-model-format';
+            }
+        }
+
+        if ('' !== trim($model['poster'])) {
+            $poster_extension = strtolower(pathinfo((string) wp_parse_url($model['poster'], PHP_URL_PATH), PATHINFO_EXTENSION));
+
+            if (!in_array($poster_extension, array('jpg', 'jpeg', 'png', 'webp', 'avif'), true)) {
+                $issues[] = 'unsupported-poster-format';
+            }
+        }
+
+        $ios_src = trim((string) $product->get_meta(self::meta_key('ios_src'), true));
+
+        if ('' !== $ios_src) {
+            $ios_url = wp_parse_url($ios_src);
+            $ios_extension = strtolower(pathinfo((string) wp_parse_url($ios_src, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+            if (empty($ios_url['scheme']) || empty($ios_url['host'])) {
+                $issues[] = 'invalid-ios-url';
+            } elseif ('usdz' !== $ios_extension) {
+                $issues[] = 'unsupported-ios-format';
+            }
+        }
+
+        $status = empty($issues) ? 'valid' : 'invalid';
+
+        if (in_array('missing-model', $issues, true)) {
+            $status = 'missing';
+        } elseif (count($issues) === 1 && false !== strpos($issues[0], 'unsupported')) {
+            $status = 'unsupported';
+        }
+
+        return array(
+            'status' => $status,
+            'issues' => $issues,
+            'model' => $model,
+        );
+    }
+
+    /**
      * Read the overrides of a product as a list of viewer attributes.
      *
      * A field left empty is not an attribute with an empty value: it is an instruction to let

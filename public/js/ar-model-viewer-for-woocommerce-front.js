@@ -18,6 +18,116 @@
 	var config = window.armvwFront || {};
 	var libraryPromise = null;
 	var dialog = null;
+	var modalSession = null;
+
+	function analyticsOptedOut() {
+		var analytics = config.analytics || {};
+
+		try {
+			return "1" === window.localStorage.getItem(analytics.storageKey || "armvwAnalyticsOptOut");
+		} catch (error) {
+			return false;
+		}
+	}
+
+	function analyticsEnabled() {
+		return !!(config.analytics && config.analytics.enabled) && !analyticsOptedOut();
+	}
+
+	function durationBucket(start) {
+		if (!start) {
+			return "";
+		}
+
+		var seconds = Math.max(0, Math.round((window.performance.now() - start) / 1000));
+
+		if (seconds < 5) {
+			return "0-4s";
+		}
+
+		if (seconds < 15) {
+			return "5-14s";
+		}
+
+		if (seconds < 60) {
+			return "15-59s";
+		}
+
+		return "60s+";
+	}
+
+	function sendAnalytics(eventName, details) {
+		var analytics = config.analytics || {};
+
+		if (!analyticsEnabled() || !analytics.endpoint) {
+			return;
+		}
+
+		var body = new window.URLSearchParams();
+		body.append("event", eventName);
+		body.append("product_id", String((details && details.productId) || 0));
+		body.append("mode", String((details && details.mode) || ""));
+		body.append("error_code", String((details && details.errorCode) || ""));
+		body.append("duration_bucket", String((details && details.durationBucket) || ""));
+
+		window.fetch(analytics.endpoint, {
+			method: "POST",
+			credentials: "same-origin",
+			body: body,
+			keepalive: true,
+		}).catch(function () {
+			// Analytics must never affect the viewer when the endpoint is unavailable.
+		});
+	}
+
+	function viewerMode(viewer) {
+		return (viewer.getAttribute("ar-modes") || "").split(" ")[0] || "";
+	}
+
+	function trackViewer(viewer, productId) {
+		if (!viewer || viewer.dataset.armvwTracked) {
+			return;
+		}
+
+		viewer.dataset.armvwTracked = "1";
+		var interactionSent = false;
+		var interactionTimer = null;
+
+		viewer.addEventListener("load", function () {
+			sendAnalytics("viewer_open", { productId: productId });
+			sendAnalytics("viewer_load", { productId: productId });
+		});
+		viewer.addEventListener("error", function () {
+			sendAnalytics("viewer_error", { productId: productId, errorCode: "model-load-failed" });
+		});
+		viewer.addEventListener("ar-status", function () {
+			var status = viewer.getAttribute("ar-status");
+
+			if ("session-started" === status) {
+				sendAnalytics("ar_session_started", { productId: productId, mode: viewerMode(viewer) });
+			} else if ("object-placed" === status) {
+				sendAnalytics("ar_object_placed", { productId: productId, mode: viewerMode(viewer) });
+			} else if ("failed" === status) {
+				sendAnalytics("ar_failed", { productId: productId, mode: viewerMode(viewer), errorCode: "tracking-failed" });
+			}
+		});
+		viewer.addEventListener("click", function (event) {
+			if (event.target.closest && event.target.closest('[slot="ar-button"]')) {
+				sendAnalytics("ar_attempt", { productId: productId, mode: viewerMode(viewer) });
+			}
+		});
+		viewer.addEventListener("camera-change", function () {
+			if (interactionSent) {
+				return;
+			}
+
+			interactionSent = true;
+			sendAnalytics("viewer_interaction", { productId: productId });
+			interactionTimer = window.setTimeout(function () {
+				interactionSent = false;
+			}, 10000);
+		});
+	}
 
 	/**
 	 * Fetch the viewer library, at most once per page.
@@ -215,6 +325,29 @@
 		status.textContent = config.i18n.loading || "Loading the 3D model…";
 		body.appendChild(status);
 
+		if (config.analytics && config.analytics.showOptOut) {
+			var privacy = document.createElement("button");
+			privacy.type = "button";
+			privacy.className = "armvw-modal__privacy";
+			privacy.addEventListener("click", function () {
+				var storageKey = config.analytics.storageKey || "armvwAnalyticsOptOut";
+
+				try {
+					if (analyticsOptedOut()) {
+						window.localStorage.removeItem(storageKey);
+					} else {
+						window.localStorage.setItem(storageKey, "1");
+					}
+				} catch (error) {
+					return;
+				}
+
+				updatePrivacyControl(privacy);
+			});
+			body.appendChild(privacy);
+			updatePrivacyControl(privacy);
+		}
+
 		dialog.appendChild(head);
 		dialog.appendChild(body);
 		dialog.setAttribute("aria-labelledby", "armvw-modal-title");
@@ -225,10 +358,34 @@
 				closeModal();
 			}
 		});
+		dialog.addEventListener("close", finishModalSession);
 
 		document.body.appendChild(dialog);
 
 		return dialog;
+	}
+
+	function updatePrivacyControl(control) {
+		if (!control) {
+			return;
+		}
+
+		control.textContent = analyticsOptedOut()
+			? (config.i18n.analyticsOptIn || "Allow anonymous viewer analytics")
+			: (config.i18n.analyticsOptOut || "Do not measure this browser");
+		control.setAttribute("aria-pressed", analyticsOptedOut() ? "true" : "false");
+	}
+
+	function finishModalSession() {
+		if (!modalSession) {
+			return;
+		}
+
+		sendAnalytics("viewer_close", {
+			productId: modalSession.productId,
+			durationBucket: durationBucket(modalSession.startedAt),
+		});
+		modalSession = null;
 	}
 
 	/**
@@ -241,6 +398,7 @@
 			return;
 		}
 
+		finishModalSession();
 		dialog.close();
 		dialog.querySelectorAll("model-viewer").forEach(function (viewer) {
 			viewer.removeAttribute("src");
@@ -267,6 +425,11 @@
 		});
 
 		box.showModal();
+		modalSession = {
+			productId: productId,
+			startedAt: window.performance.now(),
+		};
+		sendAnalytics("viewer_open", { productId: productId });
 
 		Promise.all([ensureLibrary(), requestModel(productId)])
 			.then(function (results) {
@@ -290,8 +453,10 @@
 				}
 
 				body.appendChild(viewer);
+				trackViewer(viewer, productId);
 			})
 			.catch(function (error) {
+				sendAnalytics("viewer_error", { productId: productId, errorCode: "model-load-failed" });
 				status.textContent = config.i18n.error || "The 3D model could not be loaded.";
 				status.hidden = false;
 				status.classList.add("armvw-modal__status--error");
@@ -399,6 +564,9 @@
 	 */
 	function init() {
 		var hasViewer = !!document.querySelector("model-viewer");
+		document.querySelectorAll("model-viewer").forEach(function (viewer) {
+			trackViewer(viewer, viewer.getAttribute("data-product-id") || 0);
+		});
 
 		initButton();
 		placeOverImage();
@@ -409,6 +577,12 @@
 			});
 		}
 	}
+
+	document.addEventListener("visibilitychange", function () {
+		if ("hidden" === document.visibilityState) {
+			finishModalSession();
+		}
+	});
 
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", init);

@@ -136,6 +136,12 @@ class Ar_Model_Viewer_For_Woocommerce
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-product-csv.php';
 
         /**
+         * The class responsible for anonymous first-party viewer analytics.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-analytics.php';
+        Ar_Model_Viewer_For_Woocommerce_Analytics::maybe_upgrade();
+
+        /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
@@ -260,6 +266,7 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->loader->add_action('admin_menu', $plugin_admin_settings, 'register_settings_page');
         $this->loader->add_action('admin_init', $plugin_admin_settings, 'register_settings');
         $this->loader->add_action('admin_init', $plugin_admin_settings, 'handle_reset');
+        $this->loader->add_action('admin_init', $plugin_admin_settings, 'handle_clear_analytics');
         /**
          * The settings screen is a native options page: `add_options_page()` reproduces the
          * same `settings_page_ar_model_viewer_for_woocommerce_settings` hook suffix the previous
@@ -368,6 +375,7 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         // Include the scripts for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->add_action('rest_api_init', 'Ar_Model_Viewer_For_Woocommerce_Analytics', 'register_rest_routes');
 
         // Placement of the 3D button. An empty value means the button is not printed at all.
         $button_position = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
