@@ -227,7 +227,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             ),
             'lighting' => array(
                 'label' => esc_html__('Lighting', 'ar-model-viewer-for-woocommerce'),
-                'icon' => 'dashicons-sun',
+                'icon' => 'dashicons-lightbulb',
                 'intro' => esc_html__('Decide how the model is lit and how it sits on the page. These values are the difference between a model that looks flat and one that looks like a product photo.', 'ar-model-viewer-for-woocommerce'),
                 'groups' => array(
                     array(
