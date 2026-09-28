@@ -389,21 +389,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     ),
                 ),
             ),
-            'ai' => array(
-                'label' => esc_html__('AI models', 'ar-model-viewer-for-woocommerce'),
-                'icon' => 'dashicons-superhero',
-                'intro' => esc_html__('Generate 3D models from a text prompt or a product image using meshy.ai.', 'ar-model-viewer-for-woocommerce'),
-                'groups' => array(
-                    array(
-                        'title' => esc_html__('meshy.ai API key', 'ar-model-viewer-for-woocommerce'),
-                        'icon' => 'dashicons-admin-network',
-                        'desc' => esc_html__('The key is stored in your database and only used by the plugin to call the meshy.ai API from your server. It is never printed on the public side of the site.', 'ar-model-viewer-for-woocommerce'),
-                        'fields' => array(
-                            'ar_model_viewer_for_woocommerce_api_key_meshy',
-                        ),
-                    ),
-                ),
-            ),
             'tools' => array(
                 'label' => esc_html__('Tools', 'ar-model-viewer-for-woocommerce'),
                 'icon' => 'dashicons-admin-tools',
@@ -751,10 +736,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'label' => esc_html__('Button text color', 'ar-model-viewer-for-woocommerce'),
                 'desc' => esc_html__('Color of the label of the custom AR button.', 'ar-model-viewer-for-woocommerce'),
                 'depends' => 'ar_button=yes',
-            ),
-            'ar_model_viewer_for_woocommerce_api_key_meshy' => array(
-                'label' => esc_html__('API key', 'ar-model-viewer-for-woocommerce'),
-                'desc' => esc_html__('Create your key in the meshy.ai dashboard and paste it here. Without it, the AI boxes are not added to the product editor.', 'ar-model-viewer-for-woocommerce'),
             ),
             'ar_model_viewer_for_woocommerce_logger' => array(
                 'label' => esc_html__('Enable error logs', 'ar-model-viewer-for-woocommerce'),
@@ -1213,7 +1194,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             </div>
             <ul class="armvw-feature-list">
                 <li><?php echo esc_html__('Bulk import and export of 3D models with the native WooCommerce importer.', 'ar-model-viewer-for-woocommerce'); ?></li>
-                <li><?php echo esc_html__('Generate a model from a product image with meshy.ai.', 'ar-model-viewer-for-woocommerce'); ?></li>
                 <li><?php echo esc_html__('Elementor widget to place the viewer anywhere.', 'ar-model-viewer-for-woocommerce'); ?></li>
                 <li><?php echo esc_html__('Priority support and early access to new features.', 'ar-model-viewer-for-woocommerce'); ?></li>
             </ul>
@@ -1254,14 +1234,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
     {
         $settings = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
         $items = array();
-
-        $items[] = array(
-            'label' => esc_html__('meshy.ai API key', 'ar-model-viewer-for-woocommerce'),
-            'value' => Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key()
-                ? esc_html__('Configured', 'ar-model-viewer-for-woocommerce')
-                : esc_html__('Missing', 'ar-model-viewer-for-woocommerce'),
-            'state' => Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key() ? 'ok' : 'off',
-        );
 
         $items[] = array(
             'label' => esc_html__('Augmented reality', 'ar-model-viewer-for-woocommerce'),
@@ -1403,11 +1375,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 'label' => esc_html__('Rate the plugin', 'ar-model-viewer-for-woocommerce'),
                 'url' => 'https://wordpress.org/support/plugin/ar-model-viewer-for-woocommerce/reviews/?rate=5#new-post',
                 'icon' => 'dashicons-star-half',
-            ),
-            array(
-                'label' => esc_html__('meshy.ai dashboard', 'ar-model-viewer-for-woocommerce'),
-                'url' => 'https://app.meshy.ai/?via=racmanuel',
-                'icon' => 'dashicons-admin-network',
             ),
             array(
                 'label' => esc_html__('Request a custom quote', 'ar-model-viewer-for-woocommerce'),

@@ -77,7 +77,7 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
      * @since 3.0.0
      * @var   string
      */
-    const VERSION = '3';
+    const VERSION = '4';
 
     /**
      * Option that remembers the settings shape already migrated.
@@ -404,10 +404,6 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                     'default' => '#000000',
                     'alpha' => false,
                 ),
-                'ar_model_viewer_for_woocommerce_api_key_meshy' => array(
-                    'type' => 'password',
-                    'default' => '',
-                ),
                 'ar_model_viewer_for_woocommerce_logger' => array(
                     'type' => 'checkbox',
                     'default' => '1',
@@ -711,6 +707,8 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
                     $stored[$key] = $values[$stored[$key]];
                 }
             }
+
+            unset($stored['ar_model_viewer_for_woocommerce_api_key_meshy']);
 
             update_option(self::OPTION_KEY, $stored);
         }
@@ -1040,16 +1038,4 @@ class Ar_Model_Viewer_For_Woocommerce_Settings
         self::$viewer = null;
     }
 
-    /**
-     * Whether an API key for the 3D generation service is configured.
-     *
-     * @since 3.0.0
-     * @return bool True when a key is stored.
-     */
-    public static function has_api_key()
-    {
-        $key = self::get('ar_model_viewer_for_woocommerce_api_key_meshy');
-
-        return is_string($key) && '' !== trim($key);
-    }
 }

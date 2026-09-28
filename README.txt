@@ -17,10 +17,6 @@ The AR Model Viewer for WooCommerce is a versatile plugin designed to enhance yo
 
 Whether your website is an eCommerce platform or a WooCommerce-based store, the AR Model Viewer plugin seamlessly integrates to allow customers to explore your products in 3D and AR.
 
-Now, with the power of meshy.ai, you can take your store to the next level! Generate 3D models simply by describing an object in text, creating stunning visuals effortlessly. In the PRO version, unlock the ability to convert an image into a 3D model, giving you unparalleled flexibility and creativity for showcasing your products.
-
-Note: The API usage costs for meshy.ai are separate, but it includes a free plan with 200 credits per month, perfect for starting and experimenting with this powerful tool.
-
 Start offering an extraordinary shopping experience today! 🚀
 
 The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing your products in 3D and AR. This plugin allows your customers to interact with your products in an immersive way, improving their shopping experience and increasing engagement.  
@@ -31,7 +27,6 @@ The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing yo
 - **Augmented Reality Viewing**: Allow customers to view your 3D models in augmented reality for an immersive shopping experience.  
 - **Broad File Format Support**: Compatible with **.glb** and **.gltf** file formats for seamless 3D model integration.  
 - **Effortless WooCommerce Integration**: Easily integrates with WooCommerce to enhance your eCommerce platform.  
-- **AI-Powered 3D Model Generation**: Create 3D models from images or text using the cutting-edge **meshy.ai API**, offering unparalleled convenience and creativity.  
 - **Upload External 3D Files**: Use **.glb** files from external services like Sketchfab or any other source to quickly add 3D models to your store.  
 
 ### Why You Should Install This Plugin ✅  
@@ -49,8 +44,6 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 
 - **Elementor Widget**: Display 3D models using a dedicated widget in Elementor.  
 - **Bulk Import and Export**: Easily manage your 3D models by using the native WooCommerce importer/exporter.  
-- **Generate 3D Models from Text Using AI**: Describe an object in text and let the AI create a 3D model for you.  
-- **Generate 3D Models from Images Using AI**: Upload an image and convert it into a 3D model effortlessly.
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
 
 ### Open Source and Community Contribution 🌟  
@@ -59,8 +52,6 @@ This plugin is an open-source project, and the code is available on GitHub:
 [https://github.com/racmanuel/ar-model-viewer-for-woocommerce](https://github.com/racmanuel/ar-model-viewer-for-woocommerce)  
 
 We invite you to contribute to the project by suggesting improvements, fixing issues, or enhancing features for the free version. Together, we can make this plugin even better for the WordPress community!  
-
-**Note:** The API usage costs for **meshy.ai** are separate, but it includes a free plan with **200 credits per month**, perfect for starting and experimenting with this powerful tool.  
 
 ## Try the plugin 👨🏻‍💻🎉
 
@@ -99,35 +90,14 @@ GLTF (*.glb) files are required for the 3D preview in the browser and the AR sce
 = Do I have to add models for Android and iOS? =  
 To ensure that all visitors to your website can see the AR scenes, each scene must have a dedicated model in both formats (.glb, .usdz) for Android and iOS/Apple devices. However, only a GLTF file is required for the 3D preview in the browser.  
 
-= What is meshy.ai, and how does it integrate with the plugin? =  
-**meshy.ai** is an advanced AI platform that allows you to generate 3D models from text descriptions or images. The AR Model Viewer for WooCommerce integrates with **meshy.ai API**, enabling you to create stunning 3D models directly from your WooCommerce admin panel.  
-
-= How do I use meshy.ai to generate 3D models? =  
-After connecting your **meshy.ai** API key in the plugin settings, you can describe the object or upload an image, and the plugin will automatically generate the corresponding 3D model. You can then use the model in your WooCommerce store.  
-
-= Are there additional costs for using meshy.ai? =  
-Yes, meshy.ai operates on a credit-based system. However, you can start with a free plan that includes **200 credits per month**. If you exceed the free credits, you will need to purchase additional credits from **meshy.ai**.  
-
 = Can I use the generated 3D models for both Android and iOS? =  
-Yes! Once a model is generated using **meshy.ai**, you can convert it to GLTF (*.glb) for Android and USDZ (*.usdz) for iOS/Apple devices. The plugin also supports **Reality** (*.reality) files for Apple devices.  
-
-= How secure is my data with meshy.ai? =  
-meshy.ai follows strict security protocols to protect your data. Generated models and API requests are processed securely, and no sensitive information is shared or stored without your consent.  
+Yes! Add a compatible .glb or .gltf file for the browser and a .usdz file when you need a dedicated iOS/Apple AR asset.
 
 = Where can I find the plugin documentation? =  
 You can find comprehensive documentation and support resources here:  
 - [WordPress Plugin Directory](https://wordpress.org/plugins/ar-model-viewer-for-woocommerce/)  
 - [GitHub Repository](https://github.com/racmanuel/ar-model-viewer-for-woocommerce)  
 - [Official Plugin Page](https://racmanuel.dev/ar-model-viewer-for-woocommerce/)  
-
-= What happens if I run out of credits on meshy.ai? =  
-If you exhaust your free credits, you can purchase additional credits directly from meshy.ai. The plugin will notify you when your credit balance is low.  
-
-= Do I need technical knowledge to use meshy.ai? =  
-Not at all! The integration is designed to be user-friendly. Simply describe your object or upload an image, and the AI takes care of the rest.  
-
-= Can I use this plugin without meshy.ai? =  
-Yes, the plugin fully supports manual upload of 3D models in GLTF, USDZ, and Reality formats. However, using meshy.ai adds powerful AI-driven features for generating 3D models from text or images.  
 
 = Does the plugin support bulk uploads of models? =  
 Yes, the **Pro Version** of the plugin includes a bulk import/export feature for managing multiple 3D models efficiently.  
@@ -166,7 +136,7 @@ We welcome all contributions from the community!
   - Compatibility updates to ensure seamless operation with the latest WordPress versions.  
   - Various bug fixes and minor improvements.  
 2.0.1 - Update Freemius SDK to 2.11.0 
-2.0.2 - Removed message with information about the free Meshy API, Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
+2.0.2 - Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
 2.0.3 - Update to Freemius SDK and add support for non-logged users in AJAX call
 
 == Upgrade Notice ==  

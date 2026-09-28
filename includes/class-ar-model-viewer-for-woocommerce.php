@@ -186,12 +186,6 @@ class Ar_Model_Viewer_For_Woocommerce
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-tab.php';
 
-        /**
-         * The class responsible for defining all actions that occur in the public-facing Shortcode
-         * side of the site.
-         */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-meshy-api.php';
-
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
              * Check if the user has access to premium features. This condition ensures that
@@ -310,11 +304,7 @@ class Ar_Model_Viewer_For_Woocommerce
          * response of the public one: the same page behaved differently depending on who was
          * looking at it, which is how the front ended up with the modal that ignored the settings.
          */
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_tasks', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_tasks');
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview',$plugin_admin_product,'ar_model_viewer_for_woocommerce_createTextTo3DTaskPreview');
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_createTextTo3DTaskRefine', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_createTextTo3DTaskRefine');
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_task_and_download', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_get_task_and_download');
         
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**

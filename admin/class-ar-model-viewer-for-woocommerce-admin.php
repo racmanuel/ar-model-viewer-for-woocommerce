@@ -107,7 +107,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     {
         $files = array();
 
-        foreach (array('model-viewer', 'alertify', 'driver', 'tabulator') as $vendor) {
+        foreach (array('model-viewer', 'alertify', 'driver') as $vendor) {
             $url = $this->vendor_url($vendor . '.min.js');
 
             if ($url) {
@@ -374,10 +374,6 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
 
             wp_localize_script($this->plugin_name . '-product', 'ajax_object', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'mode_preview_icon' => plugin_dir_url(__FILE__) . 'images/icons8-object-94.png',
-                'mode_refine_icon' => plugin_dir_url(__FILE__) . 'images/icons8-3d-printer-94.png',
-                'status_succeeded_icon' => plugin_dir_url(__FILE__) . 'images/icons8-check-94.png',
-                'api_key_set' => Ar_Model_Viewer_For_Woocommerce_Settings::has_api_key(),
                 // The script injects these libraries on demand, only when a feature needs them.
                 'vendor_files' => $this->vendor_files(),
                 // Static properties of the viewer element, applied by the script once the library

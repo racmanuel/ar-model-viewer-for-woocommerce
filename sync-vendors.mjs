@@ -35,7 +35,6 @@ const scripts = [
 	['node_modules/@google/model-viewer/dist/model-viewer-umd.min.js', 'model-viewer.min.js'],
 	['node_modules/alertifyjs/build/alertify.min.js', 'alertify.min.js'],
 	['node_modules/driver.js/dist/driver.js.iife.js', 'driver.min.js'],
-	['node_modules/tabulator-tables/dist/js/tabulator.min.js', 'tabulator.min.js'],
 ];
 
 /**
