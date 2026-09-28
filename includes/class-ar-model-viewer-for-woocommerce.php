@@ -218,47 +218,10 @@ class Ar_Model_Viewer_For_Woocommerce
     private function define_admin_hooks()
     {
 
-        // Instantiate the admin class for the free version of the plugin.
+        // Admin controller: styles, scripts, MIME types and shared admin classes.
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
-        $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
-        $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
-        $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();
 
-        // Hooks for the native WooCommerce importer.
-        /**
-         * Adds the 3D model and viewer override columns to the importer mapping screen.
-         */
-        $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_product_csv, 'add_import_columns');
-
-        /**
-         * Automatically maps the plugin's current and historical CSV headers.
-         */
-        $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_product_csv, 'add_default_mappings');
-
-        /**
-         * Saves imported model files and per-product viewer overrides after WooCommerce inserts the product.
-         */
-        $this->loader->add_action('woocommerce_product_import_inserted_product_object', $plugin_product_csv, 'process_import', 10, 2);
-
-        // Hooks for the native WooCommerce exporter.
-        /**
-         * Adds the plugin's columns to the available exporter columns.
-         */
-        $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_product_csv, 'add_export_columns');
-
-        /**
-         * Includes the plugin's columns in the exporter's default selection.
-         */
-        $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_product_csv, 'add_export_columns');
-
-        /**
-         * Registers one exporter callback for each model and viewer override column.
-         */
-        foreach (Ar_Model_Viewer_For_Woocommerce_Product_CSV::column_keys() as $column) {
-            $this->loader->add_filter('woocommerce_product_export_product_column_' . $column, $plugin_product_csv, 'export_value', 10, 2);
-        }
-
-        // Include the admin styles in the Admin dashboard.
+        // Admin hooks: styles, scripts and shared WordPress admin behavior.
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         /**
          * Enqueues the admin styles for the WordPress admin dashboard.
@@ -283,17 +246,20 @@ class Ar_Model_Viewer_For_Woocommerce
 
         // Allow Android (.glb) and iOS (.usdz) files to be uploaded by adding them to the allowed MIME types.
         $this->loader->add_filter('upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types');
+        $this->loader->add_filter('admin_body_class', $plugin_admin, 'admin_body_class');
 
-        // Every viewer option of a product lives in a single native metabox, so the plugin does
-        // not need a metabox library to ask for a file, for a poster or for a camera.
+        // Product controller: native product metabox and product-level viewer data.
+        $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+
         $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_viewer_metabox');
         $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_viewer_options');
 
-        // Register the settings screen built on the WordPress Settings API.
+        // Settings controller: Settings API page, reset action and screen classes.
+        $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
+
         $this->loader->add_action('admin_menu', $plugin_admin_settings, 'register_settings_page');
         $this->loader->add_action('admin_init', $plugin_admin_settings, 'register_settings');
         $this->loader->add_action('admin_init', $plugin_admin_settings, 'handle_reset');
-        $this->loader->add_filter('admin_body_class', $plugin_admin, 'admin_body_class');
         /**
          * The settings screen is a native options page: `add_options_page()` reproduces the
          * same `settings_page_ar_model_viewer_for_woocommerce_settings` hook suffix the previous
@@ -328,7 +294,39 @@ class Ar_Model_Viewer_For_Woocommerce
          * looking at it, which is how the front ended up with the modal that ignored the settings.
          */
         $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
+
+        // CSV controller: native WooCommerce product import and export.
+        $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();
+
+        /**
+         * Adds the 3D model and viewer override columns to the importer mapping screen.
+         */
+        $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_product_csv, 'add_import_columns');
+
+        /**
+         * Automatically maps the plugin's current and historical CSV headers.
+         */
+        $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_product_csv, 'add_default_mappings');
+
+        /**
+         * Saves imported model files and per-product viewer overrides after WooCommerce inserts the product.
+         */
+        $this->loader->add_action('woocommerce_product_import_inserted_product_object', $plugin_product_csv, 'process_import', 10, 2);
+
+        /**
+         * Adds the plugin's columns to the available exporter columns and its default selection.
+         */
+        $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_product_csv, 'add_export_columns');
+        $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_product_csv, 'add_export_columns');
+
+        /**
+         * Registers one exporter callback for each model and viewer override column.
+         */
+        foreach (Ar_Model_Viewer_For_Woocommerce_Product_CSV::column_keys() as $column) {
+            $this->loader->add_filter('woocommerce_product_export_product_column_' . $column, $plugin_product_csv, 'export_value', 10, 2);
+        }
         
+        // Premium controller: Elementor integration.
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
              * Check if the user has access to premium features. This condition ensures that
