@@ -949,7 +949,8 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                 </dl>
             <?php endif; ?>
             <p>
-                <a class="button" href="<?php echo esc_url(wp_nonce_url(add_query_arg('armvw-clear-analytics', '1'), 'armvw-clear-analytics')); ?>" onclick="return window.confirm('<?php echo esc_js(__('Delete all stored analytics?', 'ar-model-viewer-for-woocommerce')); ?>');">
+                <a class="button armvw-analytics-delete" href="<?php echo esc_url(wp_nonce_url(add_query_arg('armvw-clear-analytics', '1'), 'armvw-clear-analytics')); ?>" onclick="return window.confirm('<?php echo esc_js(__('Delete all stored analytics?', 'ar-model-viewer-for-woocommerce')); ?>');">
+                    <span class="dashicons dashicons-trash" aria-hidden="true"></span>
                     <?php esc_html_e('Delete all analytics', 'ar-model-viewer-for-woocommerce'); ?>
                 </a>
             </p>

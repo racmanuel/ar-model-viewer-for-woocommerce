@@ -801,6 +801,44 @@ input[type].armvw-input::placeholder {
 	color: var(--armvw-text-faint);
 }
 
+.armvw-settings-page a.armvw-analytics-delete {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--armvw-space-2);
+	min-height: 36px;
+	padding: 0 18px;
+	border: none !important;
+	border-radius: var(--armvw-radius-pill);
+	background: linear-gradient(90deg, var(--armvw-danger), var(--armvw-warning)) !important;
+	font-family: inherit;
+	font-size: var(--armvw-font-size-base);
+	font-weight: 700;
+	line-height: 1;
+	color: var(--armvw-ink) !important;
+	text-decoration: none !important;
+	text-shadow: none;
+	box-shadow: var(--armvw-shadow-sm);
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.armvw-settings-page a.armvw-analytics-delete:hover {
+	filter: brightness(1.06);
+	transform: translateY(-1px);
+	color: var(--armvw-ink) !important;
+}
+
+.armvw-settings-page a.armvw-analytics-delete:focus-visible {
+	box-shadow: var(--armvw-focus-ring);
+	outline: none;
+}
+
+.armvw-settings-page a.armvw-analytics-delete .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+}
+
 /* -------------------------------------------------------------------------
  * Top row: hero and preview side by side
  * ---------------------------------------------------------------------- */
