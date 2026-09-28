@@ -77,15 +77,10 @@ class Ar_Model_Viewer_For_Woocommerce
      */
     public function __construct()
     {
-
         if (defined('AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION')) {
-
             $this->version = AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION;
-
         } else {
-
             $this->version = '1.0.0';
-
         }
 
         $this->plugin_name = 'ar-model-viewer-for-woocommerce';
@@ -95,28 +90,16 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
-
     }
 
     /**
      * Load the required dependencies for this plugin.
-     *
-     * Include the following files that make up the plugin:
-     *
-     * - Ar_Model_Viewer_For_Woocommerce_Loader. Orchestrates the hooks of the plugin.
-     * - Ar_Model_Viewer_For_Woocommerce_i18n. Defines internationalization functionality.
-     * - Ar_Model_Viewer_For_Woocommerce_Admin. Defines all hooks for the admin area.
-     * - Ar_Model_Viewer_For_Woocommerce_Public. Defines all hooks for the public side of the site.
-     *
-     * Create an instance of the loader which will be used to register the hooks
-     * with WordPress.
      *
      * @since    1.0.0
      * @access   private
      */
     private function load_dependencies()
     {
-
         /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
@@ -146,6 +129,11 @@ class Ar_Model_Viewer_For_Woocommerce
          * It validates its values through the settings class, so it is loaded after it.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-product-model.php';
+
+        /**
+         * The class responsible for integrating product model fields with WooCommerce CSV tools.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ar-model-viewer-for-woocommerce-product-csv.php';
 
         /**
          * The class responsible for defining internationalization functionality
@@ -234,6 +222,41 @@ class Ar_Model_Viewer_For_Woocommerce
         $plugin_admin = new Ar_Model_Viewer_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
+        $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();
+
+        // Hooks for the native WooCommerce importer.
+        /**
+         * Adds the 3D model and viewer override columns to the importer mapping screen.
+         */
+        $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_product_csv, 'add_import_columns');
+
+        /**
+         * Automatically maps the plugin's current and historical CSV headers.
+         */
+        $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_product_csv, 'add_default_mappings');
+
+        /**
+         * Saves imported model files and per-product viewer overrides after WooCommerce inserts the product.
+         */
+        $this->loader->add_action('woocommerce_product_import_inserted_product_object', $plugin_product_csv, 'process_import', 10, 2);
+
+        // Hooks for the native WooCommerce exporter.
+        /**
+         * Adds the plugin's columns to the available exporter columns.
+         */
+        $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_product_csv, 'add_export_columns');
+
+        /**
+         * Includes the plugin's columns in the exporter's default selection.
+         */
+        $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_product_csv, 'add_export_columns');
+
+        /**
+         * Registers one exporter callback for each model and viewer override column.
+         */
+        foreach (Ar_Model_Viewer_For_Woocommerce_Product_CSV::column_keys() as $column) {
+            $this->loader->add_filter('woocommerce_product_export_product_column_' . $column, $plugin_product_csv, 'export_value', 10, 2);
+        }
 
         // Include the admin styles in the Admin dashboard.
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
@@ -326,81 +349,6 @@ class Ar_Model_Viewer_For_Woocommerce
 
                 // Register the AR model viewer widget in Elementor.
                 $this->loader->add_action('elementor/widgets/register', $plugin_admin_pro, 'register_ar_model_viewer_widget');
-                /**
-                 * This hook registers the AR model viewer widget with Elementor. It allows the
-                 * premium widget to be used in Elementor’s page builder.
-                 * The `register_ar_model_viewer_widget` function is called when Elementor widgets are registered.
-                 */
-
-                // Hooks for Importer
-                $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_column_to_importer');
-                /**
-                 * Adds a custom column for 3D model data to the WooCommerce product importer.
-                 * The `ar_model_viewer_for_woocommerce_add_column_to_importer` function defines
-                 * the custom column names that will be displayed when mapping import fields.
-                 */
-
-                $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_column_to_mapping_screen');
-                /**
-                 * Automatically maps the custom columns for 3D model data when importing products.
-                 * This hook connects the column names with their corresponding WooCommerce meta fields.
-                 * The function `ar_model_viewer_for_woocommerce_add_column_to_mapping_screen` handles this mapping.
-                 */
-
-                $this->loader->add_filter('woocommerce_product_import_pre_insert_product_object', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_process_import', 10, 2);
-                /**
-                 * Processes the imported data for each product and saves the custom 3D model meta fields.
-                 * The `ar_model_viewer_for_woocommerce_process_import` function takes the product object
-                 * and the imported data, and then updates the metadata with the values from the CSV.
-                 * This is triggered before the product is inserted into the database.
-                 */
-
-                // Hooks for Exporter
-                $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_column');
-                /**
-                 * Adds custom column names for exporting 3D model data in WooCommerce.
-                 * The `ar_model_viewer_for_woocommerce_add_export_column` function adds the custom
-                 * columns (like Android and iOS model file URLs) to the list of available export fields.
-                 */
-
-                $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_column');
-                /**
-                 * Adds the same custom column names for exporting 3D model data, ensuring they are part
-                 * of the default export fields in WooCommerce.
-                 * The `ar_model_viewer_for_woocommerce_add_export_column` function is reused to achieve this.
-                 */
-
-                // Hook for exporting the Android .glb URL column.
-                $this->loader->add_filter('woocommerce_product_export_product_column_ar_model_viewer_for_woocommerce_file_android', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_data_file_android', 10, 2);
-                /**
-                 * Exports the Android `.glb` file URL from the product metadata during WooCommerce exports.
-                 * The function `ar_model_viewer_for_woocommerce_add_export_data_file_android` retrieves
-                 * the meta field for the Android file and formats it for export.
-                 */
-
-                // Hook for exporting the IOS .usdz URL column.
-                $this->loader->add_filter('woocommerce_product_export_product_column_ar_model_viewer_for_woocommerce_file_ios', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_data_file_ios', 10, 2);
-                /**
-                 * Exports the iOS `.usdz` file URL from the product metadata during WooCommerce exports.
-                 * The function `ar_model_viewer_for_woocommerce_add_export_data_file_ios` retrieves
-                 * the meta field for the iOS file and formats it for export.
-                 */
-
-                // Hook for exporting the Poster for 3D Model column.
-                $this->loader->add_filter('woocommerce_product_export_product_column_ar_model_viewer_for_woocommerce_file_poster', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_data_file_poster', 10, 2);
-                /**
-                 * Exports the poster image URL for the 3D model from the product metadata during WooCommerce exports.
-                 * The function `ar_model_viewer_for_woocommerce_add_export_data_file_poster` retrieves
-                 * the meta field for the poster image and formats it for export.
-                 */
-
-                // Hook for exporting the Alt for 3D Model column.
-                $this->loader->add_filter('woocommerce_product_export_product_column_ar_model_viewer_for_woocommerce_file_alt', $plugin_admin_pro, 'ar_model_viewer_for_woocommerce_add_export_data_file_alt', 10, 2);
-                /**
-                 * Exports the alt text for the 3D model from the product metadata during WooCommerce exports.
-                 * The function `ar_model_viewer_for_woocommerce_add_export_data_file_alt` retrieves
-                 * the meta field for the alt text and formats it for export.
-                 */
             }
         }
     }

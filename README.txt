@@ -43,7 +43,7 @@ The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing yo
 Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro Version**, which includes additional premium features and support:  
 
 - **Elementor Widget**: Display 3D models using a dedicated widget in Elementor.  
-- **Bulk Import and Export**: Easily manage your 3D models by using the native WooCommerce importer/exporter.  
+- **Bulk Import and Export**: Manage 3D models and viewer overrides using the native WooCommerce importer/exporter.
 - **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
 
 ### Open Source and Community Contribution 🌟  
@@ -100,7 +100,7 @@ You can find comprehensive documentation and support resources here:
 - [Official Plugin Page](https://racmanuel.dev/ar-model-viewer-for-woocommerce/)  
 
 = Does the plugin support bulk uploads of models? =  
-Yes, the **Pro Version** of the plugin includes a bulk import/export feature for managing multiple 3D models efficiently.  
+Yes. WooCommerce's native CSV importer/exporter supports the 3D model URL, poster URL, alt text, USDZ URL and the per-product viewer overrides. URLs must be publicly accessible; the importer stores them on the product and does not download files to the Media Library.
 
 = Is there support for Elementor? =  
 Absolutely! The **Pro Version** includes a dedicated Elementor widget to display 3D models seamlessly on your website.  
