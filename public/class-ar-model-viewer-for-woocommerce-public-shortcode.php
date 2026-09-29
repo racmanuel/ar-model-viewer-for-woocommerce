@@ -111,6 +111,12 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
             return esc_html__('Product not found.', 'ar-model-viewer-for-woocommerce');
         }
 
+        // A product whose viewer is switched off renders nothing at all, which is what the store
+        // asked for when it cleared the switch.
+        if (!Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($product)) {
+            return '';
+        }
+
         // The model of the product, with the poster and the alt text already defaulted. This
         // resolution used to live in three separated copies, and the endpoint used by the modal
         // was the one that forgot to apply the fallbacks.
@@ -130,8 +136,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
             'info'
         );
 
-        // Retrieve the AR settings from the plugin's options.
-        $settings = $this->get_ar_model_viewer_settings();
+        // Retrieve the AR settings, with the overrides of this product already applied.
+        $settings = $this->get_ar_model_viewer_settings($product);
 
         // Initialize AR attributes based on the retrieved settings.
         $ar_attributes = '';
@@ -189,9 +195,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
             $ar_attributes,
             $extra_attributes,
             // Lighting and appearance attributes are shared by every placement, so they are
-            // built in one place and appended here instead of being repeated per template.
+            // built in one place and appended here instead of being repeated per template. The
+            // product switches are merged into that shared list instead of being appended, so an
+            // override never leaves a duplicated attribute behind.
             Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes(
-                Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes()
+                Ar_Model_Viewer_For_Woocommerce_Product_Model::merge_shared_attributes(
+                    Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes(),
+                    $product
+                )
             ),
             // These ones belong to the product: where its camera starts, how it is oriented.
             // A product that overrides nothing prints nothing here.
@@ -221,10 +232,37 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Shortcode
      *
      * @since 1.0.0
      *
+     * @param WC_Product|null $product Product whose overrides have to be taken into account.
      * @return array An associative array containing AR model viewer settings such as loading behavior, reveal method, AR modes, and more.
      */
-    private function get_ar_model_viewer_settings()
+    private function get_ar_model_viewer_settings($product = null)
     {
-        return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+        $settings = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+
+        if (!$product instanceof WC_Product) {
+            return $settings;
+        }
+
+        /*
+         * The settings screen is the default and the product is the exception, so an override that
+         * was never set keeps the global value instead of replacing it with an empty one.
+         */
+        $effective = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve_effective($product);
+
+        if ('yes' === $effective['ar_enabled']) {
+            $settings['ar'] = true;
+        } elseif ('no' === $effective['ar_enabled']) {
+            $settings['ar'] = false;
+        }
+
+        if ('' !== $effective['ar_scale']) {
+            $settings['scale'] = $effective['ar_scale'];
+        }
+
+        if ('' !== $effective['ar_placement']) {
+            $settings['placement'] = $effective['ar_placement'];
+        }
+
+        return $settings;
     }
 }

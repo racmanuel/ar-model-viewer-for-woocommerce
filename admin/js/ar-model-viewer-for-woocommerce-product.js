@@ -59,6 +59,66 @@ function armvwApplyStaticProperties() {
   });
 }
 
+function armvwApplyViewerAttributes(viewer, attributes) {
+  Object.keys(attributes || {}).forEach(function (name) {
+    var value = attributes[name];
+
+    if (value === true) {
+      viewer.setAttribute(name, "");
+    } else if (value !== false && value !== null && value !== undefined && value !== "") {
+      viewer.setAttribute(name, String(value));
+    }
+  });
+}
+
+function armvwApplyViewerData(viewer, data) {
+  var attributes = {};
+
+  Object.assign(attributes, data.attributes || {}, data.product_attributes || {});
+  armvwApplyViewerAttributes(viewer, attributes);
+
+  if (data.ar) {
+    viewer.setAttribute("ar", "");
+    viewer.setAttribute("ar-modes", (data.ar_modes || []).join(" "));
+    viewer.setAttribute("ar-scale", data.scale || "auto");
+    viewer.setAttribute("ar-placement", data.placement || "floor");
+
+    if (data.xr_environment) {
+      viewer.setAttribute("xr-environment", "");
+    }
+  }
+
+  if (data.with_credentials) {
+    viewer.setAttribute("with-credentials", "");
+  }
+
+  viewer
+    .setAttribute("src", data.model_3d_file || "")
+    .setAttribute("alt", data.model_alt || "")
+    .setAttribute("poster", data.model_poster || "")
+    .setAttribute("reveal", data.reveal || "auto")
+    .setAttribute("loading", data.loading || "auto");
+  viewer.style.backgroundColor = data.poster_color || "rgba(255,255,255,0)";
+}
+
+function armvwBuildArButton(data) {
+  if (!data.ar_button || !data.ar_button_text) {
+    return null;
+  }
+
+  var button = document.createElement("button");
+  button.setAttribute("slot", "ar-button");
+  button.textContent = data.ar_button_text;
+  button.style.backgroundColor = data.ar_button_background_color || "#ffffff";
+  button.style.color = data.ar_button_text_color || "#000000";
+  button.style.border = "none";
+  button.style.borderRadius = "999px";
+  button.style.padding = "8px 14px";
+  button.style.cursor = "pointer";
+
+  return button;
+}
+
 armvwVendor.ensure(["alertify"]);
 
 function armvwDriverFactory() {
@@ -188,8 +248,46 @@ function armvwDriverFactory() {
       copyToClipboard("#shortcode-text", "Shortcode copied to clipboard!");
     });
 
-    if (typeof window.armvwInitTabs === "function") {
-      window.armvwInitTabs({ storageKey: "armvwProductTab" });
+    /*
+     * The three kinds of resource the editor can ask for.
+     *
+     * The extension is the rule the viewer depends on and the mime type is only how the media
+     * library is filtered, so both live together here: a new kind of file is added once and every
+     * button of the product and of the variations picks it up.
+     *
+     * `application/octet-stream` is part of the model and USDZ filters on purpose. A file uploaded
+     * through FTP, or by a version of the plugin that did not declare the type yet, is stored
+     * without one, and a picker that only looked for the declared types would hide a file the
+     * store knows is there.
+     */
+    var armvwKinds = {
+      model: {
+        extensions: ["glb", "gltf"],
+        types: ["model/gltf-binary", "model/gltf+json", "application/octet-stream"],
+      },
+      usdz: {
+        extensions: ["usdz"],
+        types: ["model/vnd.usdz+zip", "application/octet-stream"],
+      },
+      image: {
+        extensions: ["jpg", "jpeg", "png", "webp", "avif"],
+        types: ["image/jpeg", "image/png", "image/webp", "image/avif"],
+      },
+    };
+
+    function armvwKind(kind) {
+      return armvwKinds[kind] || armvwKinds.model;
+    }
+
+    function armvwLibraryFor(kind) {
+      return { type: armvwKind(kind).types };
+    }
+
+    function armvwExtensionIsAllowed(url, kind) {
+      var clean = String(url || "").split("?")[0].split("#")[0];
+      var extension = clean.substring(clean.lastIndexOf(".") + 1).toLowerCase();
+
+      return kind && armvwKind(kind).extensions.indexOf(extension) !== -1;
     }
 
     $(document).on("click", ".armvw-media", function (event) {
@@ -197,7 +295,7 @@ function armvwDriverFactory() {
 
       var button = $(this);
       var input = document.getElementById(button.data("armvw-target"));
-      var isModel = "model" === button.data("armvw-kind");
+      var kind = button.data("armvw-kind");
 
       if (!input || !window.wp || !window.wp.media) {
         return;
@@ -206,19 +304,70 @@ function armvwDriverFactory() {
       var frame = window.wp.media({
         title: button.data("armvw-title"),
         button: { text: button.data("armvw-button") },
-        library: isModel
-          ? {}
-          : { type: ["image/jpeg", "image/png", "image/webp", "image/gif"] },
+        library: armvwLibraryFor(kind),
         multiple: false,
       });
 
       frame.on("select", function () {
         var attachment = frame.state().get("selection").first().toJSON();
+
+        /*
+         * The library is filtered by type, but a filter is a convenience and not a rule: an
+         * attachment can be saved with a mime type that does not match its extension, and picking
+         * a JPEG for the model would be discovered days later on the product page. The extension
+         * is checked here, which is the last moment the store is still looking at the dialog.
+         */
+        if (!armvwExtensionIsAllowed(attachment.url, kind)) {
+          window.alert(
+            translate(
+              "That file type is not allowed here. Expected:",
+              "ar-model-viewer-for-woocommerce"
+            ) + " " + armvwKind(kind).extensions.join(", ")
+          );
+
+          input.value = "";
+          input.dispatchEvent(new Event("change"));
+
+          var cleared = document.getElementById(button.data("armvw-id") || "");
+
+          if (cleared) {
+            cleared.value = "";
+          }
+
+          return;
+        }
+
         input.value = attachment.url;
         input.dispatchEvent(new Event("change"));
+
+        /*
+         * The id of the attachment travels next to the URL. The URL is what the viewer prints
+         * and what a CSV carries, so it stays the source of truth; the id is what lets the
+         * editor know that the file came from this media library and not from a CDN.
+         */
+        var idInput = document.getElementById(button.data("armvw-id") || "");
+
+        if (idInput) {
+          idInput.value = attachment.id || "";
+        }
       });
 
       frame.open();
+    });
+
+    /*
+     * A variation only shows its three file fields once it is asked to. The fields are not
+     * removed from the form, they are hidden: a store that turns the switch off and on again
+     * before saving gets back what it had typed.
+     *
+     * The class is written in full and not shortened: it is the same one the partial uses, and a
+     * typo here leaves a switch that silently does nothing.
+     */
+    $(document).on("change", ".armvw-variation__custom", function () {
+      $(this)
+        .closest(".armvw-variation")
+        .find(".armvw-variation__files")
+        .prop("hidden", !this.checked);
     });
 
     $(document).on("click", "#armvw-use-current-view", function () {
@@ -274,9 +423,9 @@ function armvwDriverFactory() {
 
       window.armvwVendor.ensure(["model-viewer"]).then(armvwApplyStaticProperties);
 
-      var htmlContent = `
+        var htmlContent = `
       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-          <model-viewer id="model-viewer" src="" alt="" poster="" reveal="" loading="" ar ar-modes="" camera-controls ar-scale="auto" style="width: 100%; max-width: 600px; height: 400px;"></model-viewer>
+          <model-viewer id="model-viewer" style="width: 100%; max-width: 600px; height: 400px;"></model-viewer>
       </div>`;
       var loadingMessage;
 
@@ -310,15 +459,20 @@ function armvwDriverFactory() {
             maximizable: true,
           }).setHeader(productName);
 
-          $("#model-viewer")
-            .attr("src", data.model_3d_file || "")
-            .attr("alt", data.model_alt || "")
-            .attr("poster", data.model_poster || "")
-            .attr("reveal", data.reveal || "auto")
-            .attr("loading", data.loading || "auto")
-            .attr("ar-modes", (data.ar_modes || []).join(" "))
-            .attr("ar-scale", data.scale || "auto")
-            .css("background-color", data.poster_color || "rgba(255,255,255,0)");
+          var viewer = document.getElementById("model-viewer");
+
+          if (!viewer) {
+            alertify.error("The 3D preview could not be initialized.");
+            return;
+          }
+
+          armvwApplyViewerData(viewer, data);
+
+          var arButton = armvwBuildArButton(data);
+
+          if (arButton) {
+            viewer.appendChild(arButton);
+          }
         },
         error: function (xhr, status, error) {
           if (loadingMessage) {

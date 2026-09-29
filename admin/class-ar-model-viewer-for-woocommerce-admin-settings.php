@@ -1531,38 +1531,4 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         return 'ar_model_viewer_for_woocommerce_' . $short;
     }
 
-    /* ---------------------------------------------------------------------
-     * Legacy handlers
-     * ------------------------------------------------------------------ */
-
-    /**
-     * Legacy AJAX handler kept until the REST controllers replace it.
-     *
-     * @since 1.0.0
-     * @deprecated 3.0.0 Use the REST endpoint of the plugin instead.
-     * @return void
-     */
-    public function ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings()
-    {
-        if (!current_user_can(Ar_Model_Viewer_For_Woocommerce_Settings::CAPABILITY)) {
-            wp_send_json_error('Insufficient permissions.', 403);
-        }
-
-        check_ajax_referer('armvw_admin', 'nonce', false);
-
-        $settings = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
-
-        $this->logger->log_to_woocommerce('Global settings retrieved successfully.', 'info');
-
-        wp_send_json_success(
-            array_merge(
-                $settings,
-                array(
-                    'model_3d_file' => esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/models/witch_potion.glb'),
-                    'model_alt' => 'AR Model Viewer for WooCommerce',
-                    'model_poster' => esc_url(plugin_dir_url(dirname(__FILE__)) . 'admin/images/armvw-logo-400.png'),
-                )
-            )
-        );
-    }
 }

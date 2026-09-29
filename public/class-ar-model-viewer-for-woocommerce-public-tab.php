@@ -81,6 +81,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
      */
     public function ar_model_viewer_for_woocommerce_tab($tabs)
     {
+        global $product;
+
+        // A product whose viewer is switched off does not get an empty tab: the tab simply is
+        // not offered, which is what the store asked for when it cleared the switch.
+        if ($product instanceof WC_Product && !Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($product)) {
+            return $tabs;
+        }
+
         // The tab title is configurable in the settings, with a translated fallback.
         $tab_title = (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_tab_title');
 
@@ -132,8 +140,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
             return;
         }
 
-        // Retrieve the AR settings from the plugin's options.
-        $settings = $this->get_ar_model_viewer_settings();
+        // Retrieve the AR settings, with the overrides of this product already applied.
+        $settings = $this->get_ar_model_viewer_settings($product);
 
         // Initialize AR attributes based on the retrieved settings.
         $ar_attributes = '';
@@ -191,9 +199,14 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
             $ar_attributes,
             $extra_attributes,
             // Lighting and appearance attributes are shared by every placement, so they are
-            // built in one place and appended here instead of being repeated per template.
+            // built in one place and appended here instead of being repeated per template. The
+            // product switches are merged into that shared list instead of being appended, so an
+            // override never leaves a duplicated attribute behind.
             Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes(
-                Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes()
+                Ar_Model_Viewer_For_Woocommerce_Product_Model::merge_shared_attributes(
+                    Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes(),
+                    $product
+                )
             ),
             // These ones belong to the product: where its camera starts, how it is oriented.
             // A product that overrides nothing prints nothing here.
@@ -215,10 +228,37 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
      *
      * @since 1.0.0
      *
+     * @param WC_Product|null $product Product whose overrides have to be taken into account.
      * @return array An associative array containing AR model viewer settings such as loading behavior, reveal method, AR modes, and more.
      */
-    private function get_ar_model_viewer_settings()
+    private function get_ar_model_viewer_settings($product = null)
     {
-        return Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+        $settings = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+
+        if (!$product instanceof WC_Product) {
+            return $settings;
+        }
+
+        /*
+         * The settings screen is the default and the product is the exception, so an override that
+         * was never set keeps the global value instead of replacing it with an empty one.
+         */
+        $effective = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve_effective($product);
+
+        if ('yes' === $effective['ar_enabled']) {
+            $settings['ar'] = true;
+        } elseif ('no' === $effective['ar_enabled']) {
+            $settings['ar'] = false;
+        }
+
+        if ('' !== $effective['ar_scale']) {
+            $settings['scale'] = $effective['ar_scale'];
+        }
+
+        if ('' !== $effective['ar_placement']) {
+            $settings['placement'] = $effective['ar_placement'];
+        }
+
+        return $settings;
     }
 }

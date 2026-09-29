@@ -86,7 +86,7 @@ e.g.
 1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Use the Settings -> AR Model Viewer for WooCommerce screen to configure the plugin.
-4. Start adding 3D models to your WooCommerce products using the custom metabox provided in the product edit screen.
+4. Start adding 3D models to your WooCommerce products from the **3D and augmented reality** group, inside the **General** tab of **Product data**. The fields use the same markup as the rest of the product, so there is nothing new to learn.
 
 == Frequently Asked Questions ==  
 
@@ -106,10 +106,17 @@ You can find comprehensive documentation and support resources here:
 - [Official Plugin Page](https://racmanuel.dev/ar-model-viewer-for-woocommerce/)  
 
 = Does the plugin support bulk uploads of models? =  
-Yes. WooCommerce's native CSV importer/exporter supports the 3D model URL, poster URL, alt text, USDZ URL and the per-product viewer overrides. URLs must be publicly accessible; the importer stores them on the product and does not download files to the Media Library.
+Yes. WooCommerce's native CSV importer/exporter supports the 3D model URL, poster URL, alt text, USDZ URL, the per-product switches (enabled, AR enabled, AR scale, AR placement, auto rotate) and the per-product viewer overrides. It also supports the files of a single variation through the `AR Model Viewer: Variation ...` columns, so a catalogue of variable products survives an export and a new import with its fallbacks intact.
+
+URLs are the reference the CSV carries, because they are what makes a file portable between installations. Attachment IDs are stored next to the URL for the editor, but they are never the only reference: an export from one site can be imported into another as long as the files are reachable.
+
+An empty cell means "inherit from the parent product", and a column that is missing from the file leaves the stored value untouched. The importer does not download remote files into the Media Library; it validates and stores the URL.
+
+= Can each variation use its own model? =
+Yes. Every variation shows an **AR Model Viewer** block with a switch. While it is off, the variation uses the model, the USDZ file and the poster of the parent product. When it is on, the variation uses its own files, and any field left empty keeps inheriting from the parent. The viewer follows the variation the shopper selects without reloading the page.
 
 = Does the public viewer use the WordPress REST API? =
-Yes. The viewer loads a product's public model data at `/wp-json/armvw/v1/products/{product_id}/model` with a read-only `GET` request. Administrative settings are not exposed through this endpoint. The legacy AJAX action remains available for compatibility.
+Yes. The viewer loads a product's public model data at `/wp-json/armvw/v1/products/{product_id}/model` with a read-only `GET` request. A variable product adds `?variation_id={variation_id}`, and the response always resolves the fallback to the parent product before it is returned. Administrative settings are not exposed through this endpoint. The legacy AJAX action remains available for compatibility.
 
 = Is there support for Elementor? =  
 Absolutely! The **Pro Version** includes a dedicated Elementor widget to display 3D models seamlessly on your website.  

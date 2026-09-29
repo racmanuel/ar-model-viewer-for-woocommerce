@@ -155,12 +155,15 @@ class Ar_Model_Viewer_For_Woocommerce
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-product.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-settings.php';
 
         /**
-         * The class responsible for defining all actions that occur in the admin area.
+         * The class that registers the viewer with the product editor of WooCommerce.
+         *
+         * The file only declares the class, so requiring it is harmless on a site where
+         * WooCommerce is not loaded: the hooks it registers simply never fire.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-settings.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ar-model-viewer-for-woocommerce-admin-woocommerce.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
@@ -254,11 +257,25 @@ class Ar_Model_Viewer_For_Woocommerce
         $this->loader->add_filter('upload_mimes', $plugin_admin, 'ar_model_viewer_for_woocommerce_mime_types');
         $this->loader->add_filter('admin_body_class', $plugin_admin, 'admin_body_class');
 
-        // Product controller: native product metabox and product-level viewer data.
-        $plugin_admin_product = new Ar_Model_Viewer_For_Woocommerce_Admin_Product($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        /*
+         * WooCommerce integration: the viewer fields inside Product data and the fields of every
+         * variation.
+         *
+         * The product fields are appended to the General tab that WooCommerce already draws, so
+         * they look and behave like the rest of the product. There is no tab of this plugin and no
+         * metabox of this plugin: one product is configured in one place, with one design.
+         */
+        $plugin_admin_woocommerce = new Ar_Model_Viewer_For_Woocommerce_Admin_WooCommerce($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
-        $this->loader->add_action('add_meta_boxes', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_register_viewer_metabox');
-        $this->loader->add_action('save_post_product', $plugin_admin_product, 'ar_model_viewer_for_woocommerce_save_viewer_options');
+        $this->loader->add_action('woocommerce_product_options_general_product_data', $plugin_admin_woocommerce, 'render_product_fields');
+        $this->loader->add_action('woocommerce_admin_process_product_object', $plugin_admin_woocommerce, 'save_product');
+
+        /*
+         * The variation block is printed once per variation, so it receives the index it needs to
+         * build unique field names, and the same index comes back when WooCommerce saves.
+         */
+        $this->loader->add_action('woocommerce_product_after_variable_attributes', $plugin_admin_woocommerce, 'render_variation_fields', 10, 3);
+        $this->loader->add_action('woocommerce_save_product_variation', $plugin_admin_woocommerce, 'save_variation', 10, 2);
 
         // Settings controller: Settings API page, reset action and screen classes.
         $plugin_admin_settings = new Ar_Model_Viewer_For_Woocommerce_Admin_Settings($this->get_plugin_name(), $this->get_plugin_prefix(), $this->version);
@@ -273,34 +290,6 @@ class Ar_Model_Viewer_For_Woocommerce
          * implementation generated, so bookmarks, the Freemius menu entry and the enqueued assets
          * keep working after the migration.
          */
-
-        // Get the currently active theme.
-        $theme_actual = wp_get_theme();
-        /**
-         * Retrieves the active WordPress theme.
-         * This is used to check if specific actions or fixes are needed for certain themes (e.g., Bloksy).
-         */
-
-        if ($theme_actual->name === 'Blocksy') {
-            // Check if the active theme is Bloksy and apply necessary fixes.
-            $this->loader->add_filter('blocksy:woocommerce:product-view:use-default', $plugin_admin, 'ar_model_viewer_for_woocommerce_blocksy_fix');
-            /**
-             * Adds a filter to fix compatibility issues with the Bloksy theme.
-             * The function `ar_model_viewer_for_woocommerce_blocksy_fix` handles specific changes needed for the Bloksy theme’s WooCommerce product view.
-             * It hooks into the `blocksy:woocommerce:product-view:use-default` filter, ensuring the plugin works seamlessly with Bloksy.
-             */
-        }
-
-        /*
-         * The endpoint that serves the model of a product belongs to the public class, which is
-         * registered further down for logged in and anonymous visitors alike.
-         *
-         * It used to be registered here as well. Both callbacks answered the same hook and this one
-         * ran first, so a logged in visitor got the response of this class and a shopper got the
-         * response of the public one: the same page behaved differently depending on who was
-         * looking at it, which is how the front ended up with the modal that ignored the settings.
-         */
-        $this->loader->add_action('wp_ajax_ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings', $plugin_admin_settings, 'ar_model_viewer_for_woocommerce_get_model_preview_with_global_settings');
 
         // CSV controller: native WooCommerce product import and export.
         $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();

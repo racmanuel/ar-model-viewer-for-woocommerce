@@ -174,6 +174,17 @@ class Ar_Model_Viewer_For_Woocommerce_Public
     public function ar_model_viewer_for_woocommerce_button()
     {
         /*
+         * A product whose viewer is switched off prints no button at all. The button is added to
+         * the summary of every product, so without this check the store would hide the tab but
+         * keep offering a modal that answers with an error.
+         */
+        $armvw_product = wc_get_product(get_the_ID());
+
+        if ($armvw_product && !Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($armvw_product)) {
+            return;
+        }
+
+        /*
          * The position decides between the button printed in the flow of the page and the one laid
          * over the product image, so the template has to know which of the two it is drawing.
          */
@@ -195,7 +206,10 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             wp_send_json_error('Invalid Product ID.');
         }
 
-        $data = $this->get_model_and_settings_data($product_id);
+        // The legacy action kept no variation, so the parameter is optional on purpose.
+        $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+
+        $data = $this->get_model_and_settings_data($product_id, $variation_id);
 
         if (is_wp_error($data)) {
             wp_send_json_error($data->get_error_message());
@@ -225,6 +239,20 @@ class Ar_Model_Viewer_For_Woocommerce_Public
                         },
                         'sanitize_callback' => 'absint',
                     ),
+                    /*
+                     * The variation is optional: a simple product asks for its model without one,
+                     * and a variable product sends the id WooCommerce reports for the options the
+                     * shopper is looking at. It is validated against the parent inside the resolver,
+                     * so a hand written request cannot read a variation of another product.
+                     */
+                    'variation_id' => array(
+                        'required' => false,
+                        'default' => 0,
+                        'validate_callback' => function ($value) {
+                            return is_numeric($value) && absint($value) >= 0;
+                        },
+                        'sanitize_callback' => 'absint',
+                    ),
                 ),
             )
         );
@@ -238,16 +266,20 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      */
     public function get_model_and_settings_rest(WP_REST_Request $request)
     {
-        return $this->get_model_and_settings_data(absint($request['product_id']));
+        return $this->get_model_and_settings_data(
+            absint($request['product_id']),
+            absint($request->get_param('variation_id'))
+        );
     }
 
     /**
      * Build the shared model and viewer response.
      *
-     * @param int $product_id Product identifier.
+     * @param int $product_id   Product identifier.
+     * @param int $variation_id Optional variation of that product.
      * @return array|WP_Error
      */
-    private function get_model_and_settings_data($product_id)
+    private function get_model_and_settings_data($product_id, $variation_id = 0)
     {
         $product = wc_get_product($product_id);
 
@@ -255,35 +287,58 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             return new WP_Error('armvw_product_not_found', __('Product not found.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
         }
 
+        if (!Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($product)) {
+            return new WP_Error('armvw_viewer_disabled', __('The 3D viewer is switched off for this product.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
+        }
+
         $viewer = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
         $loading = $viewer['loading'];
         $reveal = $viewer['reveal'];
         $with_credentials = $viewer['with_credentials'];
         $poster_color = $viewer['poster_color'];
-        $ar = $viewer['ar'];
-        $scale = $viewer['scale'];
-        $placement = $viewer['placement'];
         $xr_environment = $viewer['xr_environment'];
         $ar_modes = $viewer['ar_modes'];
 
         // The custom AR button replaces the default icon of the library, so the modal needs its
         // label and its colours. It is only offered when AR is enabled and the label is not empty.
-        $ar_button = $viewer['ar'] && $viewer['ar_button'] && '' !== trim((string) $viewer['ar_button_text']);
         $ar_button_text = $viewer['ar_button_text'];
         $ar_button_background_color = $viewer['ar_button_background_color'];
         $ar_button_text_color = $viewer['ar_button_text_color'];
 
-        // The same resolver the shortcode and the product tab use. This endpoint used to read the
-        // meta values on its own, so it returned an empty poster for a product that had no poster
-        // of its own but did have a featured image.
-        $model = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve($product);
+        /*
+         * A variation only overrides its own resources, so the resolver returns the values of the
+         * parent for everything the variation does not define. This is the same resolver the
+         * shortcode and the product tab use, which is what keeps every placement in agreement.
+         */
+        $variation = Ar_Model_Viewer_For_Woocommerce_Product_Model::get_variation($product_id, $variation_id);
+        $effective = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve_effective($product, $variation);
 
-        if ('' === trim($model['source'])) {
+        if ('' === trim($effective['source'])) {
             return new WP_Error('armvw_model_missing', __('3D model file is missing.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
         }
 
+        /*
+         * The three AR switches fall back to the settings screen on their own, so a product that
+         * does not override them keeps behaving exactly as it did before they existed.
+         */
+        $ar = $viewer['ar'];
+
+        if ('yes' === $effective['ar_enabled']) {
+            $ar = true;
+        } elseif ('no' === $effective['ar_enabled']) {
+            $ar = false;
+        }
+
+        $scale = '' !== $effective['ar_scale'] ? $effective['ar_scale'] : $viewer['scale'];
+        $placement = '' !== $effective['ar_placement'] ? $effective['ar_placement'] : $viewer['placement'];
+        $ar_button = $ar && $viewer['ar_button'] && '' !== trim((string) $ar_button_text);
+
+        $product_attributes = Ar_Model_Viewer_For_Woocommerce_Product_Model::attributes($product);
+
         // Preparar los datos para el retorno
         $data = array(
+            'product_id' => $effective['product_id'],
+            'variation_id' => $effective['variation_id'],
             'loading' => $loading,
             'reveal' => $reveal,
             'with_credentials' => $with_credentials,
@@ -294,15 +349,28 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'xr_environment' => $xr_environment,
             'ar_modes' => $ar_modes,
             'product_name' => $product->get_name(),
-            'model_3d_file' => $model['source'],
-            'model_alt' => $model['alt'],
-            'model_poster' => $model['poster'],
+            'model_3d_file' => $effective['source'],
+            'model_alt' => $effective['alt'],
+            'model_poster' => $effective['poster'],
+            'model_ios_src' => $effective['ios_src'],
+            // Which layer answered for each resource: the store needs it to explain an inherited
+            // model, and the shopper never sees it.
+            'origins' => array(
+                'model' => $effective['source_origin'],
+                'poster' => $effective['poster_origin'],
+                'ios_src' => $effective['ios_src_origin'],
+            ),
             // Lighting and appearance settings travel as a ready to print list of attributes, so
             // the front-end modal does not have to know which settings map to which attribute.
-            'attributes' => Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes(),
+            // The product switches are merged here and not appended, because a duplicated
+            // attribute would leave the global value in force without any visible sign of it.
+            'attributes' => Ar_Model_Viewer_For_Woocommerce_Product_Model::merge_shared_attributes(
+                Ar_Model_Viewer_For_Woocommerce_Settings::shared_attributes(),
+                $product
+            ),
             // Overrides of this product, which the modal also receives instead of having to
             // reach for the meta values on its own.
-            'product_attributes' => Ar_Model_Viewer_For_Woocommerce_Product_Model::attributes($product),
+            'product_attributes' => $product_attributes,
             'ar_button' => $ar_button,
             'ar_button_text' => $ar_button_text,
             'ar_button_background_color' => $ar_button_background_color,

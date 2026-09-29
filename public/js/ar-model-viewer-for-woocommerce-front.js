@@ -197,22 +197,49 @@
 	}
 
 	/**
+	 * Variation the shopper is looking at, or 0 while the parent product is shown.
+	 *
+	 * The modal and every inline viewer read it, so the model that is rendered always belongs to
+	 * the options that are selected on the page.
+	 *
+	 * @type {number}
+	 */
+	var currentVariation = 0;
+
+	/**
 	 * Transfer the values of the endpoint to a viewer element.
 	 *
 	 * The endpoint already hands over the attributes the settings produce, so the script does not
 	 * decide which setting maps to which attribute: it copies. That is what made the old modal
 	 * ignore half of the settings without anyone noticing.
 	 *
+	 * Every attribute this function writes is remembered on the element, because switching from one
+	 * variation to another has to remove the attributes of the previous one. Without that, a
+	 * shopper who goes from a variation with augmented reality to one without would keep the `ar`
+	 * attribute of the first and be offered a feature the product no longer has.
+	 *
 	 * @param {HTMLElement} viewer The viewer element.
 	 * @param {Object}      data   Response of the endpoint.
 	 * @return {void}
 	 */
 	function applyData(viewer, data) {
-		viewer.setAttribute("src", data.model_3d_file || "");
-		viewer.setAttribute("alt", data.model_alt || "");
+		var previous = (viewer.dataset.armvwApplied || "").split(" ").filter(Boolean);
+
+		previous.forEach(function (name) {
+			viewer.removeAttribute(name);
+		});
+
+		var applied = [];
+		var set = function (name, value) {
+			viewer.setAttribute(name, value);
+			applied.push(name);
+		};
+
+		set("src", data.model_3d_file || "");
+		set("alt", data.model_alt || "");
 
 		if (data.model_poster) {
-			viewer.setAttribute("poster", data.model_poster);
+			set("poster", data.model_poster);
 		}
 
 		if (data.poster_color) {
@@ -220,7 +247,7 @@
 		}
 
 		if (data.with_credentials) {
-			viewer.setAttribute("with-credentials", "");
+			set("with-credentials", "");
 		}
 
 		/*
@@ -229,22 +256,22 @@
 		 * renders them on a product page, so the dialog and the tab cannot disagree.
 		 */
 		if (data.ar) {
-			viewer.setAttribute("ar", "");
+			set("ar", "");
 
 			if (Array.isArray(data.ar_modes) && data.ar_modes.length) {
-				viewer.setAttribute("ar-modes", data.ar_modes.join(" "));
+				set("ar-modes", data.ar_modes.join(" "));
 			}
 
 			if (data.scale) {
-				viewer.setAttribute("ar-scale", data.scale);
+				set("ar-scale", data.scale);
 			}
 
 			if (data.placement) {
-				viewer.setAttribute("ar-placement", data.placement);
+				set("ar-placement", data.placement);
 			}
 
 			if (data.xr_environment) {
-				viewer.setAttribute("xr-environment", "");
+				set("xr-environment", "");
 			}
 		}
 
@@ -256,13 +283,24 @@
 				var value = group[name];
 
 				if (value === true || value === "") {
-					viewer.setAttribute(name, "");
+					set(name, "");
 					return;
 				}
 
-				viewer.setAttribute(name, value);
+				set(name, value);
 			});
 		});
+
+		/*
+		 * The USDZ file can belong to the variation, so it is written after the attribute map and
+		 * replaces whatever the parent had put there.
+		 */
+		if (data.model_ios_src) {
+			viewer.removeAttribute("ios-src");
+			set("ios-src", data.model_ios_src);
+		}
+
+		viewer.dataset.armvwApplied = applied.join(" ");
 	}
 
 	/**
@@ -431,15 +469,26 @@
 		};
 		sendAnalytics("viewer_open", { productId: productId });
 
-		Promise.all([ensureLibrary(), requestModel(productId)])
+		Promise.all([ensureLibrary(), requestModel(productId, currentVariation)])
 			.then(function (results) {
 				var data = results[1];
+
+				/*
+				 * The dialog is cleared again right before the viewer is built. A second request can
+				 * land while the first one is still loading, and two viewers in one dialog are a
+				 * model drawn on top of a model where only one of them receives the events.
+				 */
+				box.querySelectorAll("model-viewer").forEach(function (existing) {
+					existing.remove();
+				});
 
 				title.textContent = data.product_name || "";
 				status.hidden = true;
 
 				var viewer = document.createElement("model-viewer");
 				viewer.className = "armvw-viewer";
+				// Marks the viewer of the dialog, so a change of variation can find it and reload it.
+				viewer.setAttribute("data-armvw-modal", "1");
 				viewer.setAttribute("loading", "eager");
 				viewer.setAttribute("reveal", "auto");
 				viewer.setAttribute("camera-controls", "");
@@ -453,6 +502,12 @@
 				}
 
 				body.appendChild(viewer);
+				var privacy = body.querySelector(".armvw-modal__privacy");
+
+				if (privacy) {
+					body.appendChild(privacy);
+				}
+
 				trackViewer(viewer, productId);
 			})
 			.catch(function (error) {
@@ -468,13 +523,18 @@
 	}
 
 	/**
-	 * Request the model and the settings of a product.
+	 * Request the model and the settings of a product, or of one of its variations.
 	 *
-	 * @param {number} productId Product id.
+	 * @param {number} productId   Product id.
+	 * @param {number} variationId Optional variation id.
 	 * @return {Promise<Object>} The data of the endpoint.
 	 */
-	function requestModel(productId) {
+	function requestModel(productId, variationId) {
 		var endpoint = (config.modelEndpoint || "") + encodeURIComponent(productId) + "/model";
+
+		if (variationId) {
+			endpoint += "?variation_id=" + encodeURIComponent(variationId);
+		}
 
 		return window.fetch(endpoint, {
 			method: "GET",
@@ -489,6 +549,134 @@
 					return json;
 				});
 			});
+	}
+
+	/**
+	 * Put the model of a variation, or of the parent, into a viewer that is already on the page.
+	 *
+	 * A variation without a model of its own is answered by the server with the values of the
+	 * parent, so the fallback happens in one place and this function does not have to know about
+	 * it.
+	 *
+	 * @param {HTMLElement} viewer      The viewer element.
+	 * @param {number}      variationId Variation id, or 0 for the parent.
+	 * @return {void}
+	 */
+	function refreshViewer(viewer, variationId) {
+		var productId = viewer.getAttribute("data-product-id");
+
+		if (!productId) {
+			return;
+		}
+
+		requestModel(productId, variationId)
+			.then(function (data) {
+				applyData(viewer, data);
+			})
+			.catch(function () {
+				/*
+				 * A product with no model, or a request that failed, leaves the viewer as it is: an old
+				 * model on screen is less confusing than an empty box where a model used to be.
+				 */
+			});
+	}
+
+	/**
+	 * Reload the model of the dialog, without closing it.
+	 *
+	 * @return {void}
+	 */
+	function reloadModal() {
+		if (!dialog || !modalSession) {
+			return;
+		}
+
+		var viewer = dialog.querySelector("model-viewer[data-armvw-modal]");
+
+		if (!viewer) {
+			return;
+		}
+
+		requestModel(modalSession.productId, currentVariation)
+			.then(function (data) {
+				applyData(viewer, data);
+
+				var title = dialog.querySelector(".armvw-modal__title");
+
+				if (title) {
+					title.textContent = data.product_name || "";
+				}
+
+				var existing = viewer.querySelector('[slot="ar-button"]');
+
+				if (existing) {
+					existing.remove();
+				}
+
+				var arButton = buildArButton(data);
+
+				if (arButton) {
+					viewer.appendChild(arButton);
+				}
+			})
+			.catch(function () {
+				// The dialog keeps showing the model it already had.
+			});
+	}
+
+	/**
+	 * Show the model of a variation, or of the parent when there is none.
+	 *
+	 * @param {number} variationId Variation id, or 0.
+	 * @return {void}
+	 */
+	function updateVariation(variationId) {
+		currentVariation = variationId || 0;
+
+		if (dialog && dialog.open) {
+			reloadModal();
+			return;
+		}
+
+		if (currentVariation) {
+			document.querySelectorAll("model-viewer[data-product-id]").forEach(function (viewer) {
+				refreshViewer(viewer, currentVariation);
+			});
+		}
+	}
+
+	/**
+	 * Follow the variation the shopper selects.
+	 *
+	 * WooCommerce publishes which variation its options resolve to, both on the product page and
+	 * in the quick view, so the viewer follows it instead of reaching for the DOM of the form.
+	 * The events are bound to the form and not to the document, so a page with several variable
+	 * products in a loop does not cross its variations.
+	 *
+	 * @return {void}
+	 */
+	function initVariations() {
+		if (!window.jQuery) {
+			return;
+		}
+
+		var form = window.jQuery(".variations_form");
+
+		if (!form.length) {
+			return;
+		}
+
+		form.on("found_variation", function (event, variation) {
+			updateVariation(variation && variation.variation_id ? variation.variation_id : 0);
+		});
+
+		/*
+		 * `reset_data` is what WooCommerce fires when the options no longer form a variation, so it
+		 * is the signal to go back to the model of the parent product.
+		 */
+		form.on("reset_data", function () {
+			updateVariation(0);
+		});
 	}
 
 	/**
@@ -510,25 +698,28 @@
 	}
 
 	/**
-	 * Move the button inside the gallery when the theme did not put it there.
+	 * Move the button into the visible image frame when the theme did not put it there.
 	 *
-	 * The server prints the button inside the gallery container of WooCommerce, so this only has work
-	 * to do on themes that use their own gallery markup. When no gallery is found the button stays
-	 * where the server left it: a button in an odd place is better than a button nobody can find.
+	 * Some themes place the button in a gallery wrapper that is taller than the visible image frame.
+	 * Positioning it against that wrapper makes the button appear below the product image, so prefer
+	 * the visible figure or slide and only fall back to the gallery wrapper when no image frame exists.
 	 *
 	 * @return {void}
 	 */
 	function placeOverImage() {
 		var button = document.querySelector(".armvw-button--over-image");
 
-		if (!button || button.closest(".woocommerce-product-gallery")) {
+		if (!button) {
 			return;
 		}
 
 		var selectors = [
+			".flexy-item-is-visible figure.ct-media-container",
+			".flexy-item-is-visible",
+			".woocommerce-product-gallery__image",
+			".flexy-view",
 			".woocommerce-product-gallery",
 			".woocommerce-product-gallery__wrapper",
-			".flex-viewport",
 			"[class*='product-gallery']",
 		];
 		var gallery = null;
@@ -538,6 +729,10 @@
 		}
 
 		if (!gallery) {
+			return;
+		}
+
+		if (!gallery || button.parentElement === gallery) {
 			return;
 		}
 
@@ -565,6 +760,7 @@
 
 		initButton();
 		placeOverImage();
+		initVariations();
 
 		if (hasViewer) {
 			ensureLibrary().catch(function () {

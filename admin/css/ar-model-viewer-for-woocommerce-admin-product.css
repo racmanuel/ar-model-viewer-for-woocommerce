@@ -1,422 +1,130 @@
 /**
  * Product editor styles.
  *
- * Plain CSS built on the design tokens of `...-admin-tokens.css`. It replaces the former
- * Sass sources and the former third-party task table imports.
+ * The 3D and AR fields of a product are rendered with the markup WooCommerce uses for its own
+ * fields, so they inherit its layout and colours and nothing has to be restyled. What is left here
+ * is the handful of things WooCommerce has no rule for: a text input that shares its row with a
+ * button, the poster thumbnail and the block of a variation.
  *
- * Every selector is scoped with `body.armvw-product-editor`, the body class added on this
- * screen only.
+ * This file used to paint a metabox with the dark canvas of the settings screen. That metabox no
+ * longer exists, and neither do its rules: a second visual language inside the product editor was
+ * the reason the plugin looked like a plugin instead of like WooCommerce.
  *
  * @link       https://racmanuel.dev
- * @since      3.0.0
+ * @since      3.2.0
  * @package    Ar_Model_Viewer_For_Woocommerce
  */
 
 /* -------------------------------------------------------------------------
- * Metabox chrome: brand gradient header and dark canvas
+ * Product fields
  * ---------------------------------------------------------------------- */
 
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header {
-	margin-top: 0 !important;
-	border-bottom: none !important;
-	background-image: var(--armvw-gradient);
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header > h2,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header > h2 {
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-higher,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-lower,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handlediv,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-higher,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handle-order-lower,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes .postbox-header button.handlediv {
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header .toggle-indicator,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .postbox-header .toggle-indicator {
-	color: var(--armvw-text);
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .inside,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_metaboxes > .inside {
-	margin-top: 0 !important;
-	background: var(--armvw-glow-violet), var(--armvw-glow-mint), var(--armvw-ink);
-}
-
-/* -------------------------------------------------------------------------
- * Field text and CMB2 helpers
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor .cmb-th > label,
-body.armvw-product-editor div.cmb-td > p {
-	font-weight: 600;
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor .cmb2-wrap ul {
-	margin: 10px !important;
-}
-
-body.armvw-product-editor .icon-in-field {
-	width: 18px;
-	vertical-align: middle;
-}
-
-body.armvw-product-editor .ar-model-viewer-logo {
-	width: 200px;
-	height: auto;
-}
-
-body.armvw-product-editor .cmb-type-group .cmb-repeatable-group:not(:last-of-type),
-body.armvw-product-editor .cmb-type-group .cmb-row:not(:last-of-type),
-body.armvw-product-editor .cmb2-postbox .cmb-repeatable-group:not(:last-of-type),
-body.armvw-product-editor .cmb2-postbox .cmb-row:not(:last-of-type) {
-	border-bottom: 1px solid var(--armvw-border) !important;
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object-status > div > a:nth-child(2),
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object-status > div > a.cmb2-remove-file-button {
-	color: var(--armvw-violet);
-}
-
-body.armvw-product-editor .file-status.cmb2-media-item {
-	color: var(--armvw-mint);
-}
-
-/* -------------------------------------------------------------------------
- * Gradients buttons
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_tutorial,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_settings,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_preview,
-body.armvw-product-editor #cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes input.cmb2-upload-button.button-secondary {
-	border: none;
-	background-image: var(--armvw-gradient) !important;
-	color: var(--armvw-text) !important;
-	font-weight: 500;
-	cursor: pointer;
-	transition: filter 0.15s ease;
-}
-
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_tutorial:hover,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_settings:hover,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_product_preview:hover,
-body.armvw-product-editor #cmb2-metabox-ar_model_viewer_for_woocommerce_metaboxes input.cmb2-upload-button.button-secondary:hover {
-	filter: brightness(1.08);
-}
-
-/* -------------------------------------------------------------------------
- * Text inputs
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor div.cmb-td > input,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_poster,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_alt {
-	border: none !important;
-	background-image: var(--armvw-gradient);
-	background-origin: border-box;
-	color: var(--armvw-text);
-	font-weight: 500;
-	width: 100%;
-}
-
-/* On focus the gradient is dropped for a readable white field. */
-body.armvw-product-editor div.cmb-td > input:focus,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_object:focus,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_poster:focus,
-body.armvw-product-editor #ar_model_viewer_for_woocommerce_file_alt:focus {
-	background-color: var(--armvw-white);
-	background-image: none !important;
-	color: var(--armvw-ink) !important;
-}
-
-/* -------------------------------------------------------------------------
- * Shortcode helper boxes
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor .shortcode-box {
-	display: inline-flex;
-	align-items: center;
-	justify-content: space-between;
-	max-width: 100%;
-	padding: 10px;
-	border: none;
-	border-radius: var(--armvw-radius-sm);
-	background-image: var(--armvw-gradient);
-}
-
-body.armvw-product-editor .shortcode-box code {
-	padding: 10px;
-	border-radius: 4px;
-	background-color: var(--armvw-white);
-	font-family: var(--armvw-font-mono);
-	font-size: var(--armvw-font-size-base);
-	color: var(--armvw-ink);
-	overflow-x: auto;
-}
-
-body.armvw-product-editor .copy-button {
-	margin-left: 10px;
-	padding: 5px 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: var(--armvw-violet);
-	color: var(--armvw-text);
-	cursor: pointer;
-	transition: background-color 0.2s ease;
-}
-
-body.armvw-product-editor .copy-button:hover {
-	background-color: var(--armvw-violet-dark);
-}
-
-/* -------------------------------------------------------------------------
- * Viewer metabox
- *
- * The metabox reuses the cards, fields and controls of the settings screen,
- * which is loaded on this screen too. Only what changes in this context lives
- * here: the editor is a narrow column, so a field stacks its label over its
- * control instead of placing them side by side.
- * ---------------------------------------------------------------------- */
-
-/*
- * The box is painted with the canvas of the settings screen. The cards are dark and on the white
- * background of the editor they looked like stickers, so the metabox brings its own background
- * instead. Only this box is painted: the rest of the editor keeps the WordPress colours its own
- * controls were designed for.
- */
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer {
-	background: var(--armvw-page-background);
-	border: 1px solid var(--armvw-border-strong);
-	border-radius: var(--armvw-radius-lg);
-	font-family: var(--armvw-font);
-	color: var(--armvw-text);
-}
-
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header {
-	border-bottom: 1px solid var(--armvw-border);
-	background: transparent;
-}
-
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header h2 {
-	font-family: var(--armvw-font);
-	font-size: var(--armvw-font-size-md);
-	color: var(--armvw-text);
-}
-
-/* The handles of the box are WordPress icons drawn with the currentColor. */
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button {
-	color: var(--armvw-text-faint);
-}
-
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button:hover,
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .postbox-header .handle-actions button:focus {
-	color: var(--armvw-text);
-}
-
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .order-higher-indicator::before,
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .order-lower-indicator::before,
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .handle-actions .toggle-indicator::before {
-	color: currentColor;
-}
-
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .inside {
+.woocommerce_options_panel .armvw-section-heading {
 	margin: 0;
-	padding: var(--armvw-space-5);
+	padding: 8px 12px 4px;
+	color: #50575e;
+	font-size: 13px;
+	line-height: 1.4;
 }
 
-/*
- * The buttons wear the same gradient as the primary action of the settings screen. Those rules are
- * scoped with `.armvw-settings-page`, which is not the body class of the editor, so the look has to
- * be declared for this context too instead of leaking the whole panel stylesheet.
- */
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--armvw-space-2);
-	min-height: 36px;
-	padding: 0 18px;
-	border: none;
-	border-radius: var(--armvw-radius-pill);
-	background: var(--armvw-gradient);
-	font-family: inherit;
-	font-size: var(--armvw-font-size-base);
-	font-weight: 700;
-	line-height: 1;
-	color: var(--armvw-ink);
-	text-shadow: none;
-	box-shadow: var(--armvw-shadow-sm);
-	transition: transform 0.15s ease, filter 0.15s ease;
+.woocommerce_options_panel .armvw-product-fields {
+	padding-bottom: 2px;
 }
 
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button:hover {
-	background: var(--armvw-gradient);
-	border: none;
-	color: var(--armvw-ink);
-	filter: brightness(1.06);
-	transform: translateY(-1px);
+.woocommerce_options_panel .armvw-resource-field,
+.woocommerce_options_panel .armvw-product-fields--behavior > .form-field,
+.woocommerce_options_panel .armvw-product-fields--preview > .form-field {
+	margin-top: 0;
+	margin-bottom: 8px;
 }
 
-body.armvw-product-editor #ar-model-viewer-for-woocommerce-viewer .button:focus-visible {
-	box-shadow: var(--armvw-focus-ring);
-	outline: none;
+.woocommerce_options_panel .armvw-resource-field > .armvw-media {
+	margin-left: 4px;
+	vertical-align: top;
+	white-space: nowrap;
 }
 
-/*
- * The tab list is sticky on the settings screen because that page is long. Here each panel holds a
- * handful of fields, so sticking the list would only make it float over its own content.
- */
-body.armvw-product-editor .armvw-metabox .armvw-tabs {
-	position: static;
-	margin-bottom: var(--armvw-space-4);
+.woocommerce_options_panel .armvw-product-fields--preview .button + .button {
+	margin-left: 4px;
 }
 
-body.armvw-product-editor .armvw-metabox .armvw-field {
-	grid-template-columns: minmax(0, 1fr);
-	gap: var(--armvw-space-2);
-}
-
-body.armvw-product-editor .armvw-metabox .armvw-card {
-	margin-bottom: var(--armvw-space-4);
-}
-
-body.armvw-product-editor .armvw-metabox .armvw-card:last-child {
-	margin-bottom: 0;
-}
-
-body.armvw-product-editor .armvw-metabox .armvw-input {
-	max-width: none;
-}
-
-body.armvw-product-editor .armvw-field__actions {
-	margin: var(--armvw-space-2) 0 0;
-}
-
-body.armvw-product-editor .armvw-thumb {
+.woocommerce_options_panel .armvw-thumb {
 	display: block;
 	max-width: 150px;
 	height: auto;
-	margin: var(--armvw-space-3) 0 var(--armvw-space-1);
-	border: 1px solid var(--armvw-border);
-	border-radius: var(--armvw-radius-sm);
-}
-
-/* The state line answers what the viewer will do with what this product has. */
-body.armvw-product-editor .armvw-metabox__state {
-	margin: 0 0 var(--armvw-space-4);
-	padding: var(--armvw-space-3) var(--armvw-space-4);
-	border-left: 4px solid var(--armvw-border-strong);
-	border-radius: var(--armvw-radius-sm);
-	background-color: var(--armvw-surface);
-	font-size: var(--armvw-font-size-sm);
-	font-weight: 500;
-	line-height: var(--armvw-line-base);
-	color: var(--armvw-text-muted);
-}
-
-body.armvw-product-editor .armvw-metabox__state--ok {
-	border-left-color: var(--armvw-success);
-}
-
-body.armvw-product-editor .armvw-metabox__state--warn {
-	border-left-color: var(--armvw-warning);
+	margin: 5px 0 0;
+	border: 1px solid #dcdcde;
+	border-radius: 3px;
 }
 
 /* -------------------------------------------------------------------------
- * Notifications
- *
- * The editor tells the store that the model is loading, or that something failed, with a
- * notification of alertify. These rules used to live in the public stylesheet, where the front
- * loaded them for a library it no longer uses.
+ * Variation block
+ * ---------------------------------------------------------------------- */
+
+.armvw-variation .armvw-variation__toggle {
+	display: block;
+	margin: 2px 0 4px;
+}
+
+/*
+ * The file fields stay in the form while the switch is off, so turning the switch back on before
+ * saving returns what the store had typed. `hidden` is stated explicitly because the rows are
+ * laid out as `form-row`, which some themes give a `display` of their own.
+ */
+.armvw-variation__files[hidden] {
+	display: none !important;
+}
+
+.armvw-variation__files .armvw-media-row > .armvw-media {
+	margin-left: 4px;
+	white-space: nowrap;
+}
+
+.armvw-variation__files .armvw-media-row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.armvw-variation__files .armvw-media-row > label {
+	flex: 0 0 140px;
+}
+
+.armvw-variation__files .armvw-media-row > input[type="text"] {
+	flex: 1 1 auto;
+	width: auto !important;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.armvw-variation__files .armvw-media-row > .armvw-media {
+	flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------------------
+ * Alertify notifications
  * ---------------------------------------------------------------------- */
 
 body.armvw-product-editor .alertify-notifier .ajs-message {
+	width: 280px;
 	border: 1px solid var(--armvw-border-strong);
-	border-radius: var(--armvw-radius);
-	background-color: var(--armvw-ink);
-	font-family: var(--armvw-font);
-	color: var(--armvw-text);
+	border-radius: var(--armvw-radius-sm);
 	box-shadow: var(--armvw-shadow);
+	text-shadow: none;
 }
 
 body.armvw-product-editor .alertify-notifier .ajs-message.ajs-success {
-	border-left: 4px solid var(--armvw-success);
+	background: var(--armvw-mint);
+	color: var(--armvw-ink);
 }
 
 body.armvw-product-editor .alertify-notifier .ajs-message.ajs-error {
-	border-left: 4px solid var(--armvw-danger);
+	background: var(--armvw-danger);
+	color: var(--armvw-ink);
 }
 
-/* -------------------------------------------------------------------------
- * Tutorial popovers
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor .driver-popover-next-btn,
-body.armvw-product-editor .driver-popover-prev-btn {
-	border: none;
-	background-image: var(--armvw-gradient) !important;
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor .driver-popover-progress-text {
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor .driver-popover-footer button {
-	border: none;
-	border-radius: 3px;
-	color: var(--armvw-text) !important;
-	text-shadow: none !important;
-}
-
-/* -------------------------------------------------------------------------
- * Notifications and preview modal
- * ---------------------------------------------------------------------- */
-
-body.armvw-product-editor .alertify-notifier .ajs-message.ajs-success {
-	border: none;
-	background: var(--armvw-gradient) !important;
-	color: var(--armvw-text) !important;
-	font-weight: 500;
-	text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
-}
-
-body.armvw-product-editor .alertify .ajs-modal {
-	z-index: 999999 !important;
-}
-
-body.armvw-product-editor .alertify .ajs-dialog {
-	background: var(--armvw-glow-violet), var(--armvw-glow-mint), var(--armvw-ink) !important;
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor .alertify .ajs-header,
-body.armvw-product-editor .alertify .ajs-footer {
-	border: none !important;
-	background-image: var(--armvw-gradient) !important;
-	color: var(--armvw-ink) !important;
-}
-
-body.armvw-product-editor .alertify .ajs-body {
-	color: var(--armvw-text) !important;
-}
-
-body.armvw-product-editor .alertify .ajs-footer .ajs-buttons .ajs-button {
-	border-radius: 5px;
-	background-color: var(--armvw-violet) !important;
-	color: var(--armvw-text) !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	body.armvw-product-editor * {
-		transition: none !important;
-		animation: none !important;
-	}
+body.armvw-product-editor .alertify-notifier .ajs-message.ajs-warning {
+	background: var(--armvw-warning);
+	border-color: transparent;
+	color: var(--armvw-ink);
 }

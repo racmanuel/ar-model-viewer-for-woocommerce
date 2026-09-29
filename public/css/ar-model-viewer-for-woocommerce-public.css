@@ -358,6 +358,10 @@
 	text-align: center;
 }
 
+.armvw-modal__status[hidden] {
+	display: none;
+}
+
 /* The spinner takes the colour of the theme through `currentColor`, so it is never off palette. */
 .armvw-modal__status::before {
 	content: "";

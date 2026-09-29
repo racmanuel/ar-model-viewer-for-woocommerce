@@ -357,17 +357,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             // The metabox groups its fields in tabs, and that behaviour is shared with the
             // settings screen instead of being written twice.
             wp_enqueue_script(
-                $this->plugin_name . '-tabs',
-                plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-tabs.js',
-                array(),
-                $this->asset_version('js/ar-model-viewer-for-woocommerce-tabs.js'),
-                true
-            );
-
-            wp_enqueue_script(
                 $this->plugin_name . '-product',
                 plugin_dir_url(__FILE__) . 'js/ar-model-viewer-for-woocommerce-product.js',
-                array('jquery', 'wp-i18n', $this->plugin_name . '-tabs'),
+                array('jquery', 'wp-i18n'),
                 $this->asset_version('js/ar-model-viewer-for-woocommerce-product.js'),
                 true
             );
@@ -409,6 +401,12 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
             $types['ext'] = 'glb';
             $types['type'] = 'model/gltf-binary';
         }
+
+        // A glTF scene is a JSON file, and the library has to treat it as a model too.
+        if (false !== strpos($filename, '.gltf')) {
+            $types['ext'] = 'gltf';
+            $types['type'] = 'model/gltf+json';
+        }
         if (false !== strpos($filename, '.usdz')) {
             $types['ext'] = 'usdz';
             $types['type'] = 'model/vnd.usdz+zip';
@@ -425,13 +423,9 @@ class Ar_Model_Viewer_For_Woocommerce_Admin
     public function ar_model_viewer_for_woocommerce_mime_types($mimes)
     {
         $mimes['glb'] = 'model/gltf-binary'; //Adding gbl extension
+        $mimes['gltf'] = 'model/gltf+json'; //Adding gltf extension
         $mimes['usdz'] = 'model/vnd.usdz+zip'; //Adding usdz extension
         return $mimes;
     }
 
-    public function ar_model_viewer_for_woocommerce_blocksy_fix($current_value)
-    {
-        // Use WooCommerce built in gallery
-        return true;
-    }
 }
