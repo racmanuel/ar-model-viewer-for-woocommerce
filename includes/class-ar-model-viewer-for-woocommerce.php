@@ -291,37 +291,23 @@ class Ar_Model_Viewer_For_Woocommerce
          * keep working after the migration.
          */
 
-        // CSV controller: native WooCommerce product import and export.
-        $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();
+        // Premium controller: CSV import/export and Elementor integration.
+        if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
+            if (ar_model_viewer_for_woocommerce_fs()->is_plan('pro', true) && ar_model_viewer_for_woocommerce_fs()->can_use_premium_code()) {
+                $plugin_product_csv = new Ar_Model_Viewer_For_Woocommerce_Product_CSV();
 
-        /**
-         * Adds the 3D model and viewer override columns to the importer mapping screen.
-         */
-        $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_product_csv, 'add_import_columns');
+                $this->loader->add_filter('woocommerce_csv_product_import_mapping_options', $plugin_product_csv, 'add_import_columns');
+                $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_product_csv, 'add_default_mappings');
+                $this->loader->add_action('woocommerce_product_import_inserted_product_object', $plugin_product_csv, 'process_import', 10, 2);
+                $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_product_csv, 'add_export_columns');
+                $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_product_csv, 'add_export_columns');
 
-        /**
-         * Automatically maps the plugin's current and historical CSV headers.
-         */
-        $this->loader->add_filter('woocommerce_csv_product_import_mapping_default_columns', $plugin_product_csv, 'add_default_mappings');
-
-        /**
-         * Saves imported model files and per-product viewer overrides after WooCommerce inserts the product.
-         */
-        $this->loader->add_action('woocommerce_product_import_inserted_product_object', $plugin_product_csv, 'process_import', 10, 2);
-
-        /**
-         * Adds the plugin's columns to the available exporter columns and its default selection.
-         */
-        $this->loader->add_filter('woocommerce_product_export_column_names', $plugin_product_csv, 'add_export_columns');
-        $this->loader->add_filter('woocommerce_product_export_product_default_columns', $plugin_product_csv, 'add_export_columns');
-
-        /**
-         * Registers one exporter callback for each model and viewer override column.
-         */
-        foreach (Ar_Model_Viewer_For_Woocommerce_Product_CSV::column_keys() as $column) {
-            $this->loader->add_filter('woocommerce_product_export_product_column_' . $column, $plugin_product_csv, 'export_value', 10, 2);
+                foreach (Ar_Model_Viewer_For_Woocommerce_Product_CSV::column_keys() as $column) {
+                    $this->loader->add_filter('woocommerce_product_export_product_column_' . $column, $plugin_product_csv, 'export_value', 10, 2);
+                }
+            }
         }
-        
+
         // Premium controller: Elementor integration.
         if (ar_model_viewer_for_woocommerce_fs()->is__premium_only()) {
             /**
