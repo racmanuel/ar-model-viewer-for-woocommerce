@@ -32,7 +32,7 @@ if (!defined('WPINC')) {
         <p class="armvw-direct__eyebrow"><?php esc_html_e('Explore in 3D and AR', 'ar-model-viewer-for-woocommerce'); ?></p>
         <h1 id="armvw-direct-title" class="armvw-direct__title"><?php echo esc_html($title); ?></h1>
         <div class="armvw-direct__viewer-wrap">
-            <model-viewer class="armvw-direct__viewer"<?php echo $viewer_markup; ?>></model-viewer>
+            <model-viewer class="armvw-direct__viewer"<?php echo $viewer_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attributes are escaped by Settings::render_attributes(). ?>></model-viewer>
         </div>
         <button type="button" class="armvw-direct__ar-button" id="armvw-direct-ar-button">
             <?php esc_html_e('View in AR', 'ar-model-viewer-for-woocommerce'); ?>

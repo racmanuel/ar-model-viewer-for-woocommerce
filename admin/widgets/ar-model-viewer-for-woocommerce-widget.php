@@ -44,7 +44,7 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
      */
     public function get_title()
     {
-        return __('AR Model Viewer', 'my-elementor-widgets');
+        return __('AR Model Viewer', 'ar-model-viewer-for-woocommerce');
     }
 
     /**
@@ -79,7 +79,7 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Content', 'my-elementor-widgets'),
+                'label' => __('Content', 'ar-model-viewer-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -87,7 +87,7 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'post_select',
             [
-                'label' => __('Select a 3D Model', 'my-elementor-widgets'),
+                'label' => __('Select a 3D Model', 'ar-model-viewer-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => $this->get_all_posts(),
                 'default' => '',
@@ -111,6 +111,7 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
             'posts_per_page' => -1,
             'orderby' => 'title',
             'order' => 'ASC',
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Elementor needs to list only products with a model.
             'meta_query' => [
                 'relation' => 'OR',
                 [
@@ -136,7 +137,7 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
             }
             wp_reset_postdata();
         } else {
-            $options = ['' => __('No products found', 'my-elementor-widgets')];
+            $options = ['' => __('No products found', 'ar-model-viewer-for-woocommerce')];
         }
 
         return $options;
@@ -169,8 +170,8 @@ class Ar_Model_Viewer_For_Woocommerce_Widget extends \Elementor\Widget_Base
             echo '<div class="elementor-widget-ar-model-viewer">';
             ?>
             <model-viewer id="reveal" loading="lazy" camera-controls auto-rotate
-                poster="<?php echo $get_poster; ?>" src="<?php echo $get_android_file; ?>" shadow-intensity="1"
-                alt="<?php echo $get_alt; ?>"></model-viewer>
+                poster="<?php echo esc_url($get_poster); ?>" src="<?php echo esc_url($get_android_file); ?>" shadow-intensity="1"
+                alt="<?php echo esc_attr($get_alt); ?>"></model-viewer>
             <?php
 echo '</div>';
         } else {
@@ -194,7 +195,7 @@ echo '</div>';
     </div>
 <# } else { #>
     <div class="ar-model-viewer-widget">
-        <h2><?php esc_html_e('No post selected', 'my-elementor-widgets');?></h2>
+        <h2><?php esc_html_e('No post selected', 'ar-model-viewer-for-woocommerce');?></h2>
     </div>
 <# } #>
 

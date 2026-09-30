@@ -66,7 +66,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
             return;
         }
 
-        echo $this->qr_markup($post->ID, 0);
+        echo $this->qr_markup($post->ID, 0); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup is escaped inside qr_markup().
     }
 
     /**
@@ -83,7 +83,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
             return;
         }
 
-        echo $this->qr_markup($variation->get_parent_id(), $variation->get_id());
+        echo $this->qr_markup($variation->get_parent_id(), $variation->get_id()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup is escaped inside qr_markup().
     }
 
     /**
@@ -131,7 +131,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Pro
         nocache_headers();
         header('Content-Type: ' . ('svg' === $format ? 'image/svg+xml' : 'image/png'));
         header('Content-Disposition: attachment; filename="' . sanitize_file_name($filename) . '"');
-        echo $content;
+        echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- QR binary output is generated locally by the QR library.
         exit;
     }
 

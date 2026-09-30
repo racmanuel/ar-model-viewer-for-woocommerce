@@ -816,6 +816,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
          * @since 3.0.0
          * @param array $tabs Tab definitions keyed by tab slug.
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy hook retained for third-party integrations.
         $tabs = apply_filters('armvw_settings_tabs', $tabs);
 
         include plugin_dir_path(__FILE__) . 'partials/ar-model-viewer-for-woocommerce-admin-display-settings.php';
@@ -1026,7 +1027,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         switch ($definition['type']) {
             case 'select':
                 ?>
-                <select class="armvw-select" id="<?php echo esc_attr($id); ?>" name="<?php echo esc_attr($name); ?>"<?php echo $described; ?>>
+                <select class="armvw-select" id="<?php echo esc_attr($id); ?>" name="<?php echo esc_attr($name); ?>"<?php echo wp_kses_data($described); ?>>
                     <?php if (!empty($definition['allow_empty'])) : ?>
                         <option value="" <?php selected($value, ''); ?>>
                             <?php echo esc_html(isset($meta['empty_label']) ? $meta['empty_label'] : esc_html__('None', 'ar-model-viewer-for-woocommerce')); ?>
@@ -1043,7 +1044,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
 
             case 'radio':
                 ?>
-                <fieldset class="armvw-switch" role="radiogroup" aria-labelledby="<?php echo esc_attr($label_id); ?>"<?php echo $described; ?>>
+                <fieldset class="armvw-switch" role="radiogroup" aria-labelledby="<?php echo esc_attr($label_id); ?>"<?php echo wp_kses_data($described); ?>>
                     <legend class="armvw-visually-hidden"><?php echo esc_html($meta['label']); ?></legend>
                     <?php foreach ($definition['choices'] as $choice) : ?>
                         <label class="armvw-switch__item">
@@ -1064,7 +1065,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             case 'checklist':
                 $selected = is_array($value) ? $value : array();
                 ?>
-                <fieldset class="armvw-chips" aria-labelledby="<?php echo esc_attr($label_id); ?>"<?php echo $described; ?>>
+                <fieldset class="armvw-chips" aria-labelledby="<?php echo esc_attr($label_id); ?>"<?php echo wp_kses_data($described); ?>>
                     <legend class="armvw-visually-hidden"><?php echo esc_html($meta['label']); ?></legend>
                     <?php foreach ($definition['choices'] as $choice) : ?>
                         <label class="armvw-chips__item">
@@ -1095,7 +1096,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                         data-type="full"
                         data-alpha-enabled="<?php echo $alpha ? 'true' : 'false'; ?>"
                         data-alpha-color-type="rgba"
-                        <?php echo $described; ?>
+                        <?php echo wp_kses_data($described); ?>
                     />
                 </div>
                 <?php
@@ -1112,7 +1113,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                         value="<?php echo esc_attr(is_string($value) ? $value : ''); ?>"
                         autocomplete="off"
                         spellcheck="false"
-                        <?php echo $described; ?>
+                        <?php echo wp_kses_data($described); ?>
                     />
                     <button
                         type="button"
@@ -1139,7 +1140,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                         name="<?php echo esc_attr($name); ?>"
                         value="1"
                         <?php checked(!empty($value)); ?>
-                        <?php echo $described; ?>
+                        <?php echo wp_kses_data($described); ?>
                     />
                     <span><?php echo esc_html($meta['checkbox_label'] ?? esc_html__('Enabled', 'ar-model-viewer-for-woocommerce')); ?></span>
                 </label>
@@ -1165,7 +1166,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     inputmode="decimal"
                     <?php echo $bounds; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the loop above. ?>
                     <?php echo '' !== $placeholder ? ' placeholder="' . esc_attr($placeholder) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the expression. ?>
-                    <?php echo $described; ?>
+                    <?php echo wp_kses_data($described); ?>
                 />
                 <?php
                 break;
@@ -1182,7 +1183,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
                     name="<?php echo esc_attr($name); ?>"
                     value="<?php echo esc_attr(is_string($value) ? $value : ''); ?>"
                     <?php echo '' !== $placeholder ? ' placeholder="' . esc_attr($placeholder) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in the expression. ?>
-                    <?php echo $described; ?>
+                    <?php echo wp_kses_data($described); ?>
                 />
                 <?php
                 break;
@@ -1239,6 +1240,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
          * @since 3.0.0
          * @param array $links Resource links.
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy hook retained for third-party integrations.
         $links = apply_filters('armvw_settings_resources', $links);
         ?>
         <div class="armvw-card">

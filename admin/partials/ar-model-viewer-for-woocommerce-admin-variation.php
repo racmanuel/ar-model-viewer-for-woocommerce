@@ -106,7 +106,7 @@ $armvw_resources = array(
 			/>
 			<?php esc_html_e('Use a custom 3D model for this variation', 'ar-model-viewer-for-woocommerce'); ?>
 		</label>
-		<?php echo wc_help_tip(__('Leave this off to use the model, the USDZ file and the poster of the parent product. Turn it on to give this variation its own files; any field you leave empty still falls back to the parent.', 'ar-model-viewer-for-woocommerce')); ?>
+		<?php echo wp_kses_post(wc_help_tip(__('Leave this off to use the model, the USDZ file and the poster of the parent product. Turn it on to give this variation its own files; any field you leave empty still falls back to the parent.', 'ar-model-viewer-for-woocommerce'))); ?>
 	</p>
 
 	<div class="armvw-variation__files form-row form-row-full" <?php echo $armvw_files['custom'] ? '' : 'hidden'; ?>>

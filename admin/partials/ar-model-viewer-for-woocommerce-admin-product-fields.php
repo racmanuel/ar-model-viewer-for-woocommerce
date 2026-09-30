@@ -100,7 +100,7 @@ switch ($armvw_diagnostics['status']) {
 			value="yes"
 			<?php checked($armvw_owner::is_enabled($product)); ?>
 		/>
-		<?php echo wc_help_tip($armvw_switches['enabled']['help']); ?>
+		<?php echo wp_kses_post(wc_help_tip($armvw_switches['enabled']['help'])); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
@@ -125,7 +125,7 @@ switch ($armvw_diagnostics['status']) {
 		>
 			<?php esc_html_e('Select .glb or .gltf', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
-		<?php echo wc_help_tip($armvw_model_note); ?>
+		<?php echo wp_kses_post(wc_help_tip($armvw_model_note)); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
@@ -150,7 +150,7 @@ switch ($armvw_diagnostics['status']) {
 		>
 			<?php esc_html_e('Select .usdz', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
-		<?php echo wc_help_tip($armvw_fields['ios_src']['help']); ?>
+		<?php echo wp_kses_post(wc_help_tip($armvw_fields['ios_src']['help'])); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
@@ -176,11 +176,11 @@ switch ($armvw_diagnostics['status']) {
 			<?php esc_html_e('Select an image', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
 		<?php
-		echo wc_help_tip(
+		echo wp_kses_post(wc_help_tip(
 			'featured' === $armvw_resolved['poster_source']
 				? __('Shown while the model loads. It is empty, so the featured image of the product is being used.', 'ar-model-viewer-for-woocommerce')
 				: __('Shown while the model loads. An absolute URL of a JPG, PNG, WebP or AVIF image.', 'ar-model-viewer-for-woocommerce')
-		);
+		));
 		?>
 		<?php if ('' !== trim($armvw_poster) || ('featured' === $armvw_resolved['poster_source'] && '' !== trim($armvw_resolved['poster']))) : ?>
 			<img class="armvw-thumb" src="<?php echo esc_url('' !== trim($armvw_poster) ? $armvw_poster : $armvw_resolved['poster']); ?>" alt="" />
@@ -272,6 +272,6 @@ switch ($armvw_diagnostics['status']) {
 		>
 			<?php esc_html_e('Preview the model', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
-		<?php echo wc_help_tip(__('Save the product before previewing, so the viewer reads the files you have just chosen.', 'ar-model-viewer-for-woocommerce')); ?>
+		<?php echo wp_kses_post(wc_help_tip(__('Save the product before previewing, so the viewer reads the files you have just chosen.', 'ar-model-viewer-for-woocommerce'))); ?>
 	</p>
 </div>

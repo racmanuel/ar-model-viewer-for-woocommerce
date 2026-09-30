@@ -1,9 +1,9 @@
-=== AR Model Viewer for WooCommerce ===
+=== 3D/AR/VR Model Viewer for WooCommerce ===
 Contributors: racmanuel
 Donate link: https://racmanuel.dev 
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
-Tested up to: 6.8
+Tested up to: 7.1
 Stable tag: 2.0.3
 Requires PHP: 7.4
 License: GPLv2 or later

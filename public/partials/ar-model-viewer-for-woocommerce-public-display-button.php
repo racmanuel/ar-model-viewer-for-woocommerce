@@ -11,6 +11,10 @@
  * @subpackage Ar_Model_Viewer_For_Woocommerce/public/partials
  */
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $armvw_button_text = (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_button_text');
 
 if ('' === trim($armvw_button_text)) {

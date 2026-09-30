@@ -88,9 +88,11 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
             KEY event_day (`event`, `day`)
         ) {$charset_collate};";
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- dbDelta requires the complete schema statement.
         dbDelta($sql);
 
         if ($table !== $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)))) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- The schema statement is built from fixed plugin SQL and a trusted table name.
             $wpdb->query($sql);
         }
 
@@ -137,8 +139,11 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
             return false;
         }
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
         $result = $wpdb->query(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
                 "INSERT INTO " . self::table_name() . " (`day`, `product_id`, `variation_id`, `event`, `mode`, `error_code`, `duration_bucket`, `event_count`)
                 VALUES (%s, %d, %d, %s, %s, %s, %s, 1)
                 ON DUPLICATE KEY UPDATE event_count = event_count + 1",
@@ -317,6 +322,7 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
         }
 
         $where_sql = implode(' AND ', $where);
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table and WHERE fragments are generated from fixed identifiers and placeholder-backed values.
         $summary = $wpdb->get_row($wpdb->prepare("SELECT COALESCE(SUM(`event_count`), 0) AS total, COUNT(DISTINCT `product_id`) AS products, COUNT(DISTINCT `variation_id`) AS variations FROM {$table} WHERE {$where_sql}", $values), ARRAY_A);
         $group_column = array(
             'day' => '`day`',
@@ -325,8 +331,10 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
             'variation' => '`variation_id`',
             'mode' => '`mode`',
         )[$group_by];
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Grouping column, table and WHERE fragments come from fixed allowlists.
         $count = absint($wpdb->get_var($wpdb->prepare("SELECT COUNT(DISTINCT {$group_column}) FROM {$table} WHERE {$where_sql}", $values)));
         $offset = ($page - 1) * $per_page;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Grouping column, table and WHERE fragments come from fixed allowlists; limits and offsets use placeholders.
         $rows = $wpdb->get_results($wpdb->prepare("SELECT {$group_column} AS `group_value`, SUM(`event_count`) AS `event_count` FROM {$table} WHERE {$where_sql} GROUP BY {$group_column} ORDER BY `event_count` DESC LIMIT %d OFFSET %d", array_merge($values, array($per_page, $offset))), ARRAY_A);
 
         foreach ($rows as &$row) {
@@ -436,6 +444,7 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and fixed plugin suffix.
         return false !== $wpdb->query('TRUNCATE TABLE ' . self::table_name());
     }
 
@@ -451,6 +460,7 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
         }
 
         $since = gmdate('Y-m-d', time() - (absint($days) * DAY_IN_SECONDS));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name is generated from the WordPress prefix and fixed plugin suffix; the date is a placeholder.
         $rows = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT `event`, SUM(`event_count`) AS total FROM {$table} WHERE `day` >= %s GROUP BY `event`",
