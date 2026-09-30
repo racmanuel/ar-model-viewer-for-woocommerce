@@ -1135,6 +1135,83 @@ input[type].armvw-input::placeholder {
 	color: var(--armvw-text-faint);
 }
 
+/* Keep the Freemius connection screen aligned with the plugin card surfaces. */
+.armvw-settings-page #fs_connect {
+	color: var(--armvw-text);
+}
+
+.armvw-settings-page #fs_connect .fs-box-container {
+	background: var(--armvw-surface-raised);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-lg);
+	box-shadow: var(--armvw-shadow);
+}
+
+.armvw-settings-page #fs_connect .fs-content {
+	background: transparent;
+}
+
+.armvw-settings-page #fs_connect .fs-content,
+.armvw-settings-page #fs_connect .fs-content p,
+.armvw-settings-page #fs_connect .fs-content label,
+.armvw-settings-page #fs_connect .fs-content h1,
+.armvw-settings-page #fs_connect .fs-content h2,
+.armvw-settings-page #fs_connect .fs-content h3 {
+	color: var(--armvw-text);
+}
+
+.armvw-settings-page #fs_connect .fs-content a {
+	color: var(--armvw-mint);
+}
+
+.armvw-settings-page #fs_connect input[type="text"],
+.armvw-settings-page #fs_connect input[type="email"],
+.armvw-settings-page #fs_connect input[type="password"] {
+	background: var(--armvw-surface);
+	border-color: var(--armvw-border-strong);
+	color: var(--armvw-text);
+}
+
+.armvw-settings-page #fs_connect input::placeholder {
+	color: var(--armvw-text-faint);
+	opacity: 1;
+}
+
+.armvw-settings-page #fs_connect .dashicons {
+	color: var(--armvw-mint);
+}
+
+.armvw-settings-page #fs_connect input:focus {
+	border-color: var(--armvw-mint);
+	box-shadow: 0 0 0 1px var(--armvw-mint);
+}
+
+.armvw-settings-page #fs_connect .button-primary {
+	background: var(--armvw-gradient) !important;
+	border-color: transparent !important;
+	color: var(--armvw-ink) !important;
+}
+
+.armvw-settings-page #fs_connect .fs-actions .button.button-primary:hover,
+.armvw-settings-page #fs_connect .fs-actions .button.button-primary:focus {
+	background: var(--armvw-gradient) !important;
+	border-color: transparent !important;
+	color: var(--armvw-ink) !important;
+}
+
+.armvw-settings-page #fs_connect .fs-actions,
+.armvw-settings-page #fs_connect .fs-permissions,
+.armvw-settings-page #fs_connect .fs-freemium-licensing {
+	background: transparent;
+	color: var(--armvw-text-muted);
+}
+
+.armvw-settings-page #fs_connect .fs-actions a,
+.armvw-settings-page #fs_connect .fs-permissions a,
+.armvw-settings-page #fs_connect .fs-freemium-licensing a {
+	color: var(--armvw-mint);
+}
+
 /* -------------------------------------------------------------------------
  * Utilities and motion
  * ---------------------------------------------------------------------- */

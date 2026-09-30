@@ -70,6 +70,7 @@ class Ar_Model_Viewer_For_Woocommerce_Deactivator {
 		 * Perform your deactivation actions here.
 		 */
 		delete_option('ar_model_viewer_for_woocommerce_settings');
+		flush_rewrite_rules();
 	}
 
 	/**

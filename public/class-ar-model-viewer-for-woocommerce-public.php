@@ -398,12 +398,18 @@ class Ar_Model_Viewer_For_Woocommerce_Public
      * @param int $variation_id Optional variation of that product.
      * @return array|WP_Error
      */
-    private function get_model_and_settings_data($product_id, $variation_id = 0)
+    public function get_model_and_settings_data($product_id, $variation_id = 0)
     {
         $product = wc_get_product($product_id);
 
         if (!$product) {
             return new WP_Error('armvw_product_not_found', __('Product not found.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
+        }
+
+        $variation_id = absint($variation_id);
+
+        if ($variation_id && !Ar_Model_Viewer_For_Woocommerce_Product_Model::get_variation($product_id, $variation_id)) {
+            return new WP_Error('armvw_variation_not_found', __('Variation not found for this product.', 'ar-model-viewer-for-woocommerce'), array('status' => 404));
         }
 
         if (!Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($product)) {

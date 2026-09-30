@@ -92,12 +92,11 @@ function armvwApplyViewerData(viewer, data) {
     viewer.setAttribute("with-credentials", "");
   }
 
-  viewer
-    .setAttribute("src", data.model_3d_file || "")
-    .setAttribute("alt", data.model_alt || "")
-    .setAttribute("poster", data.model_poster || "")
-    .setAttribute("reveal", data.reveal || "auto")
-    .setAttribute("loading", data.loading || "auto");
+  viewer.setAttribute("src", data.model_3d_file || "");
+  viewer.setAttribute("alt", data.model_alt || "");
+  viewer.setAttribute("poster", data.model_poster || "");
+  viewer.setAttribute("reveal", data.reveal || "auto");
+  viewer.setAttribute("loading", data.loading || "auto");
   viewer.style.backgroundColor = data.poster_color || "rgba(255,255,255,0)";
 }
 
@@ -383,9 +382,15 @@ function armvwDriverFactory() {
 
       var values = {
         "armvw-product-camera-orbit": viewer.getCameraOrbit().toString(),
-        "armvw-product-camera-target": viewer.getCameraTarget().toString(),
-        "armvw-product-field-of-view": Math.round(viewer.getFieldOfView() * 100) / 100 + "deg",
       };
+
+      if (typeof viewer.getCameraTarget === "function") {
+        values["armvw-product-camera-target"] = viewer.getCameraTarget().toString();
+      }
+
+      if (typeof viewer.getFieldOfView === "function") {
+        values["armvw-product-field-of-view"] = Math.round(viewer.getFieldOfView() * 100) / 100 + "deg";
+      }
       var written = 0;
 
       Object.keys(values).forEach(function (id) {

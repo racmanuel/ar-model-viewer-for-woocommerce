@@ -66,6 +66,115 @@
 	background-color: transparent;
 }
 
+.armvw-direct-page {
+	margin: 0;
+	background: var(--armvw-page-background);
+	color: var(--armvw-text);
+	font-family: var(--armvw-font);
+}
+
+.armvw-direct {
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	padding: var(--armvw-space-6) var(--armvw-space-5);
+	box-sizing: border-box;
+}
+
+.armvw-direct__content {
+	width: min(100%, 720px);
+	text-align: center;
+}
+
+.armvw-direct__logo {
+	display: block;
+	width: 104px;
+	height: auto;
+	margin: 0 auto var(--armvw-space-4);
+}
+
+.armvw-direct__eyebrow {
+	margin: 0 0 var(--armvw-space-2);
+	color: var(--armvw-mint);
+	font-size: var(--armvw-font-size-sm);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.armvw-direct__title {
+	margin: 0 0 var(--armvw-space-5);
+	color: var(--armvw-text);
+	font-size: clamp(1.6rem, 5vw, var(--armvw-font-size-xl));
+	line-height: var(--armvw-line-tight);
+	font-weight: 700;
+}
+
+.armvw-direct__viewer-wrap {
+	width: 100%;
+	margin: 0 auto var(--armvw-space-5);
+	border: 1px solid var(--armvw-border);
+	border-radius: var(--armvw-radius-lg);
+	background: var(--armvw-surface-raised);
+	box-shadow: var(--armvw-shadow);
+	overflow: hidden;
+}
+
+.armvw-direct__viewer {
+	display: block;
+	width: 100%;
+	height: min(68vh, 560px);
+	min-height: 320px;
+}
+
+.armvw-direct__ar-button {
+	min-height: 48px;
+	padding: 0 var(--armvw-space-5);
+	border: 0;
+	border-radius: var(--armvw-radius-pill);
+	background: var(--armvw-gradient);
+	color: var(--armvw-ink);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: var(--armvw-shadow-sm);
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.armvw-direct__ar-button:hover,
+.armvw-direct__ar-button:focus-visible {
+	filter: brightness(1.06);
+	transform: translateY(-1px);
+}
+
+.armvw-direct__hint,
+.armvw-direct__product-link {
+	color: var(--armvw-text-muted);
+	font-size: var(--armvw-font-size-sm);
+}
+
+.armvw-direct__hint {
+	margin: var(--armvw-space-3) 0 var(--armvw-space-2);
+	line-height: var(--armvw-line-base);
+}
+
+.armvw-direct__product-link {
+	display: inline-block;
+	margin-top: 0;
+	color: var(--armvw-mint) !important;
+	font-weight: 700;
+	text-decoration: underline;
+	text-decoration-color: rgba(0, 224, 135, 0.45);
+	text-underline-offset: 3px;
+	transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.armvw-direct__product-link:hover,
+.armvw-direct__product-link:focus-visible {
+	color: var(--armvw-white) !important;
+	text-decoration-color: var(--armvw-white);
+}
+
 /* The library draws the poster itself, so it fills the rounded box without square corners. */
 .armvw-viewer::part(default-progress-bar) {
 	height: 3px;

@@ -36,6 +36,9 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
         'ar_failed',
         'viewer_error',
         'viewer_interaction',
+        'direct_link_open',
+        'qr_open',
+        'direct_ar_attempt',
     );
 
     /**

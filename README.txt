@@ -47,7 +47,7 @@ Unlock the full potential of the AR Model Viewer for WooCommerce with the **Pro 
 
 - **Elementor Widget**: Display 3D models using a dedicated widget in Elementor.  
 - **Bulk Import and Export**: Manage 3D models and viewer overrides using the native WooCommerce importer/exporter.
-- **Exclusive Future Updates and Improvements**: Stay ahead with continuous updates and feature enhancements exclusive to Pro users.
+- **Direct AR Links and QR Codes**: Pro users can generate stable product/variation links and download local SVG or PNG QR codes.
 
 ### Open Source and Community Contribution 🌟  
 

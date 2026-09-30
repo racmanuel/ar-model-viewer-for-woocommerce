@@ -41,6 +41,14 @@ The response has this shape:
 
 Returns the public viewer configuration for one product. Add `variation_id` for a variation belonging to that product. The endpoint returns `404` when the product is missing, disabled, or has no effective model.
 
+## Pro direct AR links
+
+The Pro plan exposes a stable mobile page at `/ar-model-viewer/{product_id}/`. Add `variation_id` for a specific WooCommerce variation. QR destinations append `armvw_qr=1` so anonymous analytics can distinguish a scanned code from a regular direct link.
+
+The page prepares the 3D model and requires the shopper to press `View in AR`. Mobile browsers do not allow a QR scan to launch Quick Look, Scene Viewer, or WebXR without a user gesture.
+
+Pro product and variation editors provide the direct URL plus local SVG and PNG QR downloads. QR generation does not send store URLs to an external service.
+
 ## Analytics
 
 `GET /analytics`
@@ -53,7 +61,7 @@ Query parameters:
 - `to`: inclusive ISO date, default today.
 - `product_id`: filter by product.
 - `variation_id`: filter by variation.
-- `event`: one of the event names accepted by `POST /events`.
+- `event`: one of the event names accepted by `POST /events`, including `direct_link_open`, `qr_open`, and `direct_ar_attempt`.
 - `mode`: filter by AR mode.
 - `group_by`: `day`, `event`, `product`, `variation`, or `mode`; default `event`.
 - `page`: page number, starting at `1`.

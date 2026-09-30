@@ -67,6 +67,7 @@ class Ar_Model_Viewer_For_Woocommerce_Activator {
 
 		require_once plugin_dir_path( __FILE__ ) . 'class-ar-model-viewer-for-woocommerce-settings.php';
 		require_once plugin_dir_path( __FILE__ ) . 'class-ar-model-viewer-for-woocommerce-analytics.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-ar-model-viewer-for-woocommerce-public-direct.php';
 
 		if ( false === get_option( Ar_Model_Viewer_For_Woocommerce_Settings::OPTION_KEY, false ) ) {
 			add_option(
@@ -78,6 +79,8 @@ class Ar_Model_Viewer_For_Woocommerce_Activator {
 		}
 
 		Ar_Model_Viewer_For_Woocommerce_Analytics::create_table();
+		Ar_Model_Viewer_For_Woocommerce_Public_Direct::register_rewrite_rule();
+		flush_rewrite_rules();
 
 		/**
 		 * The plugin is now safely activated.

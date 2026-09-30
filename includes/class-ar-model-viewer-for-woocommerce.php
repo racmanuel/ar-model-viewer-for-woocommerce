@@ -170,6 +170,7 @@ class Ar_Model_Viewer_For_Woocommerce
          * side of the site.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ar-model-viewer-for-woocommerce-public-direct.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing Shortcode
@@ -327,6 +328,11 @@ class Ar_Model_Viewer_For_Woocommerce
                 // Instantiate the admin class for the pro version of the plugin.
                 $plugin_admin_pro = new Ar_Model_Viewer_For_Woocommerce_Admin_Pro($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
 
+                // Register direct AR links and QR downloads in the native WooCommerce editors.
+                $this->loader->add_action('woocommerce_product_options_general_product_data', $plugin_admin_pro, 'render_product_qr_fields', 30);
+                $this->loader->add_action('woocommerce_product_after_variable_attributes', $plugin_admin_pro, 'render_variation_qr_fields', 30, 3);
+                $this->loader->add_action('admin_post_armvw_download_qr', $plugin_admin_pro, 'download_qr');
+
                 // Register the AR model viewer widget in Elementor.
                 $this->loader->add_action('elementor/widgets/register', $plugin_admin_pro, 'register_ar_model_viewer_widget');
             }
@@ -346,10 +352,15 @@ class Ar_Model_Viewer_For_Woocommerce
         $plugin_public = new Ar_Model_Viewer_For_Woocommerce_Public($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_public_shortcode = new Ar_Model_Viewer_For_Woocommerce_Public_Shortcode($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
         $plugin_public_tab = new Ar_Model_Viewer_For_Woocommerce_Public_Tab($this->get_plugin_name(), $this->get_plugin_prefix(), $this->get_version());
+        $plugin_public_direct = new Ar_Model_Viewer_For_Woocommerce_Public_Direct($plugin_public);
         // Include the styles for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         // Include the scripts for public web
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->add_action('wp_enqueue_scripts', $plugin_public_direct, 'enqueue_assets', 20);
+        $this->loader->add_action('init', 'Ar_Model_Viewer_For_Woocommerce_Public_Direct', 'register_rewrite_rule');
+        $this->loader->add_filter('query_vars', $plugin_public_direct, 'register_query_var');
+        $this->loader->add_action('template_redirect', $plugin_public_direct, 'render');
         $this->loader->add_action('rest_api_init', $plugin_public, 'register_rest_routes');
         $this->loader->add_action('rest_api_init', 'Ar_Model_Viewer_For_Woocommerce_Analytics', 'register_rest_routes');
 

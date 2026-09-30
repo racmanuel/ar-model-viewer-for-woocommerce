@@ -48,6 +48,96 @@
 	margin-left: 4px;
 }
 
+/* Direct AR links use the same rows and controls as the native WooCommerce fields. */
+.woocommerce_options_panel .armvw-pro-qr {
+	padding: 0 0 10px;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__title {
+	margin-bottom: 4px;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__title .description {
+	display: block;
+	margin-left: 162px;
+	color: #646970;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__body {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	margin: 0 12px 8px 162px;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__preview {
+	flex: 0 0 140px;
+	width: 140px;
+	height: 140px;
+	padding: 8px;
+	border: 1px solid #dcdcde;
+	background: #fff;
+	box-sizing: border-box;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__preview svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__controls {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.woocommerce_options_panel .armvw-pro-qr p.armvw-pro-qr__url-field {
+	display: block;
+	width: auto !important;
+	margin: 0 0 8px !important;
+	padding: 0 !important;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__url-field label {
+	display: block;
+	float: none !important;
+	width: auto !important;
+	margin: 0 0 4px;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__url-field input {
+	display: block;
+	float: none !important;
+	width: 100% !important;
+	max-width: none;
+	margin-left: 0 !important;
+	box-sizing: border-box;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+	margin: 0;
+	padding: 0 !important;
+}
+
+.woocommerce_options_panel .armvw-pro-qr__actions .button {
+	margin: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+	.woocommerce_options_panel .armvw-pro-qr__title .description,
+	.woocommerce_options_panel .armvw-pro-qr__body {
+		margin-left: 12px;
+	}
+
+	.woocommerce_options_panel .armvw-pro-qr__body {
+		flex-wrap: wrap;
+	}
+}
+
 .woocommerce_options_panel .armvw-thumb {
 	display: block;
 	max-width: 150px;

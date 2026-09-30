@@ -1292,6 +1292,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
             <ul class="armvw-feature-list">
                 <li><?php echo esc_html__('Bulk import and export of 3D/AR product data with the native WooCommerce importer.', 'ar-model-viewer-for-woocommerce'); ?></li>
                 <li><?php echo esc_html__('Elementor widget to place the viewer anywhere.', 'ar-model-viewer-for-woocommerce'); ?></li>
+                <li><?php echo esc_html__('Stable AR links and local QR codes for products and variations.', 'ar-model-viewer-for-woocommerce'); ?></li>
             </ul>
             <a class="button button-primary" href="<?php echo esc_url(admin_url('options-general.php?page=' . Ar_Model_Viewer_For_Woocommerce_Settings::PAGE_SLUG . '-pricing')); ?>">
                 <?php echo esc_html__('See the plans', 'ar-model-viewer-for-woocommerce'); ?>
