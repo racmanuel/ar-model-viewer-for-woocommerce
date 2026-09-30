@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.Security.NonceVerification.Recommended -- Variables are template-local and reset requests are nonce-validated by the settings controller.
 /**
  * Provide the admin view of the plugin settings screen.
  *

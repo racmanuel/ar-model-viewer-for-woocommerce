@@ -35,6 +35,7 @@ class Ar_Model_Viewer_For_Woocommerce_I18n {
 	 */
 	public function load_plugin_textdomain() {
 
+		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- Retained for local installations and pre-4.6 WordPress compatibility.
 		load_plugin_textdomain(
 			'ar-model-viewer-for-woocommerce',
 			false,

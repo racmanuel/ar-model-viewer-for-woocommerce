@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Missing -- The legacy AJAX callback validates its nonce; REST callbacks use WordPress REST permissions.
 /**
  * The public-facing functionality of the plugin.
  *
@@ -138,6 +139,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'armvwFront',
             array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('armvw_public'),
                 'modelEndpoint' => esc_url_raw(rest_url('ar-model-viewer/v1/products/')),
                 'viewerUrl' => plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/model-viewer.min.js',
                 'action' => 'ar_model_viewer_for_woocommerce_get_model_and_settings',
@@ -196,6 +198,10 @@ class Ar_Model_Viewer_For_Woocommerce_Public
 
     public function ar_model_viewer_for_woocommerce_get_model_and_settings()
     {
+        if (!check_ajax_referer('armvw_public', 'nonce', false)) {
+            wp_send_json_error('Invalid request.', 403);
+        }
+
         if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
             wp_send_json_error('Invalid Product ID.');
         }

@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended -- Direct AR URLs are public, shareable product links and intentionally do not require a session nonce.
 /**
  * Direct AR product links for the Pro plan.
  *

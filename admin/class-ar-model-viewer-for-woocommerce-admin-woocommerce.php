@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Missing -- Save handlers verify the WooCommerce/editor nonce before reading submitted fields.
 /**
  * The WooCommerce integration of the plugin.
  *

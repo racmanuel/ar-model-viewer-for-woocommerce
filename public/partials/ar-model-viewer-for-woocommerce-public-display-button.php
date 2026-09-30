@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- These are scoped template variables with the plugin's established armvw prefix.
 /**
  * Provide the public-facing button that opens the viewer.
  *

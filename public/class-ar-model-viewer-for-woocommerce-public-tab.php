@@ -114,7 +114,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
 
         // Ensure that the global product object is valid.
         if (!$product || !is_a($product, 'WC_Product')) {
-            error_log('Invalid product object in AR model viewer tab content.');
             echo esc_html__('Invalid product.', 'ar-model-viewer-for-woocommerce');
             return;
         }
@@ -124,7 +123,6 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Tab
 
         // Log an error and return a message if the product ID is invalid.
         if (empty($product_id)) {
-            error_log('Invalid product ID in AR model viewer tab content.');
             echo esc_html__('Invalid product ID.', 'ar-model-viewer-for-woocommerce');
             return;
         }

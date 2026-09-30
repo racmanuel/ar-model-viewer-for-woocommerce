@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- These are scoped template variables with the plugin's established armvw prefix.
 /**
  * The 3D and AR fields of a single WooCommerce variation.
  *

@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Analytics uses intentional aggregate queries and mutations against its plugin-owned table.
 /**
  * First-party, privacy-conscious analytics storage for the viewer.
  *
