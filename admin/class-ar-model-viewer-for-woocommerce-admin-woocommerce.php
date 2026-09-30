@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.Security.NonceVerification.Missing -- Save handlers verify the WooCommerce/editor nonce before reading submitted fields.
 /**
  * The WooCommerce integration of the plugin.
  *
@@ -210,12 +209,13 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_WooCommerce
             return;
         }
 
-        if (!isset($_POST['armvw_variation'][$loop]) || !is_array($_POST['armvw_variation'][$loop])) {
+        $variations = filter_input(INPUT_POST, 'armvw_variation', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+        if (!is_array($variations) || !isset($variations[$loop]) || !is_array($variations[$loop])) {
             return;
         }
 
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every value is validated by type in the model class.
-        $input = wp_unslash($_POST['armvw_variation'][$loop]);
+        $input = map_deep($variations[$loop], 'sanitize_text_field');
 
         Ar_Model_Viewer_For_Woocommerce_Product_Model::save_variation($variation_id, $input);
     }
@@ -228,11 +228,11 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_WooCommerce
      */
     private function verify_nonce()
     {
-        if (!isset($_POST[self::NONCE_NAME])) {
+        $nonce = filter_input(INPUT_POST, self::NONCE_NAME, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        if (!$nonce) {
             return false;
         }
-
-        $nonce = sanitize_text_field(wp_unslash($_POST[self::NONCE_NAME]));
 
         return (bool) wp_verify_nonce($nonce, self::NONCE_ACTION);
     }
@@ -249,11 +249,12 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_WooCommerce
      */
     private function posted_array($key)
     {
-        if (!isset($_POST[$key]) || !is_array($_POST[$key])) {
+        $input = filter_input(INPUT_POST, $key, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+        if (!is_array($input)) {
             return array();
         }
 
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by type in the model class.
-        return wp_unslash($_POST[$key]);
+        return map_deep($input, 'sanitize_text_field');
     }
 }

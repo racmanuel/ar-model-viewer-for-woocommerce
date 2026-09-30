@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.Security.NonceVerification.Missing -- The legacy AJAX callback validates its nonce; REST callbacks use WordPress REST permissions.
 /**
  * The public-facing functionality of the plugin.
  *
@@ -202,18 +201,15 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             wp_send_json_error('Invalid request.', 403);
         }
 
-        if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
-            wp_send_json_error('Invalid Product ID.');
-        }
-
-        $product_id = absint($_POST['product_id']);
+        $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
 
         if (!$product_id) {
             wp_send_json_error('Invalid Product ID.');
         }
 
         // The legacy action kept no variation, so the parameter is optional on purpose.
-        $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+        $variation_id = filter_input(INPUT_POST, 'variation_id', FILTER_VALIDATE_INT);
+        $variation_id = $variation_id ? absint($variation_id) : 0;
 
         $data = $this->get_model_and_settings_data($product_id, $variation_id);
 

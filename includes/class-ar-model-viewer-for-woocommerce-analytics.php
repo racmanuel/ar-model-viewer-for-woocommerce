@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Analytics uses intentional aggregate queries and mutations against its plugin-owned table.
 /**
  * First-party, privacy-conscious analytics storage for the viewer.
  *
@@ -140,11 +139,10 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
             return false;
         }
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- This is an intentional aggregate write to the plugin-owned analytics table.
         $result = $wpdb->query(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
             $wpdb->prepare(
-                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table name is generated from the WordPress prefix and the fixed plugin suffix.
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The table identifier is generated from wpdb prefix and a fixed plugin suffix; WordPress 5.9 has no identifier placeholder.
                 "INSERT INTO " . self::table_name() . " (`day`, `product_id`, `variation_id`, `event`, `mode`, `error_code`, `duration_bucket`, `event_count`)
                 VALUES (%s, %d, %d, %s, %s, %s, %s, 1)
                 ON DUPLICATE KEY UPDATE event_count = event_count + 1",
@@ -464,6 +462,7 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name is generated from the WordPress prefix and fixed plugin suffix; the date is a placeholder.
         $rows = $wpdb->get_results(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table identifier is generated internally from the WordPress prefix and a fixed plugin suffix.
                 "SELECT `event`, SUM(`event_count`) AS total FROM {$table} WHERE `day` >= %s GROUP BY `event`",
                 $since
             ),

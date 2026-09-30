@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.Security.NonceVerification.Recommended -- Variables are template-local and reset requests are nonce-validated by the settings controller.
 /**
  * Provide the admin view of the plugin settings screen.
  *
@@ -21,11 +20,8 @@ if (!defined('WPINC')) {
     die;
 }
 
-$armvw_was_reset = isset($_GET['armvw-reset'])
-    && is_string($_GET['armvw-reset'])
-    && 'done' === sanitize_key(wp_unslash($_GET['armvw-reset']));
-$armvw_ar_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar');
-$armvw_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
+$ar_model_viewer_for_woocommerce_ar_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_ar');
+$ar_model_viewer_for_woocommerce_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_btn');
 ?>
 <div class="armvw-shell">
     <div class="armvw-main">
@@ -51,15 +47,15 @@ $armvw_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_vi
                     <span class="armvw-chip armvw-chip--brand">
                         <?php echo esc_html(sprintf(/* translators: %s: plugin version. */ __('Version %s', 'ar-model-viewer-for-woocommerce'), AR_MODEL_VIEWER_FOR_WOOCOMMERCE_VERSION)); ?>
                     </span>
-                    <span class="armvw-chip armvw-chip--<?php echo 'yes' === $armvw_ar_state ? 'ok' : 'off'; ?>">
+                    <span class="armvw-chip armvw-chip--<?php echo 'yes' === $ar_model_viewer_for_woocommerce_ar_state ? 'ok' : 'off'; ?>">
                         <span class="dashicons dashicons-smartphone" aria-hidden="true"></span>
-                        <?php echo 'yes' === $armvw_ar_state
+                        <?php echo 'yes' === $ar_model_viewer_for_woocommerce_ar_state
                             ? esc_html__('AR enabled', 'ar-model-viewer-for-woocommerce')
                             : esc_html__('AR disabled', 'ar-model-viewer-for-woocommerce'); ?>
                     </span>
-                    <span class="armvw-chip armvw-chip--<?php echo $armvw_button_state ? 'ok' : 'off'; ?>">
+                    <span class="armvw-chip armvw-chip--<?php echo $ar_model_viewer_for_woocommerce_button_state ? 'ok' : 'off'; ?>">
                         <span class="dashicons dashicons-visibility" aria-hidden="true"></span>
-                        <?php echo $armvw_button_state
+                        <?php echo $ar_model_viewer_for_woocommerce_button_state
                             ? esc_html__('3D button visible', 'ar-model-viewer-for-woocommerce')
                             : esc_html__('3D button hidden', 'ar-model-viewer-for-woocommerce'); ?>
                     </span>
@@ -71,7 +67,7 @@ $armvw_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_vi
 
         <?php settings_errors(); ?>
 
-        <?php if ($armvw_was_reset) : ?>
+        <?php if ($ar_model_viewer_for_woocommerce_was_reset) : ?>
             <div class="notice notice-success">
                 <p><?php echo esc_html__('The default settings were restored. Remember to save your API key again if you were using the AI features.', 'ar-model-viewer-for-woocommerce'); ?></p>
             </div>
@@ -83,11 +79,11 @@ $armvw_button_state = Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_vi
             <?php $settings->render_tab_nav($tabs); ?>
 
             <?php
-            $armvw_is_first = true;
+            $ar_model_viewer_for_woocommerce_is_first = true;
 
-            foreach ($tabs as $armvw_slug => $armvw_tab) {
-                $settings->render_panel($armvw_slug, $armvw_tab, $fields, $armvw_is_first);
-                $armvw_is_first = false;
+            foreach ($tabs as $ar_model_viewer_for_woocommerce_slug => $ar_model_viewer_for_woocommerce_tab) {
+                $settings->render_panel($ar_model_viewer_for_woocommerce_slug, $ar_model_viewer_for_woocommerce_tab, $fields, $ar_model_viewer_for_woocommerce_is_first);
+                $ar_model_viewer_for_woocommerce_is_first = false;
             }
             ?>
 

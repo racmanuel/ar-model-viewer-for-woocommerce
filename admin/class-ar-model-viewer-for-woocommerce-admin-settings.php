@@ -809,6 +809,7 @@ class Ar_Model_Viewer_For_Woocommerce_Admin_Settings
         $settings = $this;
         $fields = $this->fields();
         $tabs = $this->tabs();
+        $ar_model_viewer_for_woocommerce_was_reset = 'done' === filter_input(INPUT_GET, 'armvw-reset', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         /**
          * Filters the tabs rendered on the settings screen.

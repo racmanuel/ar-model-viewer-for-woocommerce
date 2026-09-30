@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- These are scoped template variables with the plugin's established armvw prefix.
 /**
  * The 3D and AR fields of a product.
  *
@@ -34,55 +33,57 @@ if (!isset($product) || !$product instanceof WC_Product) {
     return;
 }
 
-$armvw_owner = 'Ar_Model_Viewer_For_Woocommerce_Product_Model';
+call_user_func(static function () use ($product) {
+
+$ar_model_viewer_for_woocommerce_owner = 'Ar_Model_Viewer_For_Woocommerce_Product_Model';
 
 wp_nonce_field('armvw_save_viewer_options', 'armvw_viewer_nonce');
 
 // The inputs carry what this product owns, not the value after the fallbacks: an empty field is
 // how the store says "use the featured image" or "use the product name".
-$armvw_source = (string) $product->get_meta($armvw_owner::META_SOURCE, true);
-$armvw_poster = (string) $product->get_meta($armvw_owner::META_POSTER, true);
+$ar_model_viewer_for_woocommerce_source = (string) $product->get_meta($ar_model_viewer_for_woocommerce_owner::META_SOURCE, true);
+$ar_model_viewer_for_woocommerce_poster = (string) $product->get_meta($ar_model_viewer_for_woocommerce_owner::META_POSTER, true);
 
-$armvw_ids = array(
-    'source' => (int) $product->get_meta($armvw_owner::META_ATTACHMENT . 'source', true),
-    'poster' => (int) $product->get_meta($armvw_owner::META_ATTACHMENT . 'poster', true),
-    'ios_src' => (int) $product->get_meta($armvw_owner::META_ATTACHMENT . 'ios_src', true),
+$ar_model_viewer_for_woocommerce_ids = array(
+    'source' => (int) $product->get_meta($ar_model_viewer_for_woocommerce_owner::META_ATTACHMENT . 'source', true),
+    'poster' => (int) $product->get_meta($ar_model_viewer_for_woocommerce_owner::META_ATTACHMENT . 'poster', true),
+    'ios_src' => (int) $product->get_meta($ar_model_viewer_for_woocommerce_owner::META_ATTACHMENT . 'ios_src', true),
 );
 
-$armvw_resolved = $armvw_owner::resolve($product);
-$armvw_diagnostics = $armvw_owner::diagnostics($product);
-$armvw_fields = $armvw_owner::fields();
-$armvw_switches = $armvw_owner::switches();
-$armvw_selects = $armvw_owner::selects();
+$ar_model_viewer_for_woocommerce_resolved = $ar_model_viewer_for_woocommerce_owner::resolve($product);
+$ar_model_viewer_for_woocommerce_diagnostics = $ar_model_viewer_for_woocommerce_owner::diagnostics($product);
+$ar_model_viewer_for_woocommerce_fields = $ar_model_viewer_for_woocommerce_owner::fields();
+$ar_model_viewer_for_woocommerce_switches = $ar_model_viewer_for_woocommerce_owner::switches();
+$ar_model_viewer_for_woocommerce_selects = $ar_model_viewer_for_woocommerce_owner::selects();
 
-$armvw_ios_src = $armvw_owner::read($product, 'ios_src', 'resource');
-$armvw_ios_src = is_string($armvw_ios_src) ? $armvw_ios_src : '';
+$ar_model_viewer_for_woocommerce_ios_src = $ar_model_viewer_for_woocommerce_owner::read($product, 'ios_src', 'resource');
+$ar_model_viewer_for_woocommerce_ios_src = is_string($ar_model_viewer_for_woocommerce_ios_src) ? $ar_model_viewer_for_woocommerce_ios_src : '';
 
-$armvw_camera = $armvw_owner::read($product, 'camera_orbit', $armvw_fields['camera_orbit']['type']);
-$armvw_camera = is_string($armvw_camera) ? $armvw_camera : '';
+$ar_model_viewer_for_woocommerce_camera = $ar_model_viewer_for_woocommerce_owner::read($product, 'camera_orbit', $ar_model_viewer_for_woocommerce_fields['camera_orbit']['type']);
+$ar_model_viewer_for_woocommerce_camera = is_string($ar_model_viewer_for_woocommerce_camera) ? $ar_model_viewer_for_woocommerce_camera : '';
 
 /*
  * The state of the model is attached to the field it talks about instead of living in a banner of
  * its own. It is the one piece of information that has to be read before touching anything, and
  * the description line of the model field is where the store is already looking.
  */
-switch ($armvw_diagnostics['status']) {
+switch ($ar_model_viewer_for_woocommerce_diagnostics['status']) {
     case 'missing':
-        $armvw_model_note = __('No 3D file yet. The viewer is not offered on this product until you add one.', 'ar-model-viewer-for-woocommerce');
+        $ar_model_viewer_for_woocommerce_model_note = __('No 3D file yet. The viewer is not offered on this product until you add one.', 'ar-model-viewer-for-woocommerce');
         break;
 
     case 'valid':
-        $armvw_model_note = 'featured' === $armvw_resolved['poster_source']
+        $ar_model_viewer_for_woocommerce_model_note = 'featured' === $ar_model_viewer_for_woocommerce_resolved['poster_source']
             ? __('Ready. The viewer loads with the featured image of the product as poster.', 'ar-model-viewer-for-woocommerce')
             : __('Ready. The viewer uses the poster selected below.', 'ar-model-viewer-for-woocommerce');
         break;
 
     case 'unsupported':
-        $armvw_model_note = __('The model resources use an unsupported file format. Use GLB or glTF for the model, an image for the poster and USDZ for iPhone AR.', 'ar-model-viewer-for-woocommerce');
+        $ar_model_viewer_for_woocommerce_model_note = __('The model resources use an unsupported file format. Use GLB or glTF for the model, an image for the poster and USDZ for iPhone AR.', 'ar-model-viewer-for-woocommerce');
         break;
 
     default:
-        $armvw_model_note = __('The model URL needs attention. Use an absolute URL with a supported file extension; the product can still be saved while you fix it.', 'ar-model-viewer-for-woocommerce');
+        $ar_model_viewer_for_woocommerce_model_note = __('The model URL needs attention. Use an absolute URL with a supported file extension; the product can still be saved while you fix it.', 'ar-model-viewer-for-woocommerce');
         break;
 }
 ?>
@@ -92,16 +93,16 @@ switch ($armvw_diagnostics['status']) {
 
 <div class="options_group armvw-product-fields armvw-product-fields--resources">
 	<p class="form-field armvw-resource-field armvw-resource-field--enabled">
-		<label for="armvw-product-enabled"><?php echo esc_html($armvw_switches['enabled']['label']); ?></label>
+		<label for="armvw-product-enabled"><?php echo esc_html($ar_model_viewer_for_woocommerce_switches['enabled']['label']); ?></label>
 		<input type="hidden" name="armvw_switches[enabled]" value="no" />
 		<input
 			type="checkbox"
 			id="armvw-product-enabled"
 			name="armvw_switches[enabled]"
 			value="yes"
-			<?php checked($armvw_owner::is_enabled($product)); ?>
+			<?php checked($ar_model_viewer_for_woocommerce_owner::is_enabled($product)); ?>
 		/>
-		<?php echo wp_kses_post(wc_help_tip($armvw_switches['enabled']['help'])); ?>
+		<?php echo wp_kses_post(wc_help_tip($ar_model_viewer_for_woocommerce_switches['enabled']['help'])); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
@@ -111,10 +112,10 @@ switch ($armvw_diagnostics['status']) {
 			class="short"
 			id="armvw-file-object"
 			name="armvw_files[file_object]"
-			value="<?php echo esc_attr($armvw_source); ?>"
+			value="<?php echo esc_attr($ar_model_viewer_for_woocommerce_source); ?>"
 			placeholder="https://example.com/modelo.glb"
 		/>
-		<input type="hidden" id="armvw-file-object-id" name="armvw_files[file_object_id]" value="<?php echo esc_attr((string) $armvw_ids['source']); ?>" />
+		<input type="hidden" id="armvw-file-object-id" name="armvw_files[file_object_id]" value="<?php echo esc_attr((string) $ar_model_viewer_for_woocommerce_ids['source']); ?>" />
 		<button
 			type="button"
 			class="button armvw-media"
@@ -126,20 +127,20 @@ switch ($armvw_diagnostics['status']) {
 		>
 			<?php esc_html_e('Select .glb or .gltf', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
-		<?php echo wp_kses_post(wc_help_tip($armvw_model_note)); ?>
+		<?php echo wp_kses_post(wc_help_tip($ar_model_viewer_for_woocommerce_model_note)); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
-		<label for="armvw-product-ios-src"><?php echo esc_html($armvw_fields['ios_src']['label']); ?></label>
+		<label for="armvw-product-ios-src"><?php echo esc_html($ar_model_viewer_for_woocommerce_fields['ios_src']['label']); ?></label>
 		<input
 			type="text"
 			class="short"
 			id="armvw-product-ios-src"
 			name="armvw_product[ios_src]"
-			value="<?php echo esc_attr($armvw_ios_src); ?>"
-			placeholder="<?php echo esc_attr($armvw_fields['ios_src']['placeholder']); ?>"
+			value="<?php echo esc_attr($ar_model_viewer_for_woocommerce_ios_src); ?>"
+			placeholder="<?php echo esc_attr($ar_model_viewer_for_woocommerce_fields['ios_src']['placeholder']); ?>"
 		/>
-		<input type="hidden" id="armvw-product-ios-src-id" name="armvw_product[ios_src_id]" value="<?php echo esc_attr((string) $armvw_ids['ios_src']); ?>" />
+		<input type="hidden" id="armvw-product-ios-src-id" name="armvw_product[ios_src_id]" value="<?php echo esc_attr((string) $ar_model_viewer_for_woocommerce_ids['ios_src']); ?>" />
 		<button
 			type="button"
 			class="button armvw-media"
@@ -151,7 +152,7 @@ switch ($armvw_diagnostics['status']) {
 		>
 			<?php esc_html_e('Select .usdz', 'ar-model-viewer-for-woocommerce'); ?>
 		</button>
-		<?php echo wp_kses_post(wc_help_tip($armvw_fields['ios_src']['help'])); ?>
+		<?php echo wp_kses_post(wc_help_tip($ar_model_viewer_for_woocommerce_fields['ios_src']['help'])); ?>
 	</p>
 
 	<p class="form-field armvw-resource-field">
@@ -161,10 +162,10 @@ switch ($armvw_diagnostics['status']) {
 			class="short"
 			id="armvw-file-poster"
 			name="armvw_files[file_poster]"
-			value="<?php echo esc_attr($armvw_poster); ?>"
+			value="<?php echo esc_attr($ar_model_viewer_for_woocommerce_poster); ?>"
 			placeholder="https://example.com/poster.jpg"
 		/>
-		<input type="hidden" id="armvw-file-poster-id" name="armvw_files[file_poster_id]" value="<?php echo esc_attr((string) $armvw_ids['poster']); ?>" />
+		<input type="hidden" id="armvw-file-poster-id" name="armvw_files[file_poster_id]" value="<?php echo esc_attr((string) $ar_model_viewer_for_woocommerce_ids['poster']); ?>" />
 		<button
 			type="button"
 			class="button armvw-media"
@@ -178,13 +179,13 @@ switch ($armvw_diagnostics['status']) {
 		</button>
 		<?php
 		echo wp_kses_post(wc_help_tip(
-			'featured' === $armvw_resolved['poster_source']
+			'featured' === $ar_model_viewer_for_woocommerce_resolved['poster_source']
 				? __('Shown while the model loads. It is empty, so the featured image of the product is being used.', 'ar-model-viewer-for-woocommerce')
 				: __('Shown while the model loads. An absolute URL of a JPG, PNG, WebP or AVIF image.', 'ar-model-viewer-for-woocommerce')
 		));
 		?>
-		<?php if ('' !== trim($armvw_poster) || ('featured' === $armvw_resolved['poster_source'] && '' !== trim($armvw_resolved['poster']))) : ?>
-			<img class="armvw-thumb" src="<?php echo esc_url('' !== trim($armvw_poster) ? $armvw_poster : $armvw_resolved['poster']); ?>" alt="" />
+		<?php if ('' !== trim($ar_model_viewer_for_woocommerce_poster) || ('featured' === $ar_model_viewer_for_woocommerce_resolved['poster_source'] && '' !== trim($ar_model_viewer_for_woocommerce_resolved['poster']))) : ?>
+			<img class="armvw-thumb" src="<?php echo esc_url('' !== trim($ar_model_viewer_for_woocommerce_poster) ? $ar_model_viewer_for_woocommerce_poster : $ar_model_viewer_for_woocommerce_resolved['poster']); ?>" alt="" />
 		<?php endif; ?>
 	</p>
 </div>
@@ -201,9 +202,9 @@ switch ($armvw_diagnostics['status']) {
         array(
             'id' => 'armvw-product-ar-enabled',
             'name' => 'armvw_switches[ar_enabled]',
-            'value' => $armvw_owner::switch_value($product, 'ar_enabled'),
-            'label' => $armvw_switches['ar_enabled']['label'],
-            'description' => $armvw_switches['ar_enabled']['help'],
+            'value' => $ar_model_viewer_for_woocommerce_owner::switch_value($product, 'ar_enabled'),
+            'label' => $ar_model_viewer_for_woocommerce_switches['ar_enabled']['label'],
+            'description' => $ar_model_viewer_for_woocommerce_switches['ar_enabled']['help'],
 			'desc_tip' => true,
             'options' => array(
                 '' => __('Use the global setting', 'ar-model-viewer-for-woocommerce'),
@@ -217,9 +218,9 @@ switch ($armvw_diagnostics['status']) {
         array(
             'id' => 'armvw-product-auto-rotate',
             'name' => 'armvw_switches[auto_rotate]',
-            'value' => $armvw_owner::switch_value($product, 'auto_rotate'),
-            'label' => $armvw_switches['auto_rotate']['label'],
-            'description' => $armvw_switches['auto_rotate']['help'],
+            'value' => $ar_model_viewer_for_woocommerce_owner::switch_value($product, 'auto_rotate'),
+            'label' => $ar_model_viewer_for_woocommerce_switches['auto_rotate']['label'],
+            'description' => $ar_model_viewer_for_woocommerce_switches['auto_rotate']['help'],
 			'desc_tip' => true,
             'options' => array(
                 '' => __('Use the global setting', 'ar-model-viewer-for-woocommerce'),
@@ -229,18 +230,18 @@ switch ($armvw_diagnostics['status']) {
         )
     );
 
-    foreach (array('ar_scale', 'ar_placement') as $armvw_select_short) {
-        $armvw_select = $armvw_selects[$armvw_select_short];
+    foreach (array('ar_scale', 'ar_placement') as $ar_model_viewer_for_woocommerce_select_short) {
+        $ar_model_viewer_for_woocommerce_select = $ar_model_viewer_for_woocommerce_selects[$ar_model_viewer_for_woocommerce_select_short];
 
         woocommerce_wp_select(
             array(
-                'id' => 'armvw-product-' . str_replace('_', '-', $armvw_select_short),
-                'name' => 'armvw_switches[' . $armvw_select_short . ']',
-                'value' => $armvw_owner::select_value($product, $armvw_select_short),
-                'label' => $armvw_select['label'],
-                'description' => $armvw_select['help'],
+                'id' => 'armvw-product-' . str_replace('_', '-', $ar_model_viewer_for_woocommerce_select_short),
+                'name' => 'armvw_switches[' . $ar_model_viewer_for_woocommerce_select_short . ']',
+                'value' => $ar_model_viewer_for_woocommerce_owner::select_value($product, $ar_model_viewer_for_woocommerce_select_short),
+                'label' => $ar_model_viewer_for_woocommerce_select['label'],
+                'description' => $ar_model_viewer_for_woocommerce_select['help'],
 				'desc_tip' => true,
-                'options' => $armvw_select['options'],
+                'options' => $ar_model_viewer_for_woocommerce_select['options'],
             )
         );
     }
@@ -249,10 +250,10 @@ switch ($armvw_diagnostics['status']) {
         array(
             'id' => 'armvw-product-camera-orbit',
             'name' => 'armvw_product[camera_orbit]',
-            'value' => $armvw_camera,
-            'label' => $armvw_fields['camera_orbit']['label'],
-            'placeholder' => $armvw_fields['camera_orbit']['placeholder'],
-            'description' => $armvw_fields['camera_orbit']['help'],
+            'value' => $ar_model_viewer_for_woocommerce_camera,
+            'label' => $ar_model_viewer_for_woocommerce_fields['camera_orbit']['label'],
+            'placeholder' => $ar_model_viewer_for_woocommerce_fields['camera_orbit']['placeholder'],
+            'description' => $ar_model_viewer_for_woocommerce_fields['camera_orbit']['help'],
 			'desc_tip' => true,
         )
     );
@@ -276,3 +277,4 @@ switch ($armvw_diagnostics['status']) {
 		<?php echo wp_kses_post(wc_help_tip(__('Save the product before previewing, so the viewer reads the files you have just chosen.', 'ar-model-viewer-for-woocommerce'))); ?>
 	</p>
 </div>
+<?php }); ?>

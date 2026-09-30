@@ -1,5 +1,4 @@
 <?php
-// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended -- Direct AR URLs are public, shareable product links and intentionally do not require a session nonce.
 /**
  * Direct AR product links for the Pro plan.
  *
@@ -98,7 +97,8 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Direct
             $this->send_not_found();
         }
 
-        $variation_id = isset($_GET['variation_id']) ? absint($_GET['variation_id']) : 0;
+        $variation_id = filter_input(INPUT_GET, 'variation_id', FILTER_VALIDATE_INT);
+        $variation_id = $variation_id ? absint($variation_id) : 0;
         $data = $this->public->get_model_and_settings_data($product_id, $variation_id);
 
         if (is_wp_error($data)) {
@@ -132,7 +132,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Direct
         $attributes = array_filter($attributes, array(__CLASS__, 'is_filled'));
         $viewer_markup = Ar_Model_Viewer_For_Woocommerce_Settings::render_attributes($attributes);
         $title = $product->get_name();
-        $direct_url = self::url($product_id, $variation_id, isset($_GET['armvw_qr']));
+        $direct_url = self::url($product_id, $variation_id, null !== filter_input(INPUT_GET, 'armvw_qr', FILTER_DEFAULT));
 
         nocache_headers();
         status_header(200);
@@ -152,8 +152,9 @@ class Ar_Model_Viewer_For_Woocommerce_Public_Direct
         }
 
         $product_id = absint(get_query_var(self::QUERY_VAR));
-        $variation_id = isset($_GET['variation_id']) ? absint($_GET['variation_id']) : 0;
-        $event = isset($_GET['armvw_qr']) ? 'qr_open' : 'direct_link_open';
+        $variation_id = filter_input(INPUT_GET, 'variation_id', FILTER_VALIDATE_INT);
+        $variation_id = $variation_id ? absint($variation_id) : 0;
+        $event = null !== filter_input(INPUT_GET, 'armvw_qr', FILTER_DEFAULT) ? 'qr_open' : 'direct_link_open';
 
         wp_add_inline_script(
             'ar-model-viewer-for-woocommerce',
