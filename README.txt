@@ -28,6 +28,8 @@ The **AR Model Viewer for WooCommerce** is the ultimate plugin for showcasing yo
 - **Broad File Format Support**: Compatible with **.glb** and **.gltf** file formats for seamless 3D model integration.  
 - **Effortless WooCommerce Integration**: Easily integrates with WooCommerce to enhance your eCommerce platform.  
 - **Public REST Loading**: The viewer requests each product's model and public viewer configuration through a read-only REST endpoint, including for anonymous visitors.
+- **Public REST Catalog**: Integrations can list published, catalog-visible products with effective 3D models through `GET /wp-json/ar-model-viewer/v1/products`.
+- **Private REST Analytics**: Administrators with `manage_options` can read filtered, grouped anonymous aggregates through `GET /wp-json/ar-model-viewer/v1/analytics`.
 - **Upload External 3D Files**: Use **.glb** files from external services like Sketchfab or any other source to quickly add 3D models to your store.  
 
 ### Why You Should Install This Plugin ✅  
@@ -67,7 +69,7 @@ If you need any customization for the plugin, feel free to send me a message or 
 The optional viewer analytics in AR Model Viewer for WooCommerce is first-party and disabled by default. A store administrator must enable it in Settings -> AR Model Viewer -> Analytics before the plugin records anything.
 
 - The plugin stores anonymous daily counters in the site's own WordPress database.
-- It records only event names, product IDs, AR mode, normalized error codes and duration buckets.
+- It records only event names, product IDs, variation IDs, AR mode, normalized error codes and duration buckets. Historical aggregates use variation ID `0`.
 - It does not store IP addresses, user agents, referrers, names, emails, user IDs, cookies or complete model URLs.
 - Visitors can exclude their browser with the privacy control shown in the viewer. The preference stays in local storage and is never sent to the site.
 - Administrators can review the last 30 days and delete all stored analytics from the Analytics settings tab.
@@ -116,7 +118,10 @@ An empty cell means "inherit from the parent product", and a column that is miss
 Yes. Every variation shows an **AR Model Viewer** block with a switch. While it is off, the variation uses the model, the USDZ file and the poster of the parent product. When it is on, the variation uses its own files, and any field left empty keeps inheriting from the parent. The viewer follows the variation the shopper selects without reloading the page.
 
 = Does the public viewer use the WordPress REST API? =
-Yes. The viewer loads a product's public model data at `/wp-json/armvw/v1/products/{product_id}/model` with a read-only `GET` request. A variable product adds `?variation_id={variation_id}`, and the response always resolves the fallback to the parent product before it is returned. Administrative settings are not exposed through this endpoint. The legacy AJAX action remains available for compatibility.
+Yes. The viewer loads a product's public model data at `/wp-json/ar-model-viewer/v1/products/{product_id}/model` with a read-only `GET` request. A variable product adds `?variation_id={variation_id}`, and the response always resolves the fallback to the parent product before it is returned. Administrative settings are not exposed through this endpoint. The legacy AJAX action remains available for compatibility.
+
+= Is there API documentation? =
+Yes. The complete endpoint reference is in `docs/api.md`, with an OpenAPI description in `docs/openapi.yaml`.
 
 = Is there support for Elementor? =  
 Absolutely! The **Pro Version** includes a dedicated Elementor widget to display 3D models seamlessly on your website.  

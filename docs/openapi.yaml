@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: AR Model Viewer for WooCommerce API
+  version: 1.0.0
+  description: Public product model and catalog routes plus authenticated anonymous analytics aggregates.
+servers:
+  - url: https://example.com/wp-json/ar-model-viewer/v1
+paths:
+  /products:
+    get:
+      summary: List public products with 3D models
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PublicPerPage'
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: category
+          schema: { type: string }
+      responses:
+        '200':
+          description: Product catalog page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductCatalog' }
+  /products/{product_id}/model:
+    get:
+      summary: Get effective viewer configuration
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema: { type: integer, minimum: 1 }
+        - in: query
+          name: variation_id
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        '200':
+          description: Viewer configuration
+          content:
+            application/json:
+              schema: { type: object }
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /analytics:
+    get:
+      summary: Read anonymous analytics aggregates
+      security:
+        - wordpressCookie: []
+      parameters:
+        - $ref: '#/components/parameters/From'
+        - $ref: '#/components/parameters/To'
+        - in: query
+          name: product_id
+          schema: { type: integer, minimum: 0 }
+        - in: query
+          name: variation_id
+          schema: { type: integer, minimum: 0 }
+        - in: query
+          name: event
+          schema:
+            type: string
+            enum: [viewer_open, viewer_load, viewer_close, ar_attempt, ar_session_started, ar_object_placed, ar_failed, viewer_error, viewer_interaction]
+        - in: query
+          name: mode
+          schema: { type: string }
+        - in: query
+          name: group_by
+          schema:
+            type: string
+            enum: [day, event, product, variation, mode]
+            default: event
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/AnalyticsPerPage'
+      responses:
+        '200':
+          description: Filtered analytics aggregates
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AnalyticsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /events:
+    post:
+      summary: Record one anonymous viewer event
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [event]
+              properties:
+                event: { type: string }
+                product_id: { type: integer, minimum: 0 }
+                variation_id: { type: integer, minimum: 0 }
+                mode: { type: string, maxLength: 32 }
+                error_code: { type: string, maxLength: 64 }
+                duration_bucket: { type: string, maxLength: 16 }
+      responses:
+        '202':
+          description: Event accepted or analytics disabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recorded: { type: boolean }
+        '429': { description: Request event limit reached }
+components:
+  securitySchemes:
+    wordpressCookie:
+      type: apiKey
+      in: cookie
+      name: wordpress_logged_in_
+  parameters:
+    Page:
+      in: query
+      name: page
+      schema: { type: integer, minimum: 1, default: 1 }
+    PublicPerPage:
+      in: query
+      name: per_page
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    AnalyticsPerPage:
+      in: query
+      name: per_page
+      schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+    From:
+      in: query
+      name: from
+      schema: { type: string, format: date }
+    To:
+      in: query
+      name: to
+      schema: { type: string, format: date }
+  responses:
+    Unauthorized:
+      description: Authentication required
+    Forbidden:
+      description: Required capability missing
+    NotFound:
+      description: Product or model not found
+  schemas:
+    Pagination:
+      type: object
+      required: [page, per_page, total, pages]
+      properties:
+        page: { type: integer }
+        per_page: { type: integer }
+        total: { type: integer }
+        pages: { type: integer }
+    Product:
+      type: object
+      required: [product_id, name, slug, model_url, poster_url, ios_src, has_ar, variation_count, model_endpoint]
+      properties:
+        product_id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+        model_url: { type: string, format: uri }
+        poster_url: { type: string, format: uri }
+        ios_src: { type: string, format: uri }
+        has_ar: { type: boolean }
+        variation_count: { type: integer }
+        model_endpoint: { type: string, format: uri }
+    ProductCatalog:
+      type: object
+      properties:
+        products:
+          type: array
+          items: { $ref: '#/components/schemas/Product' }
+        pagination: { $ref: '#/components/schemas/Pagination' }
+        filters:
+          type: object
+          properties:
+            search: { type: string }
+            category: { type: string }
+    AnalyticsResponse:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            total: { type: integer }
+            products: { type: integer }
+            variations: { type: integer }
+        range:
+          type: object
+          properties:
+            from: { type: string, format: date }
+            to: { type: string, format: date }
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              group_value: {}
+              event_count: { type: integer }
+        pagination: { $ref: '#/components/schemas/Pagination' }

@@ -66,6 +66,7 @@
 		var body = new window.URLSearchParams();
 		body.append("event", eventName);
 		body.append("product_id", String((details && details.productId) || 0));
+		body.append("variation_id", String((details && details.variationId) || currentVariation || 0));
 		body.append("mode", String((details && details.mode) || ""));
 		body.append("error_code", String((details && details.errorCode) || ""));
 		body.append("duration_bucket", String((details && details.durationBucket) || ""));

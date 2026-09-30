@@ -138,7 +138,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
             'armvwFront',
             array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'modelEndpoint' => esc_url_raw(rest_url('armvw/v1/products/')),
+                'modelEndpoint' => esc_url_raw(rest_url('ar-model-viewer/v1/products/')),
                 'viewerUrl' => plugin_dir_url(dirname(__FILE__)) . 'assets/vendor/model-viewer.min.js',
                 'action' => 'ar_model_viewer_for_woocommerce_get_model_and_settings',
                 'buttonId' => 'ar_model_viewer_for_woocommerce_btn',
@@ -146,7 +146,7 @@ class Ar_Model_Viewer_For_Woocommerce_Public
                     'enabled' => '1' === (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_analytics'),
                     'showOptOut' => '1' === (string) Ar_Model_Viewer_For_Woocommerce_Settings::get('ar_model_viewer_for_woocommerce_analytics_opt_out'),
                     'storageKey' => 'armvwAnalyticsOptOut',
-                    'endpoint' => esc_url_raw(rest_url('armvw/v1/events')),
+                    'endpoint' => esc_url_raw(rest_url('ar-model-viewer/v1/events')),
                 ),
                 // Static properties of the element, which cannot travel in the markup.
                 'staticProperties' => Ar_Model_Viewer_For_Woocommerce_Settings::static_properties(),
@@ -226,7 +226,35 @@ class Ar_Model_Viewer_For_Woocommerce_Public
     public function register_rest_routes()
     {
         register_rest_route(
-            'armvw/v1',
+            'ar-model-viewer/v1',
+            '/products',
+            array(
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => array($this, 'get_products_rest'),
+                'permission_callback' => '__return_true',
+                'args' => array(
+                    'page' => array(
+                        'default' => 1,
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'per_page' => array(
+                        'default' => 20,
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'search' => array(
+                        'default' => '',
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'category' => array(
+                        'default' => '',
+                        'sanitize_callback' => 'sanitize_title',
+                    ),
+                ),
+            )
+        );
+
+        register_rest_route(
+            'ar-model-viewer/v1',
             '/products/(?P<product_id>\d+)/model',
             array(
                 'methods' => WP_REST_Server::READABLE,
@@ -255,6 +283,97 @@ class Ar_Model_Viewer_For_Woocommerce_Public
                     ),
                 ),
             )
+        );
+    }
+
+    /**
+     * Return the public catalogue of products with an effective 3D model.
+     *
+     * @param WP_REST_Request $request REST request.
+     * @return array
+     */
+    public function get_products_rest(WP_REST_Request $request)
+    {
+        $page = max(1, absint($request->get_param('page')));
+        $per_page = min(100, max(1, absint($request->get_param('per_page'))));
+        $query_args = array(
+            'status' => 'publish',
+            'visibility' => 'visible',
+            'limit' => -1,
+            'return' => 'ids',
+            'orderby' => 'date',
+            'order' => 'DESC',
+        );
+        $search_param = $request->get_param('search');
+        $category_param = $request->get_param('category');
+        $search = is_scalar($search_param) ? sanitize_text_field((string) $search_param) : '';
+        $category = is_scalar($category_param) ? sanitize_title((string) $category_param) : '';
+
+        if ('' !== $search) {
+            $query_args['s'] = $search;
+        }
+
+        if ('' !== $category) {
+            $query_args['category'] = array($category);
+        }
+
+        $product_ids = function_exists('wc_get_products') ? wc_get_products($query_args) : array();
+        $products = array();
+
+        foreach ($product_ids as $product_id) {
+            $product = wc_get_product($product_id);
+
+            if (!$product || !Ar_Model_Viewer_For_Woocommerce_Product_Model::is_enabled($product)) {
+                continue;
+            }
+
+            $effective = Ar_Model_Viewer_For_Woocommerce_Product_Model::resolve_effective($product);
+
+            if ('' === trim($effective['source'])) {
+                continue;
+            }
+
+            $viewer = Ar_Model_Viewer_For_Woocommerce_Settings::viewer_options();
+            $has_ar = $viewer['ar'];
+
+            if ('yes' === $effective['ar_enabled']) {
+                $has_ar = true;
+            } elseif ('no' === $effective['ar_enabled']) {
+                $has_ar = false;
+            }
+
+            $products[] = array(
+                'product_id' => (int) $product->get_id(),
+                'name' => $product->get_name(),
+                'slug' => $product->get_slug(),
+                'model_url' => $effective['source'],
+                'poster_url' => $effective['poster'],
+                'ios_src' => $effective['ios_src'],
+                'has_ar' => (bool) $has_ar,
+                'variation_count' => $product->is_type('variable') ? count($product->get_children()) : 0,
+                'model_endpoint' => add_query_arg(
+                    'variation_id',
+                    0,
+                    rest_url('ar-model-viewer/v1/products/' . $product->get_id() . '/model')
+                ),
+            );
+        }
+
+        $total = count($products);
+        $offset = ($page - 1) * $per_page;
+
+        return array(
+            'products' => array_slice($products, $offset, $per_page),
+            'pagination' => array(
+                'page' => $page,
+                'per_page' => $per_page,
+                'total' => $total,
+                'pages' => $total ? (int) ceil($total / $per_page) : 0,
+            ),
+            'filters' => array(
+                'search' => $search,
+                'category' => $category,
+            ),
         );
     }
 
