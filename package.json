@@ -4,7 +4,8 @@
   "description": "=== AR Model Viewer for WooCommerce === Contributors: Manuel Ramirez Coronel Donate link:  Tags: AR, WooCommerce, model-viewer, Shopping, Shop Requires at least: 1.0.0 Tested up to: 6.0 Stable tag: 1.0.0 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
   "main": "index.js",
   "scripts": {
-    "vendors": "node sync-vendors.mjs"
+    "vendors": "node sync-vendors.mjs",
+    "package": "node scripts/package-plugin.mjs"
   },
   "repository": {
     "type": "git",

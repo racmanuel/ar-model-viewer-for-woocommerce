@@ -61,6 +61,46 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
     }
 
     /**
+     * Check whether the plugin-owned table exists, caching the result briefly.
+     *
+     * @return bool
+     */
+    private static function table_exists()
+    {
+        global $wpdb;
+
+        $cache_key = 'armvw_analytics_table_exists_' . md5($wpdb->prefix);
+        $found = false;
+        $cached = wp_cache_get($cache_key, 'ar_model_viewer_for_woocommerce', false, $found);
+
+        if ($found) {
+            return (bool) $cached;
+        }
+
+        $table = self::table_name();
+        $exists = $table === $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)));
+
+        wp_cache_set($cache_key, $exists, 'ar_model_viewer_for_woocommerce', MINUTE_IN_SECONDS);
+
+        return $exists;
+    }
+
+    /**
+     * Clear the cached table existence result after schema changes.
+     *
+     * @return void
+     */
+    private static function clear_table_exists_cache()
+    {
+        global $wpdb;
+
+        wp_cache_delete(
+            'armvw_analytics_table_exists_' . md5($wpdb->prefix),
+            'ar_model_viewer_for_woocommerce'
+        );
+    }
+
+    /**
      * Create or update the aggregate table.
      *
      * @return void
@@ -88,15 +128,12 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
             KEY event_day (`event`, `day`)
         ) {$charset_collate};";
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- dbDelta requires the complete schema statement.
+        self::clear_table_exists_cache();
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- dbDelta is the WordPress API for creating and upgrading this plugin-owned table.
         dbDelta($sql);
 
-        if ($table !== $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)))) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- The schema statement is built from fixed plugin SQL and a trusted table name.
-            $wpdb->query($sql);
-        }
-
-        if ($table === $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)))) {
+        if (self::table_exists()) {
             update_option(self::SCHEMA_OPTION, self::SCHEMA_VERSION, false);
         }
     }
@@ -127,6 +164,10 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
     public static function record($event, $product_id = 0, $mode = '', $error_code = '', $duration_bucket = '', $variation_id = 0)
     {
         global $wpdb;
+
+        if (!self::table_exists()) {
+            return false;
+        }
 
         $event = sanitize_key($event);
         $mode = sanitize_key($mode);
@@ -262,12 +303,11 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
     {
         global $wpdb;
 
-        $table = self::table_name();
-        $exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)));
-
-        if ($table !== $exists) {
+        if (!self::table_exists()) {
             return new WP_Error('armvw_analytics_unavailable', __('Analytics storage is not available.', 'ar-model-viewer-for-woocommerce'), array('status' => 503));
         }
+
+        $table = self::table_name();
 
         $from = self::rest_date($request->get_param('from'), gmdate('Y-m-d', time() - (30 * DAY_IN_SECONDS)));
         $to = self::rest_date($request->get_param('to'), current_time('Y-m-d'));
@@ -451,12 +491,11 @@ class Ar_Model_Viewer_For_Woocommerce_Analytics
     {
         global $wpdb;
 
-        $table = self::table_name();
-        $exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)));
-
-        if ($table !== $exists) {
+        if (!self::table_exists()) {
             return array();
         }
+
+        $table = self::table_name();
 
         $since = gmdate('Y-m-d', time() - (absint($days) * DAY_IN_SECONDS));
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name is generated from the WordPress prefix and fixed plugin suffix; the date is a placeholder.
