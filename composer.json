@@ -9,7 +9,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "freemius/wordpress-sdk": "dev-master",
+        "freemius/wordpress-sdk": "~2.13.4",
         "chillerlan/php-qrcode": "~4.3.0",
         "chillerlan/php-settings-container": "~2.1.6"
     }

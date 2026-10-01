@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ea14a3b648b4653d4c74dbf42517cb5",
+    "content-hash": "c088244a8da6da47b4c618957a576664",
     "packages": [
         {
             "name": "chillerlan/php-qrcode",
@@ -153,16 +153,16 @@
         },
         {
             "name": "freemius/wordpress-sdk",
-            "version": "dev-master",
+            "version": "2.13.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Freemius/wordpress-sdk.git",
-                "reference": "241fbfc91151f85d8ebeb75343caf29bda1d3208"
+                "reference": "fa43eb92ae9dffa0d9f5ae11b5a1739bd7222308"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Freemius/wordpress-sdk/zipball/241fbfc91151f85d8ebeb75343caf29bda1d3208",
-                "reference": "241fbfc91151f85d8ebeb75343caf29bda1d3208",
+                "url": "https://api.github.com/repos/Freemius/wordpress-sdk/zipball/fa43eb92ae9dffa0d9f5ae11b5a1739bd7222308",
+                "reference": "fa43eb92ae9dffa0d9f5ae11b5a1739bd7222308",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,6 @@
                 "szepeviktor/phpstan-wordpress": "^1.3",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -201,17 +200,15 @@
             ],
             "support": {
                 "issues": "https://github.com/Freemius/wordpress-sdk/issues",
-                "source": "https://github.com/Freemius/wordpress-sdk/tree/master"
+                "source": "https://github.com/Freemius/wordpress-sdk/tree/2.13.4"
             },
-            "time": "2025-09-15T14:36:55+00:00"
+            "time": "2026-07-09T08:50:52+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "freemius/wordpress-sdk": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
