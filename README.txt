@@ -4,7 +4,7 @@ Donate link: https://racmanuel.dev
 Tags: Augmented Reality, AR, Model Viewer, 3D, WooCommerce
 Requires at least: 5.9
 Tested up to: 7.1
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -159,8 +159,9 @@ We welcome all contributions from the community!
 2.0.1 - Update Freemius SDK to 2.11.0 
 2.0.2 - Updated the display name on wordpress.org to 3D/AR/VR Model Viewer for WooCommerce.
 2.0.3 - Update to Freemius SDK and add support for non-logged users in AJAX call
+2.1.0 - Added native WooCommerce product and variation model fields, public REST catalog and private analytics endpoints, direct AR links, local QR generation, and analytics for direct-link and QR opens.
 
 == Upgrade Notice ==  
 
-= 2.0.3 = 
-Update to Freemius SDK and add support for non-logged users in AJAX call
+= 2.1.0 =
+Adds native WooCommerce product and variation model fields, REST catalog and analytics endpoints, direct AR links, local QR generation, and analytics for direct-link and QR opens.
